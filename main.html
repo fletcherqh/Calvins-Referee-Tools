@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calvin's Referee Tools</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+      textarea {
+        font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+      }
+      .buttonLabel {
+        margin:2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Calvin's Referee Tools</h1>
+      <hr/>
+      <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs=6">
+          <p class="buttonLabel" data-toggle="collapse" href="#dice-buttons">Dice</p>
+          <div id="dice-buttons" class="collapse.in">
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d2());">d2</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d2(2));">2d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(3));">3d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(4));">4d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(5));">5d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(6));">6d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(7));">7d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(8));">8d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(9));">9d2</a></li>
+                <li><a href="#" onclick="output(dice.d2(10));">10d2</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d3());">d3</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d3(2));">2d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(3));">3d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(4));">4d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(5));">5d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(6));">6d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(7));">7d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(8));">8d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(9));">9d3</a></li>
+                <li><a href="#" onclick="output(dice.d3(10));">10d3</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d4());">d4</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d4(2));">2d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(3));">3d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(4));">4d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(5));">5d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(6));">6d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(7));">7d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(8));">8d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(9));">9d4</a></li>
+                <li><a href="#" onclick="output(dice.d4(10));">10d4</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d6());">d6</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d6(2));">2d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(3));">3d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(4));">4d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(5));">5d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(6));">6d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(7));">7d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(8));">8d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(9));">9d6</a></li>
+                <li><a href="#" onclick="output(dice.d6(10));">10d6</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d8());">d8</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d8(2));">2d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(3));">3d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(4));">4d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(5));">5d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(6));">6d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(7));">7d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(8));">8d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(9));">9d8</a></li>
+                <li><a href="#" onclick="output(dice.d8(10));">10d8</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d10());">d10</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d10(2));">2d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(3));">3d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(4));">4d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(5));">5d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(6));">6d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(7));">7d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(8));">8d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(9));">9d10</a></li>
+                <li><a href="#" onclick="output(dice.d10(10));">10d10</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d12());">d12</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d12(2));">2d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(3));">3d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(4));">4d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(5));">5d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(6));">6d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(7));">7d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(8));">8d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(9));">9d12</a></li>
+                <li><a href="#" onclick="output(dice.d12(10));">10d12</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d20());">d20</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d20(2));">2d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(3));">3d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(4));">4d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(5));">5d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(6));">6d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(7));">7d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(8));">8d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(9));">9d20</a></li>
+                <li><a href="#" onclick="output(dice.d20(10));">10d20</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d100());">d100</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(dice.d100(2));">2d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(3));">3d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(4));">4d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(5));">5d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(6));">6d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(7));">7d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(8));">8d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(9));">9d100</a></li>
+                <li><a href="#" onclick="output(dice.d100(10));">10d100</a></li>
+              </ul>
+            </div>
+            <button class="btn btn-default btn-xs" onclick="output(dice.card());">Card</button>
+            <br>
+            <button class="btn btn-default btn-xs" onclick="output(dice.multiple(10, 1, 6));">10 x d6</button>
+            <button class="btn btn-default btn-xs" onclick="output(dice.multiple(10, 1, 20));">10 x d20</button>
+            <br>
+            <input type="text" size="8" name="diceFormula" id="diceFormula" value="2d6x2+5">
+            <button id="rollDiceFormula" class="btn btn-default btn-xs" onclick="output(dice.parse(jQuery('#diceFormula').val(),true));">Roll</button>
+            <br>
+<!--             <input type="text" size="2" name="poolSize" id="poolSize">
+            <input type="text" size="2" name="poolDiff" id="poolDiff">
+            <button id="rollDicePoll" class="btn btn-default btn-xs" 
+              onclick="output(dice.pool(10,jQuery('#poolSize').val(),jQuery('#poolDiff').val()));">Pool</button> -->
+          </div>
+
+          <p class="buttonLabel" data-toggle="collapse" href="#basic-tables-buttons">Basic Tables</p>
+          <div id="basic-tables-buttons" class="collapse.in">
+            <button class="btn btn-default btn-xs" onclick="output(oddTables.characterStats());">stats</button>
+            <button class="btn btn-default btn-xs" onclick="output(oddTables.reaction());">reaction</button>
+            <button class="btn btn-default btn-xs" onclick="output(oddTables.loyalty());">loyalty</button>
+          </div>
+
+
+          <p class="buttonLabel" data-toggle="collapse" href="#treasure-buttons">Treasure Tables</p>
+          <div id="treasure-buttons" class="collapse.in">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.magicItem());">Magic Item</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.magicSword());">Sword</a></li>
+                <li><a href="#" onclick="output(oddTables.miscWeapon());">Weapon</a></li>
+                <li><a href="#" onclick="output(oddTables.armor());">Armor</a></li>
+                <li><a href="#" onclick="output(oddTables.potion(true));">Potion</a></li>
+                <li><a href="#" onclick="output(oddTables.scroll());">Scroll</a></li>
+                <li><a href="#" onclick="output(oddTables.ring(true));">Ring</a></li>
+                <li><a href="#" onclick="output(oddTables.wand());">Wand</a></li>
+                <li><a href="#" onclick="output(oddTables.miscMagic());">Misc</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureMap());">Treasure Map</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs"  onclick="output(oddTables.treasureTypeA());">Type A Land</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.treasureTypeADesert());">Type A Desert</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeAWater());">Type A Water</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeB());">Type B</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeC());">Type C</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeD());">Type D</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeE());">Type E</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeF());">Type F</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeG());">Type G</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeHHalf());">Type H (Half)</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeH());">Type H</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeHDouble());">Type H (Double)</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureTypeI());">Type I</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs"  onclick="output(oddTables.treasureLevel1());">Level 1</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.treasureLevel2to3());">Level 2-3</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureLevel4to5());">Level 4-5</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureLevel6to7());">Level 6-7</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureLevel8to9());">Level 8-9</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureLevel10to12());">Level 10-12</a></li>
+                <li><a href="#" onclick="output(oddTables.treasureLevel13());">Level 13+</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="buttonLabel" data-toggle="collapse" href="#encounter-buttons">Encounter Tables</p>
+          <div id="encounter-buttons" class="collapse.in">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs"  onclick="output(oddTables.monsterLevel1());">Dungeon Level 1</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.monsterLevel2());">Dungeon Level 2</a></li>
+                <li><a href="#" onclick="output(oddTables.monsterLevel3());">Dungeon Level 3</a></li>
+                <li><a href="#" onclick="output(oddTables.monsterLevel4());">Dungeon Level 4</a></li>
+                <li><a href="#" onclick="output(oddTables.monsterLevel5());">Dungeon Level 5</a></li>
+                <li><a href="#" onclick="output(oddTables.monsterLevel6());">Dungeon Level 6</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs"  onclick="output(oddTables.encounterClear());">Clear Terrain</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.encounterWoods());">Woods</a></li>
+                <li><a href="#" onclick="output(oddTables.encounterRiver());">River</a></li>
+                <li><a href="#" onclick="output(oddTables.encounterSwamp());">Swamp</a></li>
+                <li><a href="#" onclick="output(oddTables.encounterMountains());">Mountains</a></li>
+                <li><a href="#" onclick="output(oddTables.encounterDesert());">Desert</a></li>
+                <li><a href="#" onclick="output(oddTables.encounterCity());">City</a></li>
+                <li><a href="#" onclick="output(oddTables.encounterMars());">Mars</a></li>
+                <li><a href="#" onclick="output(oddTables.encounterLostWorld());">Lost World</a></li>
+              </ul>
+            </div>
+
+            <button class="btn btn-default btn-xs" onclick="output(oddTables.castleEncounter());">Castle</button>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddEncounters.bandits());">Bandit Lair</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddEncounters.brigands());">Brigands</a></li>
+                <li><a href="#" onclick="output(oddEncounters.berserkers());">Berserkers</a></li>
+                <li><a href="#" onclick="output(oddEncounters.desertNomads());">Desert Nomads</a></li>
+                <li><a href="#" onclick="output(oddEncounters.steppeNomads());">Steppe Nomads</a></li>
+                <li><a href="#" onclick="output(oddEncounters.dervishes());">Dervishes</a></li>
+                <li><a href="#" onclick="output(oddEncounters.buccaneers());">Buccaneers</a></li>
+                <li><a href="#" onclick="output(oddEncounters.pirates());">Pirates</a></li>
+                <li><a href="#" onclick="output(oddEncounters.goblins());">Goblins</a></li>
+                <li><a href="#" onclick="output(oddEncounters.kobolds());">Kobolds</a></li>
+                <li><a href="#" onclick="output(oddEncounters.orcs());">Orcs</a></li>
+                <li><a href="#" onclick="output(oddEncounters.orcWagons());">Orc Wagon Trains</a></li>
+                <li><a href="#" onclick="output(oddEncounters.hobgoblins());">Hobgoblins</a></li>
+                <li><a href="#" onclick="output(oddEncounters.gnolls());">Gnolls</a></li>
+                <li><a href="#" onclick="output(oddEncounters.ogres());">Ogres</a></li>
+                <li><a href="#" onclick="output(oddEncounters.trolls());">Trolls</a></li>
+                <li><a href="#" onclick="output(oddEncounters.giants());">Giants</a></li>
+                <li><a href="#" onclick="output(oddEncounters.dwarves());">Dwarves</a></li>
+                <li><a href="#" onclick="output(oddEncounters.elves());">Elves</a></li>
+                <li><a href="#" onclick="output(oddEncounters.gnomes());">Gnomes</a></li>
+                <li><a href="#" onclick="output(oddEncounters.lycanthropes());">Lycanthropes</a></li>
+                <li><a href="#" onclick="output(oddEncounters.pixies());">Pixies</a></li>
+                <li><a href="#" onclick="output(oddEncounters.nixies());">Nixies</a></li>
+              </ul>
+            </div>
+            
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddEncounters.dragonEncounter());">Dragon</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddEncounters.dragonEncounter(dragonTypes.white));">White</a></li>
+                <li><a href="#" onclick="output(oddEncounters.dragonEncounter(dragonTypes.black));">Black</a></li>
+                <li><a href="#" onclick="output(oddEncounters.dragonEncounter(dragonTypes.green));">Green</a></li>
+                <li><a href="#" onclick="output(oddEncounters.dragonEncounter(dragonTypes.blue));">Blue</a></li>
+                <li><a href="#" onclick="output(oddEncounters.dragonEncounter(dragonTypes.red));">Red</a></li>
+                <li><a href="#" onclick="output(oddEncounters.dragonEncounter(dragonTypes.gold));">Gold</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="buttonLabel" data-toggle="collapse" href="#names-buttons">Names</p>
+          <div id="names-buttons" class="collapse.in">
+            <button class="btn btn-default btn-xs" onclick="output(oddNames.feminineName());">F. Name</button>
+            <button class="btn btn-default btn-xs" onclick="output(oddNames.masculineName());">M. Name</button>
+            <button class="btn btn-default btn-xs" onclick="output(oddNames.epithet());">Epithet</button>
+          </div>
+
+          <p class="buttonLabel" data-toggle="collapse" href="#npcs-buttons">NPCs</p>
+          <div id="npcs-buttons" class="collapse.in">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcFighter(dice.d10()));">Fighter</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.npcFighter(1));">Veteran (1)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(2));">Warrior (2)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(3));">Swordsman (3)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(4));">Hero (4)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(5));">Swashbuckler (5)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(6));">Myrmidon (6)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(7));">Champion (7)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(8));">Superhero (8)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(9));">Lord (9)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(10));">Lord (10)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(11));">Lord (11)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(12));">Lord (12)</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcThief(dice.d10()));">Thief</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.npcThief(1));">Apprentice (1)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(2));">Footpad (2)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(3));">Robber (3)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(4));">Burglar (4)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(5));">Cutpurse (5)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(6));">Sharper (6)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(7));">Pilferer (7)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(8));">Master Pilferer (8)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(9));">Thief (9)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(10));">Master Thief (10)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(11));">Master Thief (11)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcThief(12));">Master Thief (12)</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcCleric(dice.d10()));">Cleric</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.npcCleric(1));">Acolyte (1)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(2));">Adept (2)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(3));">Priest (3)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(4));">Vicar (4)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(5));">Curate (5)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(6));">Bishop (6)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(7));">Lama (7)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(8));">Patriarch (8)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(9));">Patriarch (9)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(10));">Patriarch (10)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(11));">Patriarch (11)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcCleric(12));">Patriarch (12)</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcWizard(dice.d10()));">Magic-User</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.npcWizard(1));">Medium (1)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(2));">Seer (2)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(3));">Conjurer (3)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(4));">Theurgist (4)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(5));">Thaumaturgist (5)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(6));">Magician (6)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(7));">Enchanter (7)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(8));">Warlock (8)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(9));">Sorcerer (9)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(10));">Necromancer (10)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(11));">Wizard (11)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcWizard(12));">Wizard (12)</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcDwarf(dice.d6()));">Dwarf</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.npcDwarf(1));">Dwarf Veteran (1)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcDwarf(2));">Dwarf Warrior (2)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcDwarf(3));">Dwarf Swordsman (3)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcDwarf(4));">Dwarf Hero (4)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcDwarf(5));">Dwarf Swashbuckler (5)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcDwarf(6));">Dwarf Myrmidon (6)</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcHalfling(dice.d4()));">Halfling</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.npcHalfling(1));">Halfling Veteran (1)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcHalfling(2));">Halfling Warrior (2)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcHalfling(3));">Halfling Swordsman (3)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcHalfling(4));">Halfling Hero (4)</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcElfTwoLevels(dice.d4(),dice.d8()));">Elf</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(1,1));">Veteran-Medium (1/1)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(2,2));">Warrior-Seer (2/2)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(3,3));">Swordsman-Conjurer (3/3)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(4,4));">Hero-Theurgist (4/4)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(4,5));">Hero-Thaumaturgist (4/5)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(4,6));">Hero-Magician (4/6)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(4,7));">Hero-Enchanter (4/7)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcElfTwoLevels(4,8));">Hero-Warlock (4/8)</a></li>
+              </ul>
+            </div>
+
+          </div>
+
+          <p class="buttonLabel" data-toggle="collapse" href="#experimental-buttons">Experimental</p>
+          <div id="experimental-buttons" class="collapse.in">
+            <button type="button" class="btn btn-default btn-xs" onclick="output(oddEncounters.village());">Village</button>
+          </div>
+          
+        </div>
+        <div class="col-lg-10 col-md-9 col-sm-8 col-xs-6">
+          <!--<div id="output-log"></div> -->
+          <textarea id="output-log" class="full-text-area" rows="20" cols="80"></textarea>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/dice.js"></script>
+    <script src="/names/masculine-census-names.js"></script>
+    <script src="/names/feminine-census-names.js"></script>
+    <script src="/names/epithets.js"></script>
+    <script src="/names/conflux2.js"></script>
+    <script src="/names/oddNames.js"></script>
+    <script src="/odd-tables.js"></script>
+    <script src="/odd-mobs.js"></script>
+    <script type="text/javascript">
+      function output(stuff) {
+        jQuery("#output-log").text(stuff + "\n" + jQuery("#output-log").text());
+      }
+      jQuery("#diceFormula").keyup(function(event){
+        if(event.keyCode == 13){
+          $("#rollDiceFormula").click();
+        }
+      });
+    </script>
+  </body>
+</html>
