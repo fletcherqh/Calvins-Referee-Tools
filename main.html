@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Calvin's Referee Tools</title>
+    <title>Odd Referee Tools</title>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -522,7 +522,13 @@
           <div id="experimental-buttons" class="collapse.in">
             <button type="button" class="btn btn-default btn-xs" onclick="output(oddEncounters.village());">Village</button>
           </div>
+
+          <div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="MrJoshBear" data-color="#000000" data-emoji="" data-font="Arial" data-text="Buy me a coffee" data-outline-color="#fff" data-font-color="#fff" data-coffee-color="#fd0" ></script>
+          </div>
+
           
+
         </div>
         <div class="col-lg-10 col-md-9 col-sm-8 col-xs-6">
           <!--<div id="output-log"></div> -->
@@ -533,15 +539,19 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/dice.js"></script>
-    <script src="/names/masculine-census-names.js"></script>
-    <script src="/names/feminine-census-names.js"></script>
-    <script src="/names/epithets.js"></script>
-    <script src="/names/conflux2.js"></script>
-    <script src="/names/oddNames.js"></script>
-    <script src="/odd-tables.js"></script>
-    <script src="/odd-mobs.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./dice.js"></script>
+    <script src="./names/masculine-names.js"></script>
+    <script src="./names/feminine-names.js"></script>
+    <script src="./names/fighters/fighter-names.js"></script>
+    <script src="./names/fighters/fighter-epithets.js"></script>
+    <script src="./names/magic-users/magic-user-names.js"></script>
+    <script src="./names/magic-users/magic-user-epithets.js"></script>
+    <script src="./names/epithets.js"></script>
+    <script src="./names/conflux2.js"></script>
+    <script src="./names/oddNames.js"></script>
+    <script src="./odd-tables.js"></script>
+    <script src="./odd-mobs.js"></script>
     <script type="text/javascript">
       function output(stuff) {
         jQuery("#output-log").text(stuff + "\n" + jQuery("#output-log").text());
