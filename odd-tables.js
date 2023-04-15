@@ -2941,12 +2941,8 @@ oddTables.npcCleric = function (level, alignment) {
 		}
 	}
 	gender = oddTables.npcGender();
-	if (gender === "M" || gender === "*" && dice.flip()) {
-		name = oddNames.masculineName();
-	} else {
-		name = oddNames.feminineName();
-	}
-	name += oddNames.epithet();
+
+	name = oddNames.clericName();
 
 	// determine basic level derivatives 
 	switch (level) {

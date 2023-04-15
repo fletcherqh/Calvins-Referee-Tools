@@ -34,35 +34,38 @@ var oddNames = {
 	'version': '0.1',
 };
 
-oddNames.feminineConfluxor = new Confluxor();
-oddNames.feminineConfluxor.parse(feminineCensusNames.join("\n"),"\n");
-
-oddNames.feminineName = function () {
-	return oddNames.feminineConfluxor.generate(1)[0];
-};
-
-oddNames.masculineConfluxor = new Confluxor();
-oddNames.masculineConfluxor.parse(masculineCensusNames.join("\n"),"\n");
-
-oddNames.masculineName = function () {
-	return oddNames.masculineConfluxor.generate(1)[0];
-};
+//oddNames.feminineConfluxor = new Confluxor();
+//oddNames.feminineConfluxor.parse(feminineCensusNames.join("\n"),"\n");
+//
+//oddNames.feminineName = function () {
+//	return oddNames.feminineConfluxor.generate(1)[0];
+//};
+//
+//oddNames.masculineConfluxor = new Confluxor();
+//oddNames.masculineConfluxor.parse(masculineCensusNames.join("\n"),"\n");
+//
+//oddNames.masculineName = function () {
+//	return oddNames.masculineConfluxor.generate(1)[0];
+//};
 
 //Fighter Names - Calvin
 oddNames.fighterName = function () {
 	return dice.pick(fighterNames) + " the " + dice.pick(fighterEpithets);
 };
-//end fighterNames
 
 //Fighter Names - Calvin
 oddNames.magicUserName = function () {
 	return dice.pick(magicUserNames) + " the " + dice.pick(magicUserEpithets);
 };
-//end fighterNames
 
-oddNames.epithet = function () {
-	return " the " + dice.pick(epithets);
+//Cleric Names - Calvin
+oddNames.clericName = function () {
+	return dice.pick(clericNames) + " " + dice.pick(clericPrepositions) + " " + dice.pick(clericalPatrons);
 };
+
+//oddNames.epithet = function () {
+//	return " the " + dice.pick(epithets);
+//};
 
 oddNames.placePrefix = function () {
 	return dice.pick(["Aelf","Ald","Ash","Axe","Barrow","Bear","Bee","Black",
