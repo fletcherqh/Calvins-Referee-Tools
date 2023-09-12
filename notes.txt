@@ -3,3 +3,15 @@ Names table - page 23
 Possible link epithets to good, bad, etc
 
 Location
+
+separate fighting men/women with gender creation
+clerics cannot be neutral
+
+Title : Name : Epithet/Patron : Alignment (or, side) : Class :[Extraction/Religious Order]: Location
+
+Page 28 Cleric Title
+
+nested dropdowns
+
+priorities - class - alignment - level
+if cleric = c change name to evil cleric

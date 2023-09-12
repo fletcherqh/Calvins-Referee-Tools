@@ -50,7 +50,7 @@ var oddNames = {
 
 //Fighter Names - Calvin
 oddNames.fighterName = function () {
-	return dice.pick(fighterNames) + " the " + dice.pick(fighterEpithets);
+	return dice.pick(fightingManNames) + " the " + dice.pick(lawfulFightingManAmazonEpithets);
 };
 
 //Fighter Names - Calvin

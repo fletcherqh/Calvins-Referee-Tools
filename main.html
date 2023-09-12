@@ -378,8 +378,35 @@
             <button class="btn btn-default btn-xs" onclick="output(oddNames.epithet());">Epithet</button>
           </div>
 
+          
+
           <p class="buttonLabel" data-toggle="collapse" href="#npcs-buttons">NPCs</p>
           <div id="npcs-buttons" class="collapse.in">
+
+            <div class="container">                                        
+              <div class="dropdown">
+                <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">FIGHTERS
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" onclick="output(oddTables.npcFighter(dice.d10()));">Random Fighter</a></li>
+                  <li class="dropdown-submenu">
+                    <a class="test" tabindex="-1" href="#">Alignment<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                      <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                      <li class="dropdown-submenu">
+                        <a class="test" href="#">Another dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="#">3rd level dropdown</a></li>
+                          <li><a href="#">3rd level dropdown</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
             <div class="btn-group">
               <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.npcFighter(dice.d10()));">Fighter</button>
               <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -398,7 +425,7 @@
                 <li><a href="#" onclick="output(oddTables.npcFighter(9));">Lord (9)</a></li>
                 <li><a href="#" onclick="output(oddTables.npcFighter(10));">Lord (10)</a></li>
                 <li><a href="#" onclick="output(oddTables.npcFighter(11));">Lord (11)</a></li>
-                <li><a href="#" onclick="output(oddTables.npcFighter(12));">Lord (12)</a></li>
+                <li><a href="#" onclick="output(oddTables.npcFighter(12));">Lord (12)</a></li>                
               </ul>
             </div>
 
@@ -522,13 +549,6 @@
           <div id="experimental-buttons" class="collapse.in">
             <button type="button" class="btn btn-default btn-xs" onclick="output(oddEncounters.village());">Village</button>
           </div>
-
-          <div>
-            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="MrJoshBear" data-color="#000000" data-emoji="" data-font="Arial" data-text="Buy me a coffee" data-outline-color="#fff" data-font-color="#fff" data-coffee-color="#fd0" ></script>
-          </div>
-
-          
-
         </div>
         <div class="col-lg-10 col-md-9 col-sm-8 col-xs-6">
           <!--<div id="output-log"></div> -->
@@ -557,6 +577,15 @@
     <script src="./names/oddNames.js"></script>
     <script src="./odd-tables.js"></script>
     <script src="./odd-mobs.js"></script>
+    <script>
+    $(document).ready(function(){
+      $('.dropdown-submenu a.test').on("click", function(e){
+        $(this).next('ul').toggle();
+        e.stopPropagation();
+        e.preventDefault();
+      });
+    });
+    </script>
     <script type="text/javascript">
       function output(stuff) {
         jQuery("#output-log").text(stuff + "\n" + jQuery("#output-log").text());

@@ -1,0 +1,57 @@
+var LawfulMaleClericTitles = [
+    "Recruit",
+    "Novice",
+    "Brother (Monk)",
+    "Captain",
+    "Prior",
+    "Major",
+    "Abbott",
+    "Crusader",
+    "Crusader",
+    "Crusader",
+    "Crusader",
+    "High Crusader",
+];
+
+var LawfulFemaleClericTitles = [
+    "Recruit",
+    "Novice",
+    "Sister (Nun)",
+    "Captain",
+    "Prioress",
+    "Major",
+    "Abbottess",
+    "Crusader",
+    "Crusader",
+    "Crusader",
+    "Crusader",
+    "High Crusader"
+];
+var ChaoticMaleClericTitles = [
+    "Lacky",
+    "Crony",
+    "Minion",
+    "Evil Priest",
+    "Under-archon",
+    "Major Domo",
+    "Factotum",
+    "Evil High Priest",
+    "Evil High Priest",
+    "Evil High Priest",
+    "Evil High Priest",
+    "Demigogue",
+];
+var ChaoticFemaleClericTitles = [
+    "Lacky",
+    "Crony",
+    "Minion",
+    "Evil Priestess",
+    "Under-archess",
+    "Major Doma",
+    "Factotum",
+    "Evil High Priestess",
+    "Evil High Priestess",
+    "Evil High Priestess",
+    "Evil High Priestess",
+    "Demigogue",
+];

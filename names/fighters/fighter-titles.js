@@ -1,0 +1,28 @@
+var FightingManTitles = [
+    "Warrior",
+    "Swordsman",
+    "Hero",
+    "Swashbuckler",
+    "Myrmidon",
+    "Champion",
+    "Super-hero",
+    "Super-hero",
+    "Super-hero",
+    "Super-hero",
+    "Legend",
+    "Veteran",
+];
+var AmazonTitles = [
+    "Warrioress",
+    "Swordsdame",
+    "Heroine",
+    "Swashbucklerette",
+    "Myrmidonna",
+    "Championess",
+    "Super-heroine",
+    "Super-heroine",
+    "Super-heroine",
+    "Super-heroine",
+    "Legend",
+    "Veteran",
+];

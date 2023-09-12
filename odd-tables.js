@@ -2444,18 +2444,44 @@ oddTables.npcGender = function () {
 	}
 };
 
-oddTables.npcFighter = function (level, alignment) {
+oddTables.npcFighter = function (level, alignment, gender) {
 	var output = "", i = 0, roll = 0, hp = 0, 
 			title, name, gender, hd = 1, hpBonus = 0, ac, aStr, aInt, aWis, aCon, aDex, aCha, sword, armor = 0, shield = 0;
 	level = Math.floor((typeof level === "number") ? level : 1);
 	level = (level < 1 ? 1 : level);
 
-	//randomly pick basics
+	//randomly pick basics 
 	if (!(alignment == "L" || alignment == "N" || alignment == "C")) {
 		alignment = oddTables.npcAlignment();
 	}
 	
-	gender = oddTables.npcGender();
+	if (!(gender == "M" || gender == "F")) {
+		gender = oddTables.npcGender();
+	}
+
+	//get name
+	if (gender == "M") {
+		if (alignment == "L") {
+			name = dice.pick(fightingManNames) + " the " + dice.pick(lawfulFightingManAmazonEpithets);
+		}
+		if (alignment == "N") {
+			name = dice.pick(fightingManNames) + " the " + dice.pick(neutralFightingManAmazonEpithets);
+		}
+		if (alignment == "C") {
+			name = dice.pick(fightingManNames) + " the " + dice.pick(chaoticFightingManAmazonEpithets);
+		}
+	}
+	else if (gender == "F") {
+		if (alignment == "L") {
+			name = dice.pick(amazonNames) + " the " + dice.pick(lawfulFightingManAmazonEpithets);
+		}
+		if (alignment == "N") {
+			name = dice.pick(amazonNames) + " the " + dice.pick(neutralFightingManAmazonEpithets);
+		}
+		if (alignment == "C") {
+			name = dice.pick(amazonNames) + " the " + dice.pick(chaoticFightingManAmazonEpithets);
+		}
+	}
 
 	name = oddNames.fighterName();
 
