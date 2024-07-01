@@ -1229,12 +1229,12 @@ function DragonType (color, breathType, breathShape, hdLow, hdMid, hdHi, talkCha
 var dragonTypes = {
 	'version': '0.1',
 };
-dragonTypes.white = new DragonType("white", "cold", "8\"x3\" cone", 5, 6, 7, 25, 0, 0, 60);
-dragonTypes.black = new DragonType("black", "acid", "6\"x½\" line", 6, 7, 8, 40, 5, 1, 50);
-dragonTypes.green = new DragonType("green", "gas", "5\"x4\" cloud", 7, 8, 9, 55, 10, 2, 40);
-dragonTypes.blue = new DragonType("blue", "lightning", "10\"x½\" line", 8, 9, 10, 70, 2, 15, 30);
-dragonTypes.red = new DragonType("red", "fire", "9\"x3\" cone", 9, 10, 11, 85, 15, 3, 20);
-dragonTypes.gold = new DragonType("gold", "fire or gas", "9\"x3\" cone or 5\"x4\" cloud", 10, 11, 12, 100, 100, 6, 10);
+dragonTypes.white = new DragonType("White", "cold", "8\"x3\" cone", 5, 6, 7, 50, 40, 1, 60);
+dragonTypes.black = new DragonType("Black", "acid", "6\"x½\" line", 6, 7, 8, 60, 50, 1, 50);
+dragonTypes.green = new DragonType("Green", "gas", "5\"x4\" cloud", 7, 8, 9, 70, 60, 2, 40);
+dragonTypes.blue = new DragonType("Blue", "lightning", "10\"x½\" line", 8, 9, 10, 80, 70, 3, 30);
+dragonTypes.red = new DragonType("Red", "fire", "9\"x3\" cone", 9, 10, 11, 90, 80, 4, 20);
+dragonTypes.gold = new DragonType("Gold", "fire or gas", "9\"x3\" cone or 5\"x4\" cloud", 10, 11, 12, 100, 100, 6, 10);
 
 oddEncounters.dragon = function (age, type) {
 	var i, roll1, spellLevels, dragon;
@@ -1289,7 +1289,7 @@ oddEncounters.dragon = function (age, type) {
 		case 6: dragon.ageDesc = "Ancient"; break;
 	}
 
-	dragon.description = dragon.size + dragon.ageDesc + " " + type.color + " dragon";
+	dragon.description = dragon.size + dragon.ageDesc + " " + type.color + " Dragon";
 	dragon.statLine = "(" + dragon.hd + "hd, " + dragon.hp + "hp, " +
 		"breathes " + type.breathShape + " of " + type.breathType + " for " + dragon.hp + " hp)";
 	dragon.extras = ""
