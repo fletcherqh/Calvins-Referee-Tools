@@ -1292,12 +1292,16 @@ oddEncounters.dragon = function (age, type) {
 	dragon.description = dragon.size + dragon.ageDesc + " " + type.color + " dragon";
 	dragon.statLine = "(" + dragon.hd + "hd, " + dragon.hp + "hp, " +
 		"breathes " + type.breathShape + " of " + type.breathType + " for " + dragon.hp + " hp)";
-	dragon.extras = "This dragon is " + (dragon.sleeping ? "asleep" : "awake");
+	dragon.extras = ""
+	// original program had this line: "This dragon is " + (dragon.sleeping ? "asleep" : "awake");
 	if (dragon.castsSpells) {
-		dragon.extras += " and can speak and cast these spells: " + dragon.spells;
+		dragon.extras += "Capable of speech\n Casts spells: " + dragon.spells;
 	} else {
-		dragon.extras += " and " + (dragon.talks ? "can speak" : "cannot speak");
+		dragon.extras += (dragon.talks ? "Capable of speech" : "Cannot speak");
 	}
+
+	dragon.extras += "\n";
+
 	return dragon;
 };
 
