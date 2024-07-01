@@ -1249,13 +1249,13 @@ oddEncounters.dragon = function (age, type) {
 
 	roll1 = dice.d5(1);
 	if (roll1 === 1) {
-		dragon.size = "small ";
+		dragon.size = "Small ";
 		dragon.hd = type.hdLow;
 	} else if (roll1 === 5) {
 		dragon.size = "";
 		dragon.hd = type.hdMid;
 	} else {
-		dragon.size = "large ";
+		dragon.size = "Large ";
 		dragon.hd = type.hdHi;
 	}
 	dragon.hp = dragon.hd * age;
@@ -1352,7 +1352,7 @@ oddEncounters.dragonEncounter = function (type) {
 		hoard = oddTables.treasureTypeH();
 	}
 
-	result = "Dragon Encounter";
+	result = "DRAGON ENCOUNTER";
 	for (i = 0; i < dragons.length; i++) {
 		result += "\n" + dragons[i].description + " " + dragons[i].statLine + "\n\t" + dragons[i].extras;
 	} 
