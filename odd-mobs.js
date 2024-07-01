@@ -1281,12 +1281,12 @@ oddEncounters.dragon = function (age, type) {
 	}
 
 	switch (age) {
-		case 1: dragon.ageDesc = "very young"; break;
-		case 2: dragon.ageDesc = "young"; break;
-		case 3: dragon.ageDesc = "sub-adult"; break;
-		case 4: dragon.ageDesc = "adult"; break;
-		case 5: dragon.ageDesc = "old"; break;
-		case 6: dragon.ageDesc = "very old"; break;
+		case 1: dragon.ageDesc = "Hatchling"; break;
+		case 2: dragon.ageDesc = "Prepubescent"; break;
+		case 3: dragon.ageDesc = "Adolescent"; break;
+		case 4: dragon.ageDesc = "Mature"; break;
+		case 5: dragon.ageDesc = "Elder"; break;
+		case 6: dragon.ageDesc = "Ancient"; break;
 	}
 
 	dragon.description = dragon.size + dragon.ageDesc + " " + type.color + " dragon";
