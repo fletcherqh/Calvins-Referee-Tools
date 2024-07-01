@@ -1,4 +1,5 @@
 var FightingManNames = [
+    "Brack",
     "Arn",
     "Revaltoppe",
     "Helmer",
