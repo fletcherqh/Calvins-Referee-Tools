@@ -40,7 +40,7 @@ var oddPrefs = {
 	'suppressNames':false,			//Don't give names for characters/castles/swords
 	'useGenderedTitles':false,		//Use titles like "Swordswoman" for female characters
 
-	'rerollEmptyTreasure':false,	//If a treasure table generatres no treasure, start over
+	'rerollEmptyTreasure':false,	//If a treasure table generates no treasure, start over
 	'correctDetectMeal':false,		//Change sword power from "Detect Meal and what kind" to "Detect Metal and what kind",
 
 	'allowNeutralClerics':false,	//Allow clerics of any level to be neutral
@@ -316,7 +316,7 @@ oddTables.spellsMu2 = ["Detect Invisible", "Levitate", "Phantasmal Forces",
 		"Locate Object", "Invisibility", "Wizard Lock", "Detect Evil", "ESP", 
 		"Continual Light", "Knock"];
 
-oddTables.spellsMu3 = ["Fly", "Hold Person", "Dispell Magic", "Clairvoyance", 
+oddTables.spellsMu3 = ["Fly", "Hold Person", "Dispel Magic", "Clairvoyance", 
 		"Clairaudience", "Fire Ball", "Lightning Bolt", 
 		"Protection/Evil, 10' r.", "Invisibility, 10' r.", "Infravision", 
 		"Slow Spell", "Haste Spell", "Protection/Normal Missiles", 
@@ -1060,9 +1060,9 @@ oddTables.clericItem = function () {
 	} else if (roll <= 40) {
 		result += "Wand of Fear";
 	} else if (roll <= 45) {
-		result += "Wand of Paralization";
+		result += "Wand of Paralyzation";
 	} else if (roll <= 50) {
-		result += "Wand of Paralization";
+		result += "Wand of Paralyzation";
 	} else if (roll <= 60) {
 		result += "Mace +2";
 	} else if (roll <= 65) {
