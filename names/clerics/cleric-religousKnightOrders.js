@@ -28,7 +28,7 @@ var ChaoticClericOrders = [
     "Cult of Nug",
     "Cult of Yeb",
     "Cult of Nyarlathotep, Proud Pharoah",
-    "Cult of Crawling Chaos",
+    "Cult of the Crawling Chaos",
     "Cult of the Faceless Knight",
     "Cult of the Haunter in the Dark",
     "Cult of the Orb of Darkness",
