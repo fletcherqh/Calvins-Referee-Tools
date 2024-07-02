@@ -1,4 +1,5 @@
 var FightingManTitles = [
+    "Veteran",
     "Warrior",
     "Swordsman",
     "Hero",
@@ -10,9 +11,9 @@ var FightingManTitles = [
     "Super-hero",
     "Super-hero",
     "Legend",
-    "Veteran",
 ];
 var AmazonTitles = [
+    "Veteran",
     "Warrioress",
     "Swordsdame",
     "Heroine",
@@ -24,5 +25,4 @@ var AmazonTitles = [
     "Super-heroine",
     "Super-heroine",
     "Legend",
-    "Veteran",
 ];
