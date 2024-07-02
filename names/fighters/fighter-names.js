@@ -1,4 +1,4 @@
-var FightingManNames = [
+var fightingManNames = [
     "Brack",
     "Arn",
     "Revaltoppe",
@@ -64,7 +64,7 @@ var FightingManNames = [
     "Aethelburg",
     "Zuk",
 ];
-var AmazonNames = [
+var amazonNames = [
     "Vesela",
     "Mila",
     "Svetlana",

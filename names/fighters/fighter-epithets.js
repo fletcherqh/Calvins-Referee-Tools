@@ -1,4 +1,4 @@
-var LawfulFightingManAmazonEpithets = [
+var lawfulFightingManAmazonEpithets = [
     "the Avenger",
     "the Just",
     "the Good",
@@ -36,7 +36,7 @@ var LawfulFightingManAmazonEpithets = [
     "the Stellar",
     "the Straightforward",
 ];
-var NeutralFightingManAmazonEpithets = [
+var neutralFightingManAmazonEpithets = [
     "Split-nose",
     "Split-ear",
     "Split-brow",
@@ -74,7 +74,7 @@ var NeutralFightingManAmazonEpithets = [
     "the Dirty",
     "Lowbrow",
 ];
-var ChaoticFightingManAmazonEpithets = [
+var chaoticFightingManAmazonEpithets = [
     "the Punisher",
     "the Unjust",
     "the Bad",

@@ -2483,7 +2483,7 @@ oddTables.npcFighter = function (level, alignment, gender) {
 		}
 	}
 
-	name = oddNames.fighterName();
+	//name = oddNames.fighterName();
 
 	// determine basic level derivatives 
 	switch (level) {
