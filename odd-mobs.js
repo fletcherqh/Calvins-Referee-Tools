@@ -1234,7 +1234,7 @@ dragonTypes.black = new DragonType("Black", "acid", "6\"x½\" line", 6, 7, 8, 60
 dragonTypes.green = new DragonType("Green", "gas", "5\"x4\" cloud", 7, 8, 9, 70, 60, 2, 40);
 dragonTypes.blue = new DragonType("Blue", "lightning", "10\"x½\" line", 8, 9, 10, 80, 70, 3, 30);
 dragonTypes.red = new DragonType("Red", "fire", "9\"x3\" cone", 9, 10, 11, 90, 80, 4, 20);
-dragonTypes.gold = new DragonType("Gold", "fire or gas", "9\"x3\" cone or 5\"x4\" cloud", 10, 11, 12, 100, 100, 6, 10);
+dragonTypes.gold = new DragonType("Golden", "fire or gas", "9\"x3\" cone or 5\"x4\" cloud", 10, 11, 12, 100, 100, 6, 10);
 
 oddEncounters.dragon = function (age, type) {
 	var i, roll1, spellLevels, dragon;
@@ -1289,15 +1289,15 @@ oddEncounters.dragon = function (age, type) {
 		case 6: dragon.ageDesc = "Ancient"; break;
 	}
 
-	dragon.description = dragon.size + dragon.ageDesc + " " + type.color + " Dragon";
-	dragon.statLine = "(" + dragon.hd + "hd, " + dragon.hp + "hp, " +
-		"breathes " + type.breathShape + " of " + type.breathType + " for " + dragon.hp + " hp)";
+	dragon.description = dragon.size + dragon.ageDesc + " " + type.color + " Dragon\n";
+	dragon.statLine = dragon.hd + "hd AC2 mv9/24 " + dragon.hp + "hp\n" +
+		"Breath weapon:\n " + type.breathShape + " of " + type.breathType + " for " + dragon.hp + " hp\n";
 	dragon.extras = ""
 	// original program had this line: "This dragon is " + (dragon.sleeping ? "asleep" : "awake");
 	if (dragon.castsSpells) {
-		dragon.extras += "Capable of speech\n Casts spells: " + dragon.spells;
+		dragon.extras += "Speaks and casts:\n " + dragon.spells;
 	} else {
-		dragon.extras += (dragon.talks ? "Capable of speech" : "Cannot speak");
+		dragon.extras += (dragon.talks ? "Speaks but casts no spells" : "Cannot speak");
 	}
 
 	dragon.extras += "\n";
