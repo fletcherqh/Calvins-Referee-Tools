@@ -1759,8 +1759,8 @@ oddTables.treasureTypeNil = function () {
 oddTables.treasureLevel1 = function () {
 	var result;
 	result = "Level 1 Treasure";
-	result += "\n\t" + (dice.d12(1) * 200) + "cp";
-	result += "\n\t" + (dice.d12(1) * 100) + "sp";
+	result += "\n\t" + (dice.d6(1) * 200) + "cp";
+	result += "\n\t" + (dice.d6(1) * 100) + "sp";
 	result += "\n\t" + (dice.d6(1) * 10) + "gp";
 	if (dice.percentChance(10)) {
 		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
@@ -1778,7 +1778,7 @@ oddTables.treasureLevel1 = function () {
 oddTables.treasureLevel2to3 = function () {
 	var result;
 	result = "Level 2-3 Treasure";
-	result += "\n\t" + (dice.d12(1) * 500) + "cp";
+	result += "\n\t" + (dice.d12(1) * 200) + "cp";
 	result += "\n\t" + (dice.d12(1) * 100) + "sp";
 	result += "\n\t" + (dice.d6(1) * 100) + "gp";
 	if (dice.percentChance(20)) {
@@ -1797,8 +1797,8 @@ oddTables.treasureLevel2to3 = function () {
 oddTables.treasureLevel4to5 = function () {
 	var result;
 	result = "Level 4-5 Treasure";
-	result += "\n\t" + (dice.d12(1) * 2000) + "cp";
-	result += "\n\t" + (dice.d12(1) * 1000) + "sp";
+	result += "\n\t" + (dice.d6(1) * 2000) + "cp";
+	result += "\n\t" + (dice.d6(1) * 1000) + "sp";
 	result += "\n\t" + (dice.d6(1) * 200) + "gp";
 	if (dice.percentChance(30)) {
 		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
@@ -1816,8 +1816,8 @@ oddTables.treasureLevel4to5 = function () {
 oddTables.treasureLevel6to7 = function () {
 	var result;
 	result = "Level 6-7 Treasure";
-	result += "\n\t" + (dice.d12(1) * 5000) + "cp";
-	result += "\n\t" + (dice.d12(1) * 2000) + "sp";
+	result += "\n\t" + (dice.d6(1) * 5000) + "cp";
+	result += "\n\t" + (dice.d6(1) * 2000) + "sp";
 	result += "\n\t" + (dice.d6(1) * 500) + "gp";
 	if (dice.percentChance(40)) {
 		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
@@ -1835,8 +1835,8 @@ oddTables.treasureLevel6to7 = function () {
 oddTables.treasureLevel8to9 = function () {
 	var result;
 	result = "Level 8-9 Treasure";
-	result += "\n\t" + (dice.d12(1) * 5000) + "cp";
-	result += "\n\t" + (dice.d12(1) * 5000) + "sp";
+	result += "\n\t" + (dice.d6(1) * 5000) + "cp";
+	result += "\n\t" + (dice.d6(1) * 5000) + "sp";
 	result += "\n\t" + (dice.d6(1) * 1000) + "gp";
 	if (dice.percentChance(50)) {
 		result += "\n\t" + oddTables.gems(dice.d12(1)).trim();
@@ -1854,8 +1854,8 @@ oddTables.treasureLevel8to9 = function () {
 oddTables.treasureLevel10to12 = function () {
 	var result;
 	result = "Level 10-12 Treasure";
-	result += "\n\t" + (dice.d12(1) * 10000) + "cp";
-	result += "\n\t" + (dice.d12(1) * 5000) + "sp";
+	result += "\n\t" + (dice.d6(1) * 10000) + "cp";
+	result += "\n\t" + (dice.d6(1) * 5000) + "sp";
 	result += "\n\t" + (dice.d6(1) * 2000) + "gp";
 	if (dice.percentChance(60)) {
 		result += "\n\t" + oddTables.gems(dice.d12(1)).trim();
@@ -1873,8 +1873,8 @@ oddTables.treasureLevel10to12 = function () {
 oddTables.treasureLevel13 = function () {
 	var result;
 	result = "Level 13+ Treasure";
-	result += "\n\t" + (dice.d12(1) * 20000) + "cp";
-	result += "\n\t" + (dice.d12(1) * 10000) + "sp";
+	result += "\n\t" + (dice.d6(1) * 20000) + "cp";
+	result += "\n\t" + (dice.d6(1) * 10000) + "sp";
 	result += "\n\t" + (dice.d6(1) * 5000) + "gp";
 	if (dice.percentChance(70)) {
 		result += "\n\t" + oddTables.gems(dice.d12(1)).trim();
