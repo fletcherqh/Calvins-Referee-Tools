@@ -15,3 +15,45 @@ nested dropdowns
 
 priorities - class - alignment - level
 if cleric = c change name to evil cleric
+
+NATHAN'S REQUESTS:
+
+GUI stuff:
+
+Fix the broken buttons
+
+On the home page GUI, reorder the elements in the following way:
+"NPCs" (and rename, "Character tables")
+Delete "Basic tables" and place its three items under "Characters"
+"Names"
+"Encounter tables"
+(under the encounter tables, move "castle" under "dragon")
+Delete "Experimental" and move "village" under "castle" 
+"Treasure tables"
+
+Eventually it would be nice to add:
+A "Spell Book" button under "Character tables"
+(We would then create a script for generating spell books that we could loop to for creating characters)
+"Exploration checks"
+(We would then create scripts for things like:
+(underworld encounter checks, open doors, listen at doors, detect trap, find secret doors, etc.
+(And then wilderness checks like: weather, lost, encounter, etc.)
+
+JavaScript stuff:
+
+Character stuff:
+Include gold for pregen characters
+Redo chances of magic items for character generation
+
+Monster stuff:
+Always include stats when monsters displayed
+Rearrange stats and their presentation, e.g.:
+"Name/s, (#-appearing), Side,
+"HD# AC# mv#/# hp#
+"#attacks, #d6dam, [Missile:etc., if any],
+"[Spells:etc., if any]
+"[Special attacks, etc., if any]"
+
+
+
+Rework magic swords and presentation

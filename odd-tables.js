@@ -41,7 +41,7 @@ var oddPrefs = {
 	'useGenderedTitles':false,		//Use titles like "Swordswoman" for female characters
 
 	'rerollEmptyTreasure':false,	//If a treasure table generates no treasure, start over
-	'correctDetectMeal':false,		//Change sword power from "Detect Meal and what kind" to "Detect Metal and what kind",
+	'correctDetectMeal':true,		//Change sword power from "Detect Meal and what kind" to "Detect Metal and what kind",
 
 	'allowNeutralClerics':false,	//Allow clerics of any level to be neutral
 	'allowClericCastles':true,		//Include clerics in generated castle encounters
@@ -375,20 +375,20 @@ oddTables.spellClrAny = function () {
 };
 
 oddTables.spellsEvil1 = ["Inflict Light Wounds", "Putrify Food & Water", 
-		"Detect Magic", "Detect Holy", "Protection/Holy", "Darkness"];
+		"Detect Magic", "Detect Alignment", "Protection/opposing side", "Darkness"];
 
-oddTables.spellsEvil2 = ["Find Traps", "Hold Person", "Curse", 
+oddTables.spellsEvil2 = ["Find Traps", "Hold Person", "Bane", 
 		"Speak with Animals"];
 
-oddTables.spellsEvil3 = ["Remove Curse", "Inflict Disease", "Locate Object", 
+oddTables.spellsEvil3 = ["Curse", "Inflict Disease", "Locate Object", 
 		"Continual Darkness"];
 
-oddTables.spellsEvil4 = ["Neutralize Poison", "Inflict Serious Wounds", 
-		"Protection/Holy, 10'r.", "Turn sticks to snakes", 
-		"Speak with plants", "Create Water"];
+oddTables.spellsEvil4 = ["Poisoning", "Inflict Serious Wounds", 
+		"Protection/opposing side, 10'r.", "Turn sticks to snakes", 
+		"Speak with plants", "Destroy Water"];
 
-oddTables.spellsEvil5 = ["Dispell Holy", "Finger of Death", "Commune", "Quest", 
-		"Insect Plague", "Create Food"];
+oddTables.spellsEvil5 = ["Send Evil", "Finger of Death", "Excommunicate", "Quest", 
+		"Insect Plague", "Destroy Food"];
 
 oddTables.spellEvilAny = function () {
 	switch (dice.d5()) {
@@ -575,7 +575,7 @@ oddTables.magicSwordPrimaryPowers = function (roll) {
 	} else if (roll <= 70) {
 		return "Detect Evil and/or Gold";
 	} else if (roll <= 80) {
-		return "Detect Meal & What Kind";
+		return "Detect Metal & What Kind";
 	} else if (roll <= 90) {
 		return "Detect Magic";
 	} else if (roll <= 95) {
