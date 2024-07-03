@@ -3078,15 +3078,22 @@ oddTables.npcCleric = function (level, alignment) {
 	hp += hpBonus;
 
 	//generate magic items
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 15)) {
 		sword = oddTables.clericItem();
 	}
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 10)) {
 		armor = oddTables.armorOnly();
 	}
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 10)) {
 		shield = oddTables.shieldOnly();
 	}
+	if (dice.percentChance(level * 5)) {
+		shield = oddTables.potion();
+	}
+	if (dice.percentChance(level * 5)) {
+		shield = oddTables.miscItem();
+	}
+	//NGJ: increased chances and added potion, and misc. NOT SURE it is working!
 	//OED version: sword, armor(+shield?), potion, misc.
 	//default to +1, then half chance to increase by 1, repeating
 

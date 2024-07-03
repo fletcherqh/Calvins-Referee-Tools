@@ -17,7 +17,7 @@ var AmazonTitles = [
     "Warrioress",
     "Swordsdame",
     "Heroine",
-    "Swashbucklerette",
+    "Swashbucklette",
     "Myrmidonna",
     "Championess",
     "Super-heroine",
