@@ -43,7 +43,10 @@ JavaScript stuff:
 
 Character stuff:
 Include gold for pregen characters
+Eventually make distinction between PR Convention rules and PR Friday rules!
 Redo chances of magic items for character generation
+
+Spell stuff:
 
 Monster stuff:
 Always include stats when monsters displayed
@@ -54,6 +57,15 @@ Rearrange stats and their presentation, e.g.:
 "[Spells:etc., if any]
 "[Special attacks, etc., if any]"
 
+Composition of force stuff:
 
+Treasure stuff:
 
+Magic item stuff:
 Rework magic swords and presentation
+
+Lair and dungeon stuff:
+
+Castle stuff:
+
+Settlement stuff:

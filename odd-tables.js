@@ -309,16 +309,16 @@ oddTables.loyalty = function (modifier) {
 /* spell tables */
 
 oddTables.spellsMu1 = ["Detect Magic", "Hold Portal", "Read Magic", 
-		"Read Languages", "Protection/Evil", "Light", "Charm Person", 
+		"Read Languages", "Protection/Hostility", "Light", "Charm Person", 
 		"Sleep"];
 
 oddTables.spellsMu2 = ["Detect Invisible", "Levitate", "Phantasmal Forces", 
-		"Locate Object", "Invisibility", "Wizard Lock", "Detect Evil", "ESP", 
+		"Locate Object", "Invisibility", "Wizard Lock", "Detect Hostility", "Extra-sensory Perception", 
 		"Continual Light", "Knock"];
 
 oddTables.spellsMu3 = ["Fly", "Hold Person", "Dispel Magic", "Clairvoyance", 
 		"Clairaudience", "Fire Ball", "Lightning Bolt", 
-		"Protection/Evil, 10' r.", "Invisibility, 10' r.", "Infravision", 
+		"Protection/Hostility, 10' r.", "Invisibility, 10' r.", "Infravision", 
 		"Slow Spell", "Haste Spell", "Protection/Normal Missiles", 
 		"Water Breathing"];
 
@@ -349,7 +349,7 @@ oddTables.spellMuAny = function () {
 };
 
 oddTables.spellsClr1 = ["Cure Light Wounds", "Purify Food & Water", 
-		"Detect Magic", "Detect Evil", "Protection/Evil", "Light"];
+		"Detect Magic", "Detect Alignment", "Protection/Opposing side", "Light"];
 
 oddTables.spellsClr2 = ["Find Traps", "Hold Person", "Bless", 
 		"Speak with Animals"];
