@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GM Tables</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-md-9 col-sm-8 col-xs-6">
+        <h1>Character tables</h1>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" onclick="output(npcs());">NPCs</button>
+          <button type="button" class="btn btn-default" onclick="output(table('basic/quests'));">Quests</button>
+          <button type="button" class="btn btn-default" onclick="output(table('basic/plots'));">Plots</button>
+          <button type="button" class="btn btn-default" onclick="output(table('basic/missions'));">Missions</button>
+          <button type="button" class="btn btn-default" onclick="output(names('humans'));">Human Names</button>
+          <button type="button" class="btn btn-default" onclick="output(names('elves'));">Elf Names</button>
+          <button type="button" class="btn btn-default" onclick="output(names('dwarves'));">Dwarf Names</button>
+        </div>
+
+        <h2>Encounter tables</h2>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" onclick="output(table('encounters/woods'));">Woods</button>
+          <button type="button" class="btn btn-default" onclick="output(table('encounters/road'));">Road</button>
+          <button type="button" class="btn btn-default" onclick="output(table('encounters/sea'));">Sea</button>
+          <button type="button" class="btn btn-default" onclick="output(table('encounters/mountains'));">Mountains</button>
+          <button type="button" class="btn btn-default" onclick="output(table('encounters/dragon'));">Dragon</button>
+          <button type="button" class="btn btn-default" onclick="output(table('encounters/castle'));">Castle</button>
+          <button type="button" class="btn btn-default" onclick="output(table('encounters/village'));">Village</button>
+        </div>
+
+        <h2>Treasure tables</h2>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" onclick="output(table('treasure/coins'));">Coins</button>
+          <button type="button" class="btn btn-default" onclick="output(table('treasure/gems'));">Gems</button>
+          <button type="button" class="btn btn-default" onclick="output(table('treasure/art'));">Art</button>
+          <button type="button" class="btn btn-default" onclick="output(table('treasure/magic'));">Magic Items</button>
+        </div>
+
+        <h2>Dice</h2>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d4());">d4</button>
+          <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d6());">d6</button>
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" onclick="output(dice.d6(2));">2d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(3));">3d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(4));">4d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(5));">5d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(6));">6d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(7));">7d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(8));">8d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(9));">9d6</a></li>
+            <li><a href="#" onclick="output(dice.d6(10));">10d6</a></li>
+          </ul>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d8());">d8</button>
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" onclick="output(dice.d8(2));">2d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(3));">3d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(4));">4d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(5));">5d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(6));">6d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(7));">7d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(8));">8d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(9));">9d8</a></li>
+            <li><a href="#" onclick="output(dice.d8(10));">10d8</a></li>
+          </ul>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d10());">d10</button>
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" onclick="output(dice.d10(2));">2d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(3));">3d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(4));">4d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(5));">5d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(6));">6d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(7));">7d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(8));">8d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(9));">9d10</a></li>
+            <li><a href="#" onclick="output(dice.d10(10));">10d10</a></li>
+          </ul>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d12());">d12</button>
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" onclick="output(dice.d12(2));">2d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(3));">3d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(4));">4d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(5));">5d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(6));">6d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(7));">7d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(8));">8d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(9));">9d12</a></li>
+            <li><a href="#" onclick="output(dice.d12(10));">10d12</a></li>
+          </ul>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d20());">d20</button>
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" onclick="output(dice.d20(2));">2d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(3));">3d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(4));">4d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(5));">5d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(6));">6d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(7));">7d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(8));">8d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(9));">9d20</a></li>
+            <li><a href="#" onclick="output(dice.d20(10));">10d20</a></li>
+          </ul>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-xs" onclick="output(dice.d100());">d100</button>
+          <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" onclick="output(dice.d100(2));">2d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(3));">3d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(4));">4d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(5));">5d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(6));">6d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(7));">7d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(8));">8d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(9));">9d100</a></li>
+            <li><a href="#" onclick="output(dice.d100(10));">10d100</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+      <p class="buttonLabel" data-toggle="collapse" href="#html-output">HTML Output</p>
+      <div id="html-output" class="collapse in">
+        <textarea class="form-control" rows="30" id="output"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/dice.js"></script>
+<script src="js/oddTables.js"></script>
+<script src="js/names.js"></script>
+<script src="js/npcs.js"></script>
+<script src="js/encounters.js"></script>
+<script src="js/calvin.js"></script>
+</body>
+</html>
