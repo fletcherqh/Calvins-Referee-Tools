@@ -12,15 +12,24 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-10 col-md-9 col-sm-8 col-xs-6">
-        <h1>Character tables</h1>
+
+        <h2>Men</h2>
         <div class="btn-group">
           <button type="button" class="btn btn-default" onclick="output(npcs());">NPCs</button>
-          <button type="button" class="btn btn-default" onclick="output(table('basic/quests'));">Quests</button>
-          <button type="button" class="btn btn-default" onclick="output(table('basic/plots'));">Plots</button>
-          <button type="button" class="btn btn-default" onclick="output(table('basic/missions'));">Missions</button>
-          <button type="button" class="btn btn-default" onclick="output(names('humans'));">Human Names</button>
-          <button type="button" class="btn btn-default" onclick="output(names('elves'));">Elf Names</button>
-          <button type="button" class="btn btn-default" onclick="output(names('dwarves'));">Dwarf Names</button>
+        </div>
+
+        <h2>Character tables</h2>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" onclick="output(table('basic/stats'));">Stats</button>
+          <button type="button" class="btn btn-default" onclick="output(table('basic/reaction'));">Reaction</button>
+          <button type="button" class="btn btn-default" onclick="output(table('basic/loyalty'));">Loyalty</button>
+        </div>
+
+        <h2>Names</h2>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" onclick="output(names('f_name'));">F. Name</button>
+          <button type="button" class="btn btn-default" onclick="output(names('m_name'));">M. Name</button>
+          <button type="button" class="btn btn-default" onclick="output(names('epithet'));">Epithet</button>
         </div>
 
         <h2>Encounter tables</h2>
@@ -30,8 +39,8 @@
           <button type="button" class="btn btn-default" onclick="output(table('encounters/sea'));">Sea</button>
           <button type="button" class="btn btn-default" onclick="output(table('encounters/mountains'));">Mountains</button>
           <button type="button" class="btn btn-default" onclick="output(table('encounters/dragon'));">Dragon</button>
-          <button type="button" class="btn btn-default" onclick="output(table('encounters/castle'));">Castle</button>
-          <button type="button" class="btn btn-default" onclick="output(table('encounters/village'));">Village</button>
+          <button type="button" class="btn btn-default" onclick="output(table('experimental/castle'));">Castle</button>
+          <button type="button" class="btn btn-default" onclick="output(table('experimental/village'));">Village</button>
         </div>
 
         <h2>Treasure tables</h2>
@@ -157,26 +166,26 @@
             <li><a href="#" onclick="output(dice.d100(10));">10d100</a></li>
           </ul>
         </div>
+
       </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-      <p class="buttonLabel" data-toggle="collapse" href="#html-output">HTML Output</p>
-      <div id="html-output" class="collapse in">
-        <textarea class="form-control" rows="30" id="output"></textarea>
+      <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+        <p class="buttonLabel" data-toggle="collapse" href="#html-output">HTML Output</p>
+        <div id="html-output" class="collapse in">
+          <textarea class="form-control" rows="30" id="output"></textarea>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
-<script src="js/dice.js"></script>
-<script src="js/oddTables.js"></script>
-<script src="js/names.js"></script>
-<script src="js/npcs.js"></script>
-<script src="js/encounters.js"></script>
-<script src="js/calvin.js"></script>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/dice.js"></script>
+  <script src="js/oddTables.js"></script>
+  <script src="js/names.js"></script>
+  <script src="js/npcs.js"></script>
+  <script src="js/encounters.js"></script>
+  <script src="js/calvin.js"></script>
 </body>
 </html>
