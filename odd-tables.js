@@ -2975,7 +2975,7 @@ oddTables.npcCleric = function (level, alignment) {
 	}
 	gender = oddTables.npcGender();
 
-	name = oddNames.clericName();
+	name = LawfulMaleClericNames();
 
 	// determine basic level derivatives 
 	switch (level) {
