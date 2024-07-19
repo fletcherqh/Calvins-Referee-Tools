@@ -243,6 +243,28 @@ dice.cardSuit = function () { return dice.pick(["♥","♠","♦","♣"]); };
 dice.cardRank = function () { return dice.pick(["A","2","3","4","5","6","7","8","9","10","J","Q","K"]); };
 dice.card = function () { return dice.cardRank() + dice.cardSuit(); };
 
+/* magic 8 ball as oracle */
+dice.magicEightball = function () { return dice.pick(["It is certain",
+"It is decidedly so",
+"Without a doubt",
+"Yes definitely",
+"You may rely on it",
+"As I see it, yes",
+"Most likely",
+"Outlook good",
+"Yes",
+"Signs point to yes",
+"Sources hazy, try again",
+"Ask again later",
+"Better not tell you now",
+"Cannot predict now",
+"Concentrate and ask again",
+"Don't count on it",
+"My reply is no",
+"My sources say no",
+"Outlook not so good",
+"Very doubtful",]); };
+
 /* specialized dice for assorted games */
 dice.dF = function (number) {
 	return dice.fudge(number); 
