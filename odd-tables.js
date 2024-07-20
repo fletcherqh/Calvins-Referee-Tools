@@ -2966,16 +2966,16 @@ oddTables.npcCleric = function (level, alignment) {
 	level = (level < 1 ? 1 : level);
 	
 	//randomly pick basics
-	if (!(alignment === "L" || alignment === "N" || alignment === "C")) {
-		if (level >= 7) {
-			alignment = dice.flip() ? "L" : "C";
-		} else {
-			alignment = oddTables.npcAlignment();
-		}
+	
+	if (level >= 7) {
+		alignment = dice.flip() ? "L" : "C";
+	} else {
+		alignment = oddTables.npcAlignment();
+	}
 	}
 	gender = oddTables.npcGender();
 
-	name = LawfulMaleClericNames();
+	name = oddNames.clericName();
 
 	// determine basic level derivatives 
 	switch (level) {
