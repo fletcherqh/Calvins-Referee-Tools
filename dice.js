@@ -265,6 +265,28 @@ dice.magicEightball = function () { return dice.pick(["It is certain",
 "Outlook not so good",
 "Very doubtful",]); };
 
+/* incapacitation table */
+dice.incapacitationTable = function () { return dice.pick(["Bleed out in d6 rounds",
+	"Broken shield/ripped robes, restored to 1hp in d3 rounds",
+	"Lost weapon/staff/wand, restored to 1hp in d3 rounds",
+	"Broken helmet/torn wizard hat, restored to 1hp in d3 rounds",
+	"Winded, retored to 1hp in d3 rounds",
+	"Left eye, save vs. blinding",
+	"Right eye, save vs. blinding",
+	"Left arm, save vs. loss",
+	"Right arm, save vs. loss",
+	"Left leg, save vs. loss",
+	"Right leg, save vs. loss",
+	"Left ear, save vs. hearing loss",
+	"Right ear, save vs. hearing loss",
+	"Knocked out",
+	"Knocked out",
+	"Knocked out",
+	"Knocked out",
+	"Knocked out",
+	"Knocked out",
+	"Knocked out",]); };
+
 /* specialized dice for assorted games */
 dice.dF = function (number) {
 	return dice.fudge(number); 
