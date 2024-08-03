@@ -22,15 +22,20 @@ GUI stuff:
 
 Fix the broken buttons
 
-On the home page GUI, reorder the elements in the following way:
-Move the heading and section "NPCs" to the top and rename, "Character tables",
-Delete the heading "Basic tables" and place its three items under "Characters"
-Place the heading "Names" and its items under Characters,
-Then place "Encounter tables" and its content next.
-Under the encounter tables, move "castle" under "dragon",
-Delete the "Experimental" heading and move "village" under "castle" 
-Then place the heading "Treasure tables" and its content.
-Move "Dice" heading and its context to the last.
+We are going to rearrange the user interface of the web page without changing any of its content or underlying code.
+For the appearance of the user interface on the web page , reorder the the following headings with their corresponding buttons and drop-down menue buttons in the following order:
+NPCs
+Basic tables
+Names
+Encounter tables
+Treasure tables
+Dice
+Then do the following:
+Rename the "NPCs" heading to "Men"
+Rename the "Basic tables" heading to "Character tables"
+Move the "castle" button under the "dragon" menu button
+Delete the heading "Experimental"  and move the "village" button under the "castle" button
+Then place the heading "Treasure tables" and its buttons and drop-down menu buttons
 
 Eventually it would be nice to add:
 A "Spell Book" button under "Character tables"
