@@ -1,41 +1,33 @@
-Names table - page 23
+FORMATTING (HTML) STUFF:
 
-Possible link epithets to good, bad, etc
+Spacing after each entry created
+Output window stays visible while scrolling down
+nested dropdowns; or radio buttons; or check boxes
 
-Location
+Display of Character information:
 
-separate fighting men/women with gender creation
-clerics cannot be neutral
+Title : Name : Epithet/CL Patron : Alignment (or, side) : Class w/Lvl# :Extraction/CL Religious Order
 
-Title : Name : Epithet/Patron : Alignment (or, side) : Class :[Extraction/Religious Order]: Location
-
-Page 28 Cleric Title
-
-nested dropdowns
-
-priorities - class - alignment - level
-if cleric = c change name to evil cleric
-
-NATHAN'S REQUESTS:
-
-GUI stuff:
+Java.Script STUFF:
 
 Fix the broken buttons
 
-We are going to rearrange the user interface of the web page without changing any of its content or underlying code.
-For the appearance of the user interface on the web page , reorder the the following headings with their corresponding buttons and drop-down menue buttons in the following order:
-NPCs
-Basic tables
-Names
-Encounter tables
-Treasure tables
-Dice
-Then do the following:
-Rename the "NPCs" heading to "Men"
-Rename the "Basic tables" heading to "Character tables"
-Move the "castle" button under the "dragon" menu button
-Delete the heading "Experimental"  and move the "village" button under the "castle" button
-Then place the heading "Treasure tables" and its buttons and drop-down menu buttons
+CHARACTER STUFF:
+
+clerics cannot be neutral at any level
+
+Character naming LOGIC (not necessarily display order, see above):
+
+Fighting-men/Amazons:
+Sex; Name (by sex) Level title (by sex); Alignmnent; Epithets (by alignment)
+
+Magic-users
+Sex; Name (by sex); Alignment; Level title (by both alignment and sex); Epithet (NOT based upon sex or alignment)
+
+Clerics
+Sex; Alignment; Name (by both sex and alignment); Level title (by both alignment and sex); Patron (by alignment); Religous Order (by alignment)
+
+NATHAN'S REQUESTS:
 
 Eventually it would be nice to add:
 A "Spell Book" button under "Character tables"
@@ -49,13 +41,17 @@ JavaScript stuff:
 
 Character stuff:
 Include gold for pregen characters
-Eventually make distinction between PR Convention rules and PR Friday rules!
 Redo chances of magic items for character generation
+Eventually make distinction between PR Convention rules and PR Friday rules!
 
 Spell stuff:
+Spell description button
 
 Monster stuff:
-Always include stats when monsters displayed
+Always include stats when monsters displayed, even for underworld
+For wilderness encounters:
+Add "Optional Woods"
+determine number and whether or not in lair before displaying result
 Rearrange stats and their presentation, e.g.:
 "Name/s, (#-appearing), Side,
 "HD# AC# mv#/# hp#
@@ -75,3 +71,29 @@ Lair and dungeon stuff:
 Castle stuff:
 
 Settlement stuff:
+
+COMPLETED:
+
+Names table - page 23
+
+Possible link epithets to good, bad, etc
+
+Location
+
+separate fighting men/women with gender creation
+Page 28 Cleric Title
+
+We are going to rearrange the user interface of the web page without changing any of its content or underlying code.
+For the appearance of the user interface on the web page , reorder the the following headings with their corresponding buttons and drop-down menue buttons in the following order:
+NPCs
+Basic tables
+Names
+Encounter tables
+Treasure tables
+Dice
+Then do the following:
+Rename the "NPCs" heading to "Men"
+Rename the "Basic tables" heading to "Character tables"
+Move the "castle" button under the "dragon" menu button
+Delete the heading "Experimental"  and move the "village" button under the "castle" button
+Then place the heading "Treasure tables" and its buttons and drop-down menu buttons
