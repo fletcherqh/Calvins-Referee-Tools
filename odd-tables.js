@@ -2563,15 +2563,16 @@ oddTables.npcFighter = function (level, alignment, gender) {
 	hp += hpBonus;
 
 	//generate magic items
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 15)) {
 		sword = oddTables.magicSword();
 	}
 	if (dice.percentChance(level * 5)) {
 		armor = oddTables.armorOnly();
 	}
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 10)) {
 		shield = oddTables.shieldOnly();
 	}
+	//Add: potions; scrolls; rings; misc.
 	//OED version: sword, armor(+shield?), potion, misc.
 	//default to +1, then half chance to increase by 1, repeating
 
@@ -3310,15 +3311,17 @@ oddTables.npcWizard = function (level, alignment) {
 	hp += hpBonus;
 
 	//generate magic items
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 15)) {
 		sword = oddTables.wand();
 	}
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 10)) {
 		ring = oddTables.ring(true);
 	}
 	if (dice.percentChance(level * 5)) {
 		miscItem = oddTables.miscMagic();
 	}
+	//Need to differentiate cleric only staves
+	//Add potions; scrolls; etc.; make them more likely and wands/staves and rings less likely, respectively
 	//OED version: sword, armor(+shield?), potion, misc.
 	//default to +1, then half chance to increase by 1, repeating
 
