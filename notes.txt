@@ -8,6 +8,19 @@ Display of Character information:
 
 Title : Name : Epithet/CL Patron : Alignment (or, side) : Class w/Lvl# :Extraction/CL Religious Order
 
+Display of arcane spell book information:
+Spell Book:
+Level 1: Detect Magic; Protection; Read Language; Read Magic; + one random; if 13-15INT + one random; if 16+INT + two random; + one random each level over first until complete
+Level 2: one random per level starting at level 2 until complete
+Level 3: one random per level starting at level 3 until complete
+Level 4: one random per level starting at level 4 until complete
+Level 5: one random per level starting at level 5 until complete
+Level 7: one random per level starting at level 6 until complete
+
+Display of clerical prayer book information:
+Prayer Book(s): level one; level two; etc.
+or, if level one with bonuses: May cast healing once (or twice) per day
+
 Java.Script STUFF:
 
 Fix the broken buttons
@@ -46,6 +59,30 @@ Eventually make distinction between PR Convention rules and PR Friday rules!
 
 Spell stuff:
 Spell description button
+
+Spell Book:
+Level 1: Detect Magic; Protection; Read Language; Read Magic; + one random; if 13-15INT + one random; if 16+INT + two random; + one random each level over first until complete
+Level 2: one random per level starting at level 2 until complete
+Level 3: one random per level starting at level 3 until complete
+Level 4: one random per level starting at level 4 until complete
+Level 5: one random per level starting at level 5 until complete
+Level 7: one random per level starting at level 6 until complete
+
+Prayer Book:
+Prayer Book(s): level one at cleric level 2; level two at cleric level 3; etc.
+If level one cleric 13-15WIS may cast healing once per day; if 16+WIS may cast healing twice per day
+
+Elf spells:
+Randomly choose from both arcane and clerical lists
+If level 1 with 13-15CHA one random spell from: Detect Magic; Protection; Read Language; Read Magic;
+If level 1 with 16+CHA two random spells from: Detect Magic; Protection; Read Language; Read Magic;
+Level two: Detect Magic; Protection; Read Language; Read Magic; + one random; if 13-15CHA + one random; if 16+INT + two random; + one random each level over first until complete
+Level three: above and +one level one spell
+Level four: above and one random level two spell; + one level one spell
+Level five: above and one random level two spell
+Level six: above and one random level three spell; +one random level two spell
+Level seven+: above +one random spell from leves one through three
+
 
 Monster stuff:
 Always include stats when monsters displayed, even for underworld
