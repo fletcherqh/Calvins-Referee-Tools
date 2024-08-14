@@ -59,8 +59,38 @@ oddNames.magicUserName = function () {
 };
 
 //Cleric Names - Calvin
-oddNames.clericName = function () {
-	return dice.pick(clericNames) + " " + dice.pick(clericPrepositions) + " " + dice.pick(clericalPatrons);
+oddNames.clericName = function (alignment = dice.pick(["L","C"]), gender = dice.pick(["M", "F"])) {
+	let clericName, clericPatron
+
+	// use random alignment/gender name list if neutral / non-gendered
+	if (alignment === "N") alignment = dice.pick(["L","C"]);
+	if (gender === "*") gender = dice.pick(["M", "F"]);
+
+	switch (alignment) {
+		case "L":
+			clericPatron = LawfulClericPatrons
+			switch (gender) {
+				case "M":
+					clericName = LawfulMaleClericNames;
+					break;
+				case "F":
+					clericName = LawfulFemaleClericNames;
+					break;
+			}
+			break;
+		case "C":
+			clericPatron = ChaoticClericPatrons
+			switch (gender) {
+				case "M":
+					clericName = ChaoticMaleClericNames;
+					break;
+				case "F":
+					clericName = ChaoticFemaleClericNames;
+					break;
+			}
+			break;
+	}
+	return dice.pick(clericName) + " " + dice.pick(clericPrepositions) + " " + dice.pick(clericPatron);
 };
 
 //oddNames.epithet = function () {

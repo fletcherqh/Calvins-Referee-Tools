@@ -2962,7 +2962,7 @@ oddTables.npcThief = function (level, alignment) {
 
 oddTables.npcCleric = function (level, alignment) {
 	var output = "", i = 0, roll = 0, hp = 0, 
-			title, name, gender, hd = 1, hpBonus = 0, ac, aStr, aInt, aWis, aCon, aDex, aCha, spells = [], sword, armor = 0, shield = 0;
+			title, name, gender, hd = 1, hpBonus = 0, ac, aStr, aInt, aWis, aCon, aDex, aCha, spells = [], sword, armor = 0, shield = 0, potion = 0, miscItem = 0;
 	level = Math.floor((typeof level === "number") ? level : 1);
 	level = (level < 1 ? 1 : level);
 	
@@ -2976,7 +2976,7 @@ oddTables.npcCleric = function (level, alignment) {
 	}
 	gender = oddTables.npcGender();
 
-	name = LawfulMaleClericNames();
+	name = oddNames.clericName(alignment, gender);
 
 	// determine basic level derivatives 
 	switch (level) {
@@ -3089,10 +3089,10 @@ oddTables.npcCleric = function (level, alignment) {
 		shield = oddTables.shieldOnly();
 	}
 	if (dice.percentChance(level * 5)) {
-		shield = oddTables.potion();
+		potion = oddTables.potion();
 	}
 	if (dice.percentChance(level * 5)) {
-		shield = oddTables.miscItem();
+		miscItem = oddTables.miscMagic();
 	}
 	//NGJ: increased chances and added potion, and misc. NOT SURE it is working!
 	//OED version: sword, armor(+shield?), potion, misc.
@@ -3124,6 +3124,12 @@ oddTables.npcCleric = function (level, alignment) {
 	}
 	if (sword) {
 		output += sword + "\n";
+	}
+	if (potion) {
+		output += potion + "\n";
+	}
+	if (miscItem) {
+		output += miscItem + "\n";
 	}
 	output += "spellbook: " + spells.join("\n") + "\n";
 	output = output.trim();
