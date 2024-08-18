@@ -361,7 +361,7 @@ oddTables.spellsClr4 = ["Neutralize Poison", "Cure Serious Wounds",
 		"Protection/Evil, 10'r.", "Turn sticks to snakes", 
 		"Speak with plants", "Create Water"];
 
-oddTables.spellsClr5 = ["Dispell Evil", "Raise Dead", "Commune", "Quest", 
+oddTables.spellsClr5 = ["Dispel Evil", "Raise Dead", "Commune", "Quest", 
 		"Insect Plague", "Create Food"];
 
 oddTables.spellClrAny = function () {
