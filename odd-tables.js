@@ -1048,21 +1048,6 @@ oddTables.clericItem = function () {
 	result = "";
 	roll = dice.d100(1);
 	if (roll <= 15) {
-		result += "Wand of Metal Detection";
-	} else if (roll <= 20) {
-		result += "Wand of Enemy Detection";
-	} else if (roll <= 25) {
-		result += "Wand of Magic Detection";
-	} else if (roll <= 30) {
-		result += "Wand of Secret Doors & Traps Detection";
-	} else if (roll <= 35) {
-		result += "Wand of Illusion";
-	} else if (roll <= 40) {
-		result += "Wand of Fear";
-	} else if (roll <= 45) {
-		result += "Wand of Paralyzation";
-	} else if (roll <= 50) {
-		result += "Wand of Paralyzation";
 	} else if (roll <= 60) {
 		result += "Mace +2";
 	} else if (roll <= 65) {
@@ -1084,6 +1069,23 @@ oddTables.clericItem = function () {
 	}
 	return result;
 };
+
+//old Josh Bear, included for Clerics:
+//result += "Wand of Metal Detection";
+//} else if (roll <= 20) {
+//	result += "Wand of Enemy Detection";
+//} else if (roll <= 25) {
+//	result += "Wand of Magic Detection";
+//} else if (roll <= 30) {
+//	result += "Wand of Secret Doors & Traps Detection";
+//} else if (roll <= 35) {
+//	result += "Wand of Illusion";
+//} else if (roll <= 40) {
+//	result += "Wand of Fear";
+//} else if (roll <= 45) {
+//	result += "Wand of Paralyzation";
+//} else if (roll <= 50) {
+//	result += "Wand of Paralyzation";
 
 oddTables.magicItem = function () {
 	var roll = dice.d100(1);
@@ -2981,38 +2983,38 @@ oddTables.npcCleric = function (level, alignment) {
 	// determine basic level derivatives 
 	switch (level) {
 		case 1: 
-			title = alignment === "C" ? "Evil Acolyte" : "Acolyte";
+			title = alignment === "C" ? "Lacky" : "Recruit";
 			hd = 1;
 			hpBonus = 0;
 			break;
 		case 2: 
-			title = alignment === "C" ? "Evil Adept" : "Adept";
+			title = alignment === "C" ? "Crony" : "Novice";
 			hd = 2;
 			hpBonus = 0;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,1).join(", ") : oddTables.spellBookClr(1,1).join(", "));
 			break;
 		case 3:
-			title = alignment === "C" ? "Evil Priest" : "Village Priest";
+			title = alignment === "C" ? "Minion" : "Brother/Sister";
 			hd = 3;
 			hpBonus = 0;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,2).join(", ") : oddTables.spellBookClr(1,2).join(", "));
 			break;
 		case 4:
-			title = alignment === "C" ? "Shaman" : "Vicar";
+			title = alignment === "C" ? "Evil Priest" : "Captain";
 			hd = 4;
 			hpBonus = 0;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,2).join(", ") : oddTables.spellBookClr(1,2).join(", "));
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(2,1).join(", ") : oddTables.spellBookClr(2,1).join(", "));
 			break;
 		case 5:
-			title = alignment === "C" ? "Evil Curate" : "Curate";
+			title = alignment === "C" ? "Underarch" : "Prior/ess";
 			hd = 4;
 			hpBonus = 1;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,2).join(", ") : oddTables.spellBookClr(1,2).join(", "));
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(2,2).join(", ") : oddTables.spellBookClr(2,2).join(", "));
 			break;
 		case 6:
-			title = alignment === "C" ? "Evil Bishop" : "Bishop";
+			title = alignment === "C" ? "Major Domo/a" : "Major";
 			hd = 5;
 			hpBonus = 0;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,2).join(", ") : oddTables.spellBookClr(1,2).join(", "));
@@ -3031,7 +3033,7 @@ oddTables.npcCleric = function (level, alignment) {
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(5,1).join(", ") : oddTables.spellBookClr(5,1).join(", "));
 			break;
 		case 8:
-			title = alignment === "C" ? "Evil High Priest" : "Patriarch";
+			title = alignment === "C" ? "Evil High Priest/ess" : "Crusader";
 			hd = 7;
 			hpBonus = 0;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,2).join(", ") : oddTables.spellBookClr(1,2).join(", "));
@@ -3041,7 +3043,7 @@ oddTables.npcCleric = function (level, alignment) {
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(5,2).join(", ") : oddTables.spellBookClr(5,2).join(", "));
 			break;
 		case 9:
-			title = alignment === "C" ? "Evil High Priest" : "Patriarch";
+			title = alignment === "C" ? "Evil High Priest/ess" : "Crusader";
 			hd = 7;
 			hpBonus = 1;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,3).join(", ") : oddTables.spellBookClr(1,3).join(", "));
@@ -3051,7 +3053,7 @@ oddTables.npcCleric = function (level, alignment) {
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(5,2).join(", ") : oddTables.spellBookClr(5,2).join(", "));
 			break;
 		default:
-			title = alignment === "C" ? "Evil High Priest" : "Patriarch";
+			title = alignment === "C" ? "Evil High Priest/ess" : "Crusader";
 			hd = 7;
 			hpBonus = level - 8;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,3).join(", ") : oddTables.spellBookClr(1,3).join(", "));
