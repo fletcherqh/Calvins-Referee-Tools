@@ -3091,7 +3091,7 @@ oddTables.npcCleric = function (level, alignment) {
 		shield = oddTables.shieldOnly();
 	}
 	if (dice.percentChance(level * 5)) {
-		potion = oddTables.potion();
+		potion = oddTables.potion(true);
 	}
 	if (dice.percentChance(level * 5)) {
 		miscItem = oddTables.miscMagic();
