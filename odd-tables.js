@@ -3023,7 +3023,7 @@ oddTables.npcCleric = function (level, alignment) {
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(4,1).join(", ") : oddTables.spellBookClr(4,1).join(", "));
 			break;
 		case 7:
-			title = alignment === "C" ? "Evil Lama" : "Lama";
+			title = alignment === "C" ? "Factotum" : "Abott/ess";
 			hd = 6;
 			hpBonus = 0;
 			spells.push(alignment === "C" ? oddTables.spellBookEvil(1,2).join(", ") : oddTables.spellBookClr(1,2).join(", "));
