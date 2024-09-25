@@ -287,6 +287,28 @@ dice.incapacitationTable = function () { return dice.pick(["Bleed out in d6 roun
 	"Knocked out",
 	"Knocked out",]); };
 
+/* magic 8 ball as oracle */
+dice.musicalinstrumentTable = function () { return dice.pick(["Pan pipes",
+	"Ocarina",
+	"Flute",
+	"Lute",
+	"Fiddle",
+	"Jawharp",
+	"Concertina",
+	"Harmonica",
+	"Tamborine",
+	"Lyre",
+	"Zyther",
+	"Bongos",
+	"Shawm",
+	"Bag pipes",
+	"Recorder",
+	"Oboe",
+	"Bugle",
+	"Ukulele",
+	"Quijada",
+	"Tabor & Three-hole Pipe",]); };
+
 /* specialized dice for assorted games */
 dice.dF = function (number) {
 	return dice.fudge(number); 
