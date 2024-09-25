@@ -287,7 +287,7 @@ dice.incapacitationTable = function () { return dice.pick(["Bleed out in d6 roun
 	"Knocked out",
 	"Knocked out",]); };
 
-/* magic 8 ball as oracle */
+/* Hobbit musical instruments */
 dice.musicalinstrumentTable = function () { return dice.pick(["Pan pipes",
 	"Ocarina",
 	"Flute",
@@ -308,6 +308,33 @@ dice.musicalinstrumentTable = function () { return dice.pick(["Pan pipes",
 	"Ukulele",
 	"Quijada",
 	"Tabor & Three-hole Pipe",]); };
+
+/* Insantity table: improve upon later */
+dice.insanityTable = function () { return dice.pick(["Amnesia",
+"Catatonia",
+"Repetition (immediate)",
+"Doubling (again that day)",
+"Ritualizing",
+"Counting",
+"Hallucinations of (random monster)",
+"Hysteria",
+"Melancholia",
+"Phantom limb",
+"Arachnophobia",
+"Agoraphobia",
+"Claustrophobia",
+"Staurophobia",
+"Acrophobia",
+"Hemophobia",
+"Nyctophobia",
+"Nosophobia",
+"Ophidiophobia",
+"Delusions of grandeur",
+"Delusions of persecution",
+"Delusions of significance (connecting events)",
+"Delusions of reading other minds",
+"Delusions of mind being read",
+"Delusions of thoughts being injected",]); };
 
 /* specialized dice for assorted games */
 dice.dF = function (number) {
