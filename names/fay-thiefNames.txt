@@ -43,7 +43,7 @@ Swifty
 Xander
 Yodler
 Zippy
-Whoper
+Whooper
 Tekel
 Aparsin
 Og
@@ -364,9 +364,9 @@ Leopard
 Pouncer
 Snapper
 Swiper
-Sweeper
-Striker
-Stabber
+Sweep(er)
+Strike(r)
+Stab(ber)
 Fox
 Weasel
 Stote
@@ -376,8 +376,8 @@ Knife
 Blade
 
 Adjective:
-Hooded
-Cloaked
+Hood(ed)
+Cloak(ed)
 Danger
 Grey
 Hidden

@@ -756,17 +756,19 @@ oddTables.armor = function () {
 	} else if (roll <= 60) {
 		return "Armor +1";
 	} else if (roll <= 75) {
-		return "Armor & Shield +1";
+		return "Chainmail +1";
 	} else if (roll <= 83) {
 		return "Shield +2";
 	} else if (roll <= 90) {
 		return "Armor +2";
 	} else if (roll <= 97) {
-		return "Armor & Shield +2";
+		return "Chainmail +2";
 	} else {
 		return "Shield +3";
 	}
 };
+
+// Changed Armor & Shield +1 & +2 to Chainmail
 
 oddTables.armorOnly = function () {
 	var roll = dice.d100(1);
