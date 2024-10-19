@@ -1229,6 +1229,44 @@ oddTables.gemValue = function () {
 // 	return result;
 // };
 
+oddTables.gemWeight = function (base_value) {
+	let p_weight = base_value / 10
+	if (base_value > 100) p_weight = p_weight / 2
+	return p_weight
+}
+
+oddTables.gem = function (base_value = oddTables.gemValue()) {
+	let size_table = [0, 10, 50, 100, 500, 1000];
+	let size_names = ["Unknown", "Tiny", "Small", "Medium", "Large", "Huge", "Giant"];
+	let semiprecious_names = ["Unknown", "Amber", "Coral", "Ivory", "Jet", "Amethyst", "Agate", "Beryl", "Carnelian", "Garnet", "Jade", "Malachite", "Azurite", "Gypsum", "Jasper", "Lapis Lazuli", "Moonstone", "Obsidian", "Onyx", "Paridot", "Quartz", "Tiger's Eye", "Topaz", "Turquoise", "Shell", "Rubelite", "Sard", "Sunstone", "Euclase", "Spinel", "Aquamarine", "Pyrite", "Chrysoprase", "Corundum", "Chalcedony", "Sardonyx", "Petalite", "Carnelian", "Lazulite", "Nephrite", "Tourmaline", "Barite", "Celestine", "Chrysoberyl", "Orthoclase", "Calcite", "Flourite", "Pyrope", "Zircon", "Aragonite", "Zoisite"];
+	let precious_names = ["Unknown", "Diamond", "Emerald", "Opal", "Pearl", "Ruby", "Sapphire"];
+
+	let gem = {};
+	gem.base_value = parseInt(base_value);
+	gem.size_class = size_table.indexOf(base_value);
+	if (gem.size_class == -1) gem.size_class = 6;
+	gem.precious_roll = dice.d6();
+	gem.precious = (gem.precious_roll <= gem.size_class); // note: index aligns with precious range on d6
+	if(gem.precious) {
+		gem.type_roll = dice.d6();
+		gem.type_name = precious_names[parseInt(gem.type_roll)];
+		gem.size_name = size_names[gem.size_class]
+	} else {
+		gem.type_roll = dice.d100();
+		gem.type_name = semiprecious_names[parseInt(gem.type_roll / 2)];
+		gem.size_name = size_names[gem.size_class + 1]
+	}
+	gem.size_name = size_names[gem.size_class];
+	gem.weight = oddTables.gemWeight(gem.base_value);
+	gem.sort_value = parseInt(parseFloat(`${10 * gem.base_value}.${(gem.precious) ? 1 : 0}${gem.type_roll}`)*1000)
+
+	gem.toString = function() {
+		return `GEM: ${(gem.precious) ? "P" : "S"}(${gem.precious_roll}/${gem.size_class}): a ${gem.size_name} ${gem.type_name}(${gem.type_roll}) worth ${gem.base_value} gp ${gem.weight}pp\n`;
+	}
+
+	return gem;
+}
+
 oddTables.gems = function (number) {
 	var items, val, groups, result;
 	number = (typeof number === "number") ? number : 1;
@@ -1239,30 +1277,33 @@ oddTables.gems = function (number) {
 	while (number > 0) {
 		// result += "1 gem worth " + oddTables.gemValue() + "gp\n\t";
 		// items.push(oddTables.gemValue());
-		val = oddTables.gemValue();
-		if (typeof groups[val] === "number") {
-			groups[val] = groups[val] + 1;
-		} else {
-			groups[val] = 1;
-		}
+		groups.push(oddTables.gem());
 		number--;
 	}
-	// items.sort(function(a,b){return b-a;});
-	// while (number < items.length) {
-	// 	// result += "a gem worth " + item[number] + "gp\n\t";
-	// 	if (items[number] != null) {
-	// 		groups[items[number]] = 1;
-	// 	} else {
-	// 		groups[items[number]] = groups[items[number]] + 1;
-	// 	}
-	// 	number++;
-	// }
-	groups.forEach(function(item, index){ 
-		result += (item === 1 ? "a gem" : item + " gems") +
-			" worth " + index + "gp" +
-			(item === 1 ? "" : " each") +
-			"\n\t";
-		});
+	groups = groups.sort((a, b) => a.sort_value - b.sort_value).reverse()
+
+	let gem_counts = [];
+	groups.forEach(gem => {
+		if(typeof gem_counts[gem.sort_value] === "number") {
+			gem_counts[gem.sort_value] = gem_counts[gem.sort_value] + 1;
+		} else {
+			gem_counts[gem.sort_value] = 1;
+		}
+	});
+
+	let seen = [];
+	let weight = 0;
+	let value = 0;
+	let count = 0;
+	groups.forEach(gem => { 
+		count++;
+		weight = weight + gem.weight;
+		value = value + gem.base_value;
+		if (seen.includes(gem.sort_value)) return;
+		result += `\t${gem_counts[gem.sort_value]}x ${gem}`;
+		seen.push(gem.sort_value);
+	});
+	result = result + `--GEM TOTAL-- ${count} gems worth ${value} gp weighing ${weight} pp\n`
 	return result;
 };
 
