@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'ODD';
+    src: url("../fonts/QUENCRG_.TTF");
+}
+@font-face {
+    font-family: 'ODD-MEN';
+    src: url("../fonts/NauertRegular.ttf");
+}
+@font-face {
+    font-family: 'ODD-CAPS';
+    src: url("../fonts/Telegraphem.otf");
+}
+body {
+    background-color: ivory;
+}
+h1 {
+    font-family: 'ODD';
+}
+h2 {
+    font-family: 'ODD-MEN';
+}
+.btn {
+    font-family: 'ODD-CAPS';
+}
+.odd-title {
+    font-family: 'ODD';
+    color: maroon;
+}
