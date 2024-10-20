@@ -1240,6 +1240,7 @@ oddTables.gem = function (base_value = oddTables.gemValue()) {
 	let size_names = ["Unknown", "Tiny", "Small", "Medium", "Large", "Huge", "Giant"];
 	let semiprecious_names = ["Unknown", "Amber", "Coral", "Ivory", "Jet", "Amethyst", "Agate", "Beryl", "Carnelian", "Garnet", "Jade", "Malachite", "Azurite", "Gypsum", "Jasper", "Lapis Lazuli", "Moonstone", "Obsidian", "Onyx", "Paridot", "Quartz", "Tiger's Eye", "Topaz", "Turquoise", "Shell", "Rubelite", "Sard", "Sunstone", "Euclase", "Spinel", "Aquamarine", "Pyrite", "Chrysoprase", "Corundum", "Chalcedony", "Sardonyx", "Petalite", "Carnelian", "Lazulite", "Nephrite", "Tourmaline", "Barite", "Celestine", "Chrysoberyl", "Orthoclase", "Calcite", "Flourite", "Pyrope", "Zircon", "Aragonite", "Zoisite"];
 	let precious_names = ["Unknown", "Diamond", "Emerald", "Opal", "Pearl", "Ruby", "Sapphire"];
+	let enchantment_table = ["Charm the bearer", "Mesmerize willing subjects", "Glow as bright as a candle", "Sparkle in darkness", "Unfold like a flower", "Sing a ballad about the bearer", "Unfold like a flower when gazed upon", "Grant memory of the previous night’s dreams", "Serve as a magic mouth for the owner", "Ignite tender", "Present a miniature fireworks display", "Provide deep sleep when placed under pillow at night, +1hp to rest", "Heal the bearer once per day, +1hp", "Grant a bonus to charisma when worn", "Place a Quest on the bearer of [index quest table]", "Place a Geas on the bearer of [index geas table]"]
 
 	let gem = {};
 	gem.base_value = parseInt(base_value);
@@ -1253,15 +1254,29 @@ oddTables.gem = function (base_value = oddTables.gemValue()) {
 		gem.size_name = size_names[gem.size_class]
 	} else {
 		gem.type_roll = dice.d100();
-		gem.type_name = semiprecious_names[parseInt(gem.type_roll / 2)];
+		gem.type_name = semiprecious_names[parseInt((gem.type_roll + 1) / 2)];
 		gem.size_name = size_names[gem.size_class + 1]
 	}
 	gem.size_name = size_names[gem.size_class];
 	gem.weight = oddTables.gemWeight(gem.base_value);
 	gem.sort_value = parseInt(parseFloat(`${10 * gem.base_value}.${(gem.precious) ? 1 : 0}${gem.type_roll}`)*1000)
+	if (gem.base_value >= 1000) {
+		gem.enchantment = dice.pick(enchantment_table); // note: does this have a dice roll associated or just random in 16?
+		gem.enchantment_string = `This gem is famous and has a name and backstory. It is enchanted to ${gem.enchantment}.`
+	} else {
+		gem.enchantment_string = ""
+	}
+
+	gem.explain = function() {
+		return `GEM: ${(gem.precious) ? "P" : "S"}(${gem.precious_roll}/${gem.size_class}): ${gem.size_name} ${gem.type_name}(${gem.type_roll}) worth ${gem.base_value} gp ${gem.weight}pp\n`;
+	}
 
 	gem.toString = function() {
-		return `GEM: ${(gem.precious) ? "P" : "S"}(${gem.precious_roll}/${gem.size_class}): a ${gem.size_name} ${gem.type_name}(${gem.type_roll}) worth ${gem.base_value} gp ${gem.weight}pp\n`;
+		return `${gem.base_value.toLocaleString().padStart(6)}gp ${gem.weight.toLocaleString().padStart(3)}pp ${gem.size_name.padStart(6)} ${gem.type_name}`;
+	}
+
+	gem.prose = function() {
+		return `A ${gem.size_name} ${gem.type_name} worth ${gem.base_value.toLocaleString()} gp weighing ${gem.weight.toLocaleString()} pp. ${gem.enchantment_string}} `
 	}
 
 	return gem;
@@ -1299,11 +1314,15 @@ oddTables.gems = function (number) {
 		count++;
 		weight = weight + gem.weight;
 		value = value + gem.base_value;
-		if (seen.includes(gem.sort_value)) return;
-		result += `\t${gem_counts[gem.sort_value]}x ${gem}`;
+		if (!seen.includes(gem.sort_value)) {
+			result += `${gem_counts[gem.sort_value]}x ${gem}${(gem_counts[gem.sort_value] > 1) ? "s" : ""}\n`;
+		}
+		if (gem.base_value >= 1000) {
+			result += `  ENCHANTED: ${gem.enchantment}\n`
+		}
 		seen.push(gem.sort_value);
 	});
-	result = result + `--GEM TOTAL-- ${count} gems worth ${value} gp weighing ${weight} pp\n`
+	result = result + `--TOTAL GEMS-- ${count}x | ${value.toLocaleString()} gp | ${weight.toLocaleString()} pp\n`
 	return result;
 };
 
