@@ -880,7 +880,17 @@ dice.orcTribe = function () { return dice.pick([" Gobsmacker",
 " Mudslinger",
 " Slapsticker",
 " Muckraker",
-" Oinkblot",]); };
+" Oinkblot",
+" Mugshot",
+" Pate-spliter",
+" Mane-scalper",
+" Face-slapper",
+" Cheekpincher",
+" Earpiercer",
+" Suckerpuncher",
+" Kisserslapper",
+" Fangsinker",
+" Clawslasher",]); };
 dice.orcName = function () { return dice.orcPrefix() + dice.orcSuffix() + dice.orcTribe(); },
 
 /* magic 8 ball as oracle */
