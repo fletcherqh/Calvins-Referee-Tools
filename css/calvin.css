@@ -26,3 +26,6 @@ h2 {
     font-family: 'ODD';
     color: maroon;
 }
+textarea {
+    font-family: 'ODD-CAPS';
+}

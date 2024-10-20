@@ -9,17 +9,16 @@
 </head>
 <body>
   <div  class="container">
-    <div class="row" style="margin-top: 1em;">
-      <div class="col-3 text-center"><img src="calvin_sketch-clean.png" style="max-height: 128px; box-sizing: content-box;" alt="Sketch of Calvin"></div>
+    <div class="row" style="margin-top: 1em;margin-bottom: 1em; border-bottom: solid;">
+      <div class="col-3 text-center"><img src="calvin_sketch-clean.png" style="max-height: 128px; margin-bottom:1em" alt="Sketch of Calvin"></div>
       <div class="col">
         <h1 class="odd-title">Calvin's Referee Tools</h1>
         <h5><i>Automated Tables for</i></h5>
         <h4><i>Perilous Realms Medieval Fantasy Wargames Campaigns</i></h4>
       </div>
     </div>
-    <div class="row" style="margin-top: 1em"><hr/></div>
     <div class="row">
-      <div class="col-3" style="border: black; border-width: thick">
+      <div class="col-3" style="border: solid;">
         <div class="row text-center">
           <a class="btn" data-bs-toggle="collapse" href="#menButtons" role="button" aria-expanded="true" aria-controls="menButtons"><h2>Men</h2></a>
           <div class="collapse" id="menButtons">
@@ -46,32 +45,50 @@
                 <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spell Books</button>
             </div>
         </div>
-        <div class="row text-center">
-          <h2>Monsters</h2>
-          <p>wilderness lairs & encounters, dungeon stocking & encounters</p>
-        </div>
-        <div class="row text-center">
-          <h2>Treasure</h2>
-          <p>wilderness lairs & dungeon level stocking</p>
-        </div>
-        <div class="row text-center">
-          <h2>Underworld</h2>
-          <p>room & map generation and furnishing</p>
-        </div>
-        <div class="row text-center">
-          <h2>Wilderness</h2>
-          <p>strongholds, settlements, ruins, etc.</p>
-        </div>
-        <div class="row text-center">
-          <h2>Adventure</h2>
-          <p>wishes, quests, geases, curses, diseases, insanity, exiles, etc.</p>
-        </div>
-        <div class="row text-center">
-          <h2>Campaigns</h2>
-          <p>event generator, freshness maintenance</p>
-        </div>
+          <div class="row text-center">
+              <a class="btn" data-bs-toggle="collapse" href="#monsterButtons" role="button" aria-expanded="false" aria-controls="monsterButtons"><h2>Monsters</h2></a>
+              <div class="collapse" id="monsterButtons">
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spells</button>
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spell Books</button>
+              </div>
+          </div>
+          <div class="row text-center">
+              <a class="btn" data-bs-toggle="collapse" href="#treasureButtons" role="button" aria-expanded="false" aria-controls="treasureButtons"><h2>Treasure</h2></a>
+              <div class="collapse" id="treasureButtons">
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spells</button>
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spell Books</button>
+              </div>
+          </div>
+          <div class="row text-center">
+              <a class="btn" data-bs-toggle="collapse" href="#underworldButtons" role="button" aria-expanded="false" aria-controls="underworldButtons"><h2>Underworld</h2></a>
+              <div class="collapse" id="underworldButtons">
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spells</button>
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spell Books</button>
+              </div>
+          </div>
+          <div class="row text-center">
+              <a class="btn" data-bs-toggle="collapse" href="#wildernessButtons" role="button" aria-expanded="false" aria-controls="wildernessButtons"><h2>Wilderness</h2></a>
+              <div class="collapse" id="wildernessButtons">
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spells</button>
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spell Books</button>
+              </div>
+          </div>
+          <div class="row text-center">
+              <a class="btn" data-bs-toggle="collapse" href="#adventureButtons" role="button" aria-expanded="false" aria-controls="adventureButtons"><h2>Adventure</h2></a>
+              <div class="collapse" id="adventureButtons">
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spells</button>
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spell Books</button>
+              </div>
+          </div>
+          <div class="row text-center">
+              <a class="btn" data-bs-toggle="collapse" href="#campaignButtons" role="button" aria-expanded="false" aria-controls="campaignButtons"><h2>Campaigns</h2></a>
+              <div class="collapse" id="campaignButtons">
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spells</button>
+                  <button type="button" class="btn btn-sm" onclick="output(oddTables.npcFighter(dice.d10()));">Spell Books</button>
+              </div>
+          </div>
       </div>
-      <div class="col-8"><textarea id="output-log" class="full-text-area" rows="20" cols="80"></textarea></div>
+      <div class="col-9"><textarea id="output-log" class="full-text-area" rows="30" cols="100" style="border: solid; background-color: ivory"></textarea></div>
     </div>
   </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
