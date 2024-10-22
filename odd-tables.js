@@ -791,15 +791,15 @@ oddTables.shieldOnly = function () {
 oddTables.miscWeapon = function () {
 	var roll = dice.d100(1); 
 	if (roll <= 25) { 
-		return "10 Magic Arrows";
+		return "10 Magic Arrows +1";
 	} else if (roll <= 40) {
-		return (dice.d10(3)) + " Magic Arrows";
+		return (dice.d10(3)) + " Magic Arrows +1";
 	} else if (roll <= 55) {
-		return "Dagger +1 vs. Man-Sized Opponents, +3 vs. Orcs, Goblins and Kobolds";
+		return "Dagger +1, +3 vs. Fell";
 	} else if (roll <= 60) {
-		return "Dagger +2 vs. Man-Sized Opponents, +3 vs. Orcs, Goblins and Kobolds";
+		return "Dagger +2, +3 vs. Fell";
 	} else if (roll <= 65) {
-		return "Magic Bow";
+		return "Magic Bow +1";
 	} else if (roll <= 70) {
 		return "Axe +1";
 	} else if (roll <= 80) {
@@ -2576,7 +2576,7 @@ oddTables.npcFighter = function (level, alignment, gender) {
 	if (dice.percentChance(level * 10)) {
 		shield = oddTables.shieldOnly();
 	}
-	//Add: potions; scrolls; rings; misc.
+	//Add: potions; scrolls of protection only; rings; misc.
 	//OED version: sword, armor(+shield?), potion, misc.
 	//default to +1, then half chance to increase by 1, repeating
 
