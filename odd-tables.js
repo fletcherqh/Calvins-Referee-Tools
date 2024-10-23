@@ -2567,13 +2567,13 @@ oddTables.npcFighter = function (level, alignment, gender) {
 	hp += hpBonus;
 
 	//generate magic items
-	if (dice.percentChance(level * 15)) {
+	if (dice.percentChance(level * 20)) {
 		sword = oddTables.magicSword();
 	}
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 10)) {
 		armor = oddTables.armorOnly();
 	}
-	if (dice.percentChance(level * 10)) {
+	if (dice.percentChance(level * 15)) {
 		shield = oddTables.shieldOnly();
 	}
 	//Add: potions; scrolls of protection only; rings; misc.
@@ -3083,16 +3083,16 @@ oddTables.npcCleric = function (level, alignment) {
 	hp += hpBonus;
 
 	//generate magic items
-	if (dice.percentChance(level * 15)) {
+	if (dice.percentChance(level * 20)) {
 		sword = oddTables.clericItem();
 	}
 	if (dice.percentChance(level * 10)) {
 		armor = oddTables.armorOnly();
 	}
-	if (dice.percentChance(level * 10)) {
+	if (dice.percentChance(level * 15)) {
 		shield = oddTables.shieldOnly();
 	}
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 15)) {
 		potion = oddTables.potion(true);
 	}
 	if (dice.percentChance(level * 5)) {
@@ -3321,13 +3321,13 @@ oddTables.npcWizard = function (level, alignment) {
 	hp += hpBonus;
 
 	//generate magic items
-	if (dice.percentChance(level * 15)) {
+	if (dice.percentChance(level * 20)) {
 		sword = oddTables.wand();
 	}
-	if (dice.percentChance(level * 10)) {
+	if (dice.percentChance(level * 15)) {
 		ring = oddTables.ring(true);
 	}
-	if (dice.percentChance(level * 5)) {
+	if (dice.percentChance(level * 10)) {
 		miscItem = oddTables.miscMagic();
 	}
 	//Need to differentiate cleric only staves
