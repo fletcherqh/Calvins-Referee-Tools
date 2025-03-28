@@ -19,7 +19,6 @@ var ChaoticClericOrders = [
     "Cult of Oukranos",
     "Cult of Tamash",
     "Cult of Zo-Kalar",
-    "Cult of Chthulos",
     "Cult of Karakal",
     "Cult of Yog-Sothoth",
     "Cult of Dagon",
