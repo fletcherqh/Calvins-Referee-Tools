@@ -13,6 +13,7 @@ var ChaoticClericOrders = [
     "Underarchy of the Unholy Powers",
     "Chthonic Underarchy of Orcus",
     "Gothic Knights",
+    "Cult of Set",
     "Cult of Lobon",
     "Cult of Nath-Horthath",
     "Cult of Oukranos",
