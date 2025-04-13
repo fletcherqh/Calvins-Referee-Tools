@@ -1916,13 +1916,13 @@ oddTables.monsterLevel2 = function () {
 		case 1: return oddMonsters.hobgoblin.toString();
 		case 2: return oddMonsters.zombie.toString();
 		case 3: return oddMonsters.giantLizard.toString();
-		case 4: return "Warriors";
-		case 5: return "Conjurers";
+		case 4: return "Warriors FM2";
+		case 5: return "Conjurers MU3";
 		case 6: return oddMonsters.gnoll.toString();
 		case 7: return oddMonsters.ghoul.toString();
 		case 8: return oddMonsters.ghoul.toString();
 		case 9: return oddMonsters.berserker.toString();
-		case 10: return "Theurgists";
+		case 10: return "Theurgists MU4";
 	}
 };
 
@@ -1932,13 +1932,13 @@ oddTables.monsterLevel3 = function () {
 	// 	"Giant Weasles"]);
 	switch (dice.d10()) { 
 		case 1: return oddMonsters.wight.toString();
-		case 2: return "Heroes";
+		case 2: return "Heroes FM4";
 		case 3: return oddMonsters.giantHog.toString();
 		case 4: return oddMonsters.giantAnt.toString();
 		case 5: return oddMonsters.ochreJelly.toString();
-		case 6: return "Thaumaturgists";
-		case 7: return "Swashbucklers";
-		case 8: return "Magicians";
+		case 6: return "Thaumaturgists MU5";
+		case 7: return "Swashbucklers FM3";
+		case 8: return "Magicians MU6";
 		case 9: return oddMonsters.giantSnake.toString();
 		case 10: return oddMonsters.giantWeasel.toString();
 	}
@@ -1951,31 +1951,31 @@ oddTables.monsterLevel4 = function () {
 	switch (dice.d10()) { 
 		case 1: return oddMonsters.wraith.toString();
 		case 2: return oddMonsters.ogre.toString();
-		case 3: return "Evil Priests";
-		case 4: return "Myrmidons";
+		case 3: return "Evil Priests CL4";
+		case 4: return "Myrmidons FM6";
 		case 5: return oddMonsters.giantBeetle.toString();
 		case 6: return oddMonsters.giantScorpion.toString();
 		case 7: return "Lycanthropes";
 		case 8: return oddMonsters.gargoyle.toString();
 		case 9: return oddMonsters.whiteApe.toString();
-		case 10: return "Enchanters";
+		case 10: return "Enchanters MU7";
 	}
 };
 
 oddTables.monsterLevel5 = function () {
 	// return dice.pick(["Trolls", "Superheros", "Wyverns", "Spectres", "Mummies", 
 	// 	"Minotaurs", "Manticores", "Cockatrices", "Sorcerers", "Wyverns", 
-	// 	"Hydra (6-8 Heads)", "Medusae"]);
+	// 	"Hydra (6-8 Heads)", "Gorgons ("Medusae")"]);
 	switch (dice.d12()) { 
 		case 1: return oddMonsters.troll.toString();
-		case 2: return "Superheros";
+		case 2: return "Superheros FM8";
 		case 3: return oddMonsters.wyvern.toString();
 		case 4: return oddMonsters.spectre.toString();
 		case 5: return oddMonsters.mummy.toString();
 		case 6: return oddMonsters.minotaur.toString();
 		case 7: return oddMonsters.manticore.toString();
 		case 8: return oddMonsters.cockatrice.toString();
-		case 9: return "Sorcerers";
+		case 9: return "Sorcerers MU9";
 		case 10: return oddMonsters.wyvern.toString();
 		case 11: return (dice.d3() + 5) + "-headed " + oddMonsters.hydra.toString();
 		case 12: return oddMonsters.medusa.toString();
@@ -1994,10 +1994,10 @@ oddTables.monsterLevel6 = function () {
 		case 5: return oddMonsters.gorgon.toString();
 		case 6: return oddMonsters.chimera.toString();
 		case 7: return oddMonsters.vampire.toString();
-		case 8: return "Lords";
+		case 8: return "Lords FM10";
 		case 9: return oddMonsters.balrogs.toString();
-		case 10: return "Wizards";
-		case 11: return "Evil High Priests";
+		case 10: return "Wizards MU11";
+		case 11: return "Evil High Priests CL8";
 		case 12: return oddMonsters.purpleWorm.toString();
 	}
 };
