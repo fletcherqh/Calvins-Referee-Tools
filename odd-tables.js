@@ -410,13 +410,18 @@ oddTables.spellAny = function () {
 oddTables.spellBookMu = function (level, numSpells) {
 	var spell, spells = [], spellArray;
 	switch (level) {
-		case 6: spellArray = oddTables.spellsMu6; break;
-		case 5: spellArray = oddTables.spellsMu5; break;
-		case 4: spellArray = oddTables.spellsMu4; break;
-		case 3: spellArray = oddTables.spellsMu3; break;
-		case 2: spellArray = oddTables.spellsMu2; break;
-		default: spellArray = oddTables.spellsMu1; break;
-	}
+        case 1: title = "Amateur"; hd = 1; hpBonus = 0; break;
+        case 2: title = "Apprentice"; hd = 2; hpBonus = 0; break;
+        case 3: title = "Locksmith"; hd = 2; hpBonus = 1; break;
+        case 4: title = "Professional"; hd = 3; hpBonus = 0; break;
+        case 5: title = "Journeyman"; hd = 3; hpBonus = 1; break;
+        case 6: title = "Burglar"; hd = 4; hpBonus = 0; break;
+        case 7: title = "Highwayman"; hd = 4; hpBonus = 1; break;
+        case 8: case 9: case 10: case 11:
+            title = "Master Thief"; hd = 5; hpBonus = 0; break;
+        case 12: title = "Extractor"; hd = 6; hpBonus = 0; break;
+        default: title = "Extractor"; hd = 6; hpBonus = 0; break;
+        }
 	while (spells.length < numSpells && spells.length < spellArray.length) {
 		spell = dice.pick(spellArray);
 		while (spells.indexOf(spell) !== -1) {
@@ -2839,66 +2844,49 @@ oddTables.npcThief = function (level, alignment) {
 		alignment = oddTables.npcAlignment();
 	}
 	gender = oddTables.npcGender();
-	if (gender === "M" || gender === "*" && dice.flip()) {
-		name = oddNames.masculineName();
-	} else {
-		name = oddNames.feminineName();
-	}
-	name += oddNames.epithet();
+	name = (window.oddNames && typeof oddNames.thiefName==="function") ? oddNames.thiefName() : "Fox Shadow";
+	var __epi = (window.oddNames && typeof oddNames.thiefEpithet==="function") ? oddNames.thiefEpithet() : "of the Night";
+	name += ", " + __epi;
 
-	// determine basic level derivatives 
+		// determine basic level derivatives 
 	switch (level) {
-		case 1: 
-			title = "Apprentice";
-			hd = 1;
-			hpBonus = 0;
-			break;
-		case 2: 
-			title = "Footpad";
-			hd = 2;
-			hpBonus = 0;
-			break;
-		case 3:
-			title = "Robber";
-			hd = 3;
-			hpBonus = 0;
-			break;
-		case 4:
-			title = "Burglar";
-			hd = 3;
-			hpBonus = 1;
-			break;
-		case 5:
-			title = "Cutpurse";
-			hd = 4;
-			hpBonus = 0;
-			break;
-		case 6:
-			title = "Sharper";
-			hd = 4;
-			hpBonus = 1;
-			break;
-		case 7:
-			title = "Pilferer";
-			hd = 5;
-			hpBonus = 0;
-			break;
-		case 8:
-			title = "Master Pilferer";
-			hd = 6;
-			hpBonus = 0;
-			break;
-		case 9:
-			title = "Thief";
-			hd = 7;
-			hpBonus = 0;
-      break;
-		default:
-			title = "Master Thief";
-			hd = 7;
-			hpBonus = level - 9;
-			break;
+		case 1: title = "Amateur"; hd = 1; hpBonus = 0; break;
+		case 2: title = "Apprentice"; hd = 2; hpBonus = 0; break;
+		case 3: title = "Locksmith"; hd = 2; hpBonus = 0; break;
+		case 4: title = "Professional"; hd = 3; hpBonus = 0; break;
+		case 5: title = "Journeyman"; hd = 3; hpBonus = 0; break;
+		case 6: title = "Burglar"; hd = 4; hpBonus = 0; break;
+		case 7: title = "Highwayman"; hd = 4; hpBonus = 0; break;
+		case 8: title = "Master Thief"; hd = 5; hpBonus = 0; break;
+		case 9: title = "Master Thief"; hd = 6; hpBonus = 0; break;
+		case 10: title = "Master Thief"; hd = 7; hpBonus = 0; break;
+		case 11: title = "Master Thief"; hd = 8; hpBonus = 0; break;
+		case 12: title = "Extractor"; hd = 9; hpBonus = 0; break;
+		default: title = "Extractor"; hd = 10; hpBonus = 0; break;
 	}
+	// === Override Thief titles per custom mapping ===
+	(function(){
+		var lvl = level;
+		var map = {
+			1: "Amateur",
+			2: "Apprentice",
+			3: "Locksmith",
+			4: "Professional",
+			5: "Journeyman",
+			6: "Burglar",
+			7: "Highwayman",
+			8: "Master Thief",
+			9: "Master Thief",
+			10: "Master Thief",
+			11: "Master Thief",
+			12: "Extractor"
+		};
+		if (typeof lvl === "number") {
+			if (lvl >= 1 && lvl <= 12) title = map[lvl];
+			else if (lvl > 12) title = "Extractor";
+		}
+	})();
+
 
 	//roll ability scores
 	aStr = dice.d6(3);

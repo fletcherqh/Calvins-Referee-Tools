@@ -1364,3 +1364,26 @@ oddEncounters.dragonEncounter = function (type) {
 //http://odd74.proboards.com/thread/7606/analysis-od-treasure-types
 //includes image of treasure table including prisoners
 //2-10 or 2 per 10 for type A water & land, 1-20  or 1 per 20 for type A desert
+
+// === Thief button handler (auto-added) ===
+(function() {
+  function safeOutput(text) {
+    if (typeof window.outputResult === "function") return window.outputResult(text);
+    var out = document.getElementById("output");
+    if (out) { var d=document.createElement("div"); d.textContent=text; out.appendChild(d); }
+    else console.log(text);
+  }
+  function bind() {
+    var btn = document.getElementById("thiefButton");
+    if (!btn) return;
+    btn.addEventListener("click", function() {
+      var nn = window.oddNames && window.oddNames.thiefName;
+      var ee = window.oddNames && window.oddNames.thiefEpithet;
+      var name = (typeof nn==="function") ? nn() : "Fox Shadow";
+      var epi  = (typeof ee==="function") ? ee() : "of the Night";
+      safeOutput(name + ", " + epi);
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind);
+  else bind();
+})();

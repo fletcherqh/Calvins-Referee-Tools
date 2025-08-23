@@ -167,3 +167,70 @@ Death Moon
 Broken Bone
 Leprous Hand
 */
+
+// === Thief names & epithets (auto-added) ===
+// Thief name format: "<Noun> <Adjective>"
+(function(scope){
+  var oddNames = scope.oddNames = scope.oddNames || {};
+
+  var THIEF_ADJECTIVES = [
+    "Hood","Hooded","Cloak","Cloaked","Danger","Grey","Hidden","Silver",
+    "Shadow","Shade","Dash","Slim","Swift","Secret","Silent","Spy",
+    "Crouching","Whisper","Sharp","Split","Jack","Cold"
+  ];
+
+  var THIEF_NOUNS = [
+    "Viper","Crawler","Snake","Serpent","Scorpion","Spider","Rat","Ratter",
+    "Mouser","Cat","Tiger","Leopard","Snapper","Swiper","Strike","Striker",
+    "Fox","Weasel","Stote","Dagger","Knife","Blade"
+  ];
+
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  if (typeof oddNames.thiefName !== "function") {
+    oddNames.thiefName = function() {
+      var adj = pick(THIEF_ADJECTIVES);
+      var noun = pick(THIEF_NOUNS);
+      return adj + " " + noun;
+    };;
+  }
+
+  if (typeof oddNames.thiefEpithet !== "function") {
+    oddNames.thiefEpithet = function() {
+      // Choose between magic-user epithets and (neutral|chaotic) fighter epithets
+      var pools = [];
+      if (typeof magicUserEpithets !== "undefined" && Array.isArray(magicUserEpithets)) {
+        pools.push({ type: "mu", arr: magicUserEpithets });
+      }
+      var sidePools = [];
+      if (typeof neutralFightingManAmazonEpithets !== "undefined" && Array.isArray(neutralFightingManAmazonEpithets)) {
+        sidePools.push(neutralFightingManAmazonEpithets);
+      }
+      if (typeof chaoticFightingManAmazonEpithets !== "undefined" && Array.isArray(chaoticFightingManAmazonEpithets)) {
+        sidePools.push(chaoticFightingManAmazonEpithets);
+      }
+
+      var useMU = Math.random() < 0.5;
+      var chosenArr = null;
+
+      if (useMU && pools.length) {
+        chosenArr = pools[0].arr;
+      } else if (sidePools.length) {
+        chosenArr = sidePools[Math.floor(Math.random() * sidePools.length)];
+      } else if (pools.length) {
+        chosenArr = pools[0].arr;
+      }
+
+      if (chosenArr && chosenArr.length) {
+        var pick = (typeof dice !== "undefined" && dice && typeof dice.pick === "function")
+          ? dice.pick(chosenArr)
+          : chosenArr[Math.floor(Math.random() * chosenArr.length)];
+        // return a formatted epithet phrase (no punctuation)
+        return "the " + pick;
+      }
+
+      // final fallback
+      return "of the Night";
+    };
+  }
+})(this);
