@@ -1,29 +1,21 @@
-Phase 1 — Minimal Patch
+Phase 1 — Minimal Patch (v2)
 
-Files included (copy these into your repo, merging folders as needed):
-1) test_main.html
-2) js/app-nomodule.js
-3) css/components.css (optional; just styles the #output box)
+Copy these into your repo (merge folders, replace files when prompted):
 
-Where to place them:
-- test_main.html   -> repo root (replace your existing test_main.html)
-- js/app-nomodule.js -> repo/js/ (create js/ if missing)
-- css/components.css -> repo/css/ (optional)
+1) test_main.html           -> repo root (replaces your test_main.html)
+2) js/app-nomodule.js       -> repo/js/ (create js/ if needed)
 
-What changed:
-- Converted race controls to data-action (Thief/Cleric/Dwarf/Halfling/Elf)
-- Added a shared output box: <pre id="output" class="output" aria-live="polite">
-- Added a Safari-friendly controller (app-nomodule.js) that calls oddTables + dice
-- Ensured scripts load at the end of <body> in this order:
+Changes made:
+- Added data-action attributes to existing race controls where we detected npcThief / npcCleric / npcDwarf / npcHalfling / npcElfTwoLevels calls.
+  (We did NOT remove your original onclick handlers.)
+- Ensured scripts at the very end of <body> include:
     <script src="dice.js"></script>
     <script src="odd-tables.js"></script>
     <script src="js/app-nomodule.js"></script>
+- The controller renders output into #output if present, otherwise falls back to #output-log.
 
 How to test:
-- Double-click test_main.html to open in Safari
-- Click Thief/Cleric/Dwarf/Halfling/Elf — results print in the <pre id="output"> box
-
-GitHub Desktop:
-- Make sure you’re on branch chore/phase1-structure
-- Commit the file changes and Push origin
-- Open/refresh your PR
+- Double-click test_main.html to open it.
+- Click Thief / Cleric / Dwarf / Halfling / Elf and watch output appear in your usual output area.
+- If a button still shows no output, please tell me which one and I’ll tailor the dispatcher to your exact function names.
+Patched source file used: /mnt/data/_phase1_fresh2/Calvins-Referee-Tools/test_main.html

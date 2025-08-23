@@ -1,20 +1,22 @@
 
 /* Non-module controller (Safari-friendly) with robust action dispatch.
-   Tries multiple function name variants so you don't have to rename your code.
+   Tries multiple function name variants for each action and renders to #output or #output-log.
 */
 (function(){
-  function $(sel, root){ return (root||document).querySelector(sel); }
+  function pickOutput(){
+    return document.querySelector('#output') || document.querySelector('#output-log') || null;
+  }
   function render(result){
-    var out = $('#output'); if (!out) return;
-    if (result == null) { out.textContent = '⚠️ No result returned'; return; }
-    var text = (typeof result === 'string') ? result : JSON.stringify(result, null, 2);
+    var out = pickOutput(); if (!out) return;
+    var text = (result == null) ? '⚠️ No result returned'
+             : (typeof result === 'string') ? result
+             : JSON.stringify(result, null, 2);
     out.textContent = text;
   }
   function renderError(err){
-    var out = document.querySelector('#output'); if (!out) return;
+    var out = pickOutput(); if (!out) return;
     out.textContent = '⚠️ ' + (err && err.message ? err.message : err);
   }
-
   function has(obj, path){
     try {
       var parts = path.split('.'), cur = obj;
@@ -44,63 +46,38 @@
     }
     return window.dice;
   }
-
   function actionThief(){
     var dice = ensureDice();
-    var f = firstCallable([
-      'oddTables.npcThief', 'oddTables.rollThief', 'oddTables.thief',
-      'rollThief', 'npcThief', 'thief'
-    ]);
+    var f = firstCallable(['oddTables.npcThief','oddTables.rollThief','oddTables.thief','rollThief','npcThief','thief']);
     if (!f) throw new Error('No thief generator found (npcThief/rollThief/thief)');
-    // Prefer a single die param if arity >=1; otherwise call with no args.
     return (f.length >= 1) ? f(dice.d10()) : f();
   }
-
   function actionCleric(){
     var dice = ensureDice();
-    var f = firstCallable([
-      'oddTables.npcCleric', 'oddTables.rollCleric', 'oddTables.cleric',
-      'rollCleric', 'npcCleric', 'cleric'
-    ]);
+    var f = firstCallable(['oddTables.npcCleric','oddTables.rollCleric','oddTables.cleric','rollCleric','npcCleric','cleric']);
     if (!f) throw new Error('No cleric generator found (npcCleric/rollCleric/cleric)');
     return (f.length >= 1) ? f(dice.d10()) : f();
   }
-
   function actionDwarf(){
     var dice = ensureDice();
-    var f = firstCallable([
-      'oddTables.npcDwarf', 'oddTables.rollDwarf', 'oddTables.dwarf',
-      'rollDwarf', 'npcDwarf', 'dwarf'
-    ]);
+    var f = firstCallable(['oddTables.npcDwarf','oddTables.rollDwarf','oddTables.dwarf','rollDwarf','npcDwarf','dwarf']);
     if (!f) throw new Error('No dwarf generator found (npcDwarf/rollDwarf/dwarf)');
     return (f.length >= 1) ? f(dice.d10()) : f();
   }
-
   function actionHalfling(){
     var dice = ensureDice();
-    var f = firstCallable([
-      'oddTables.npcHalfling', 'oddTables.rollHalfling', 'oddTables.halfling',
-      'rollHalfling', 'npcHalfling', 'halfling'
-    ]);
+    var f = firstCallable(['oddTables.npcHalfling','oddTables.rollHalfling','oddTables.halfling','rollHalfling','npcHalfling','halfling']);
     if (!f) throw new Error('No halfling generator found (npcHalfling/rollHalfling/halfling)');
     return (f.length >= 1) ? f(dice.d10()) : f();
   }
-
   function actionElf(){
     var dice = ensureDice();
-    // Try two-level variant first, then single-arg variants, then no-arg.
-    var twoLevel = firstCallable(['oddTables.npcElfTwoLevels','npcElfTwoLevels']);
-    if (twoLevel){
-      return twoLevel(dice.d4(), dice.d8());
-    }
-    var single = firstCallable([
-      'oddTables.npcElf', 'oddTables.rollElf', 'oddTables.elf',
-      'rollElf', 'npcElf', 'elf'
-    ]);
+    var two = firstCallable(['oddTables.npcElfTwoLevels','npcElfTwoLevels']);
+    if (two){ return two(dice.d4(), dice.d8()); }
+    var single = firstCallable(['oddTables.npcElf','oddTables.rollElf','oddTables.elf','rollElf','npcElf','elf']);
     if (!single) throw new Error('No elf generator found (npcElfTwoLevels/npcElf/rollElf/elf)');
     return (single.length >= 1) ? single(dice.d10()) : single();
   }
-
   var actions = {
     'roll:thief':    actionThief,
     'roll:cleric':   actionCleric,
@@ -108,7 +85,6 @@
     'roll:halfling': actionHalfling,
     'roll:elf':      actionElf
   };
-
   document.addEventListener('DOMContentLoaded', function(){
     document.body.addEventListener('click', function(e){
       var el = e.target.closest && e.target.closest('[data-action]');
