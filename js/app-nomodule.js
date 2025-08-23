@@ -11,13 +11,14 @@
     out.textContent = '⚠️ ' + (err && err.message ? err.message : err);
   }
 
-  var actions = {
-    'roll:thief': function(){ return window.oddTables && window.dice ? window.oddTables.npcThief(window.dice.d10()) : 'Missing oddTables/dice'; },
-    'roll:cleric': function(){ return window.oddTables ? window.oddTables.npcCleric(window.dice.d10()) : 'Missing oddTables/dice'; },
-    'roll:dwarf': function(){ return window.oddTables ? window.oddTables.npcDwarf(window.dice.d10()) : 'Missing oddTables/dice'; },
-    'roll:halfling': function(){ return window.oddTables ? window.oddTables.npcHalfling(window.dice.d10()) : 'Missing oddTables/dice'; },
-    'roll:elf': function(){ return window.oddTables ? window.oddTables.npcElfTwoLevels(window.dice.d4(), window.dice.d8()) : 'Missing oddTables/dice'; }
-  };
+var actions = {
+  'roll:thief':    function(){ return (window.oddTables && window.dice) ? window.oddTables.npcThief(window.dice.d10()) : 'Missing oddTables/dice'; },
+  'roll:cleric':   function(){ return (window.oddTables && window.dice) ? window.oddTables.npcCleric(window.dice.d10()) : 'Missing oddTables/dice'; },
+  'roll:dwarf':    function(){ return (window.oddTables && window.dice) ? window.oddTables.npcDwarf(window.dice.d10()) : 'Missing oddTables/dice'; },
+  'roll:halfling': function(){ return (window.oddTables && window.dice) ? window.oddTables.npcHalfling(window.dice.d10()) : 'Missing oddTables/dice'; },
+  'roll:elf':      function(){ return (window.oddTables && window.dice) ? window.oddTables.npcElfTwoLevels(window.dice.d4(), window.dice.d8()) : 'Missing oddTables/dice'; }
+};
+
 
   document.addEventListener('DOMContentLoaded', function(){
     document.body.addEventListener('click', function(e){
