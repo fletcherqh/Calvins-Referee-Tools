@@ -11,7 +11,9 @@
     var text = (result == null) ? '⚠️ No result returned'
              : (typeof result === 'string') ? result
              : JSON.stringify(result, null, 2);
-    out.textContent = text;
+    var prev = out.textContent || '';
+      out.textContent = text + (prev ? '
+' + prev : '');
   }
   function renderError(err){
     var out = pickOutput(); if (!out) return;

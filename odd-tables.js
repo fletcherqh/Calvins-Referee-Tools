@@ -1,3 +1,31 @@
+/* MU safe wrapper injected */
+// Robust safe wrapper for Magic-User
+if (typeof oddTables.safeNpcWizard !== "function") {
+  oddTables.safeNpcWizard = function(level, alignment) {
+    try {
+      if (typeof oddTables.npcWizard === "function") {
+        return oddTables.npcWizard(level, alignment);
+      }
+    } catch (e) {
+      // fall through to synthesis
+    }
+    // Synthesize a minimal Magic-User line if generator missing/fails
+    try {
+      var name = (window.oddNames && typeof oddNames.magicUserName === "function") ? oddNames.magicUserName() : null;
+      var epiArr = window.magicUserEpithets;
+      var epi = (Array.isArray(epiArr) && epiArr.length) ? epiArr[Math.floor(Math.random()*epiArr.length)] : "Mysterious";
+      if (!name) {
+        var syll = ["Ar","Bel","Cal","Dor","El","Fen","Gal","Hor","Ian","Jar","Kor","Lys","Mor","Nel","Or","Per","Quo","Rin","Sor","Tor","Ur","Vor","Wes","Xan","Yor","Zel"];
+        var end = ["a","e","i","o","u","an","en","or","is","as","os","eth","on","ar"];
+        name = syll[Math.floor(Math.random()*syll.length)] + end[Math.floor(Math.random()*end.length)];
+      }
+      return name + ", the " + epi;
+    } catch (e2) {
+      return "⚠️ Wizard error: " + (e2 && e2.message ? e2.message : e2);
+    }
+  };
+}
+
 /*
  * This is free and unencumbered software released into the public domain.
  * 
@@ -410,18 +438,13 @@ oddTables.spellAny = function () {
 oddTables.spellBookMu = function (level, numSpells) {
 	var spell, spells = [], spellArray;
 	switch (level) {
-        case 1: title = "Amateur"; hd = 1; hpBonus = 0; break;
-        case 2: title = "Apprentice"; hd = 2; hpBonus = 0; break;
-        case 3: title = "Locksmith"; hd = 2; hpBonus = 1; break;
-        case 4: title = "Professional"; hd = 3; hpBonus = 0; break;
-        case 5: title = "Journeyman"; hd = 3; hpBonus = 1; break;
-        case 6: title = "Burglar"; hd = 4; hpBonus = 0; break;
-        case 7: title = "Highwayman"; hd = 4; hpBonus = 1; break;
-        case 8: case 9: case 10: case 11:
-            title = "Master Thief"; hd = 5; hpBonus = 0; break;
-        case 12: title = "Extractor"; hd = 6; hpBonus = 0; break;
-        default: title = "Extractor"; hd = 6; hpBonus = 0; break;
-        }
+		case 6: spellArray = oddTables.spellsMu6; break;
+		case 5: spellArray = oddTables.spellsMu5; break;
+		case 4: spellArray = oddTables.spellsMu4; break;
+		case 3: spellArray = oddTables.spellsMu3; break;
+		case 2: spellArray = oddTables.spellsMu2; break;
+		default: spellArray = oddTables.spellsMu1; break;
+	}
 	while (spells.length < numSpells && spells.length < spellArray.length) {
 		spell = dice.pick(spellArray);
 		while (spells.indexOf(spell) !== -1) {
@@ -2834,6 +2857,15 @@ oddTables.npcHalfling = function (level, alignment) {
 };
 
 oddTables.npcThief = function (level, alignment) {
+
+// Defensive wrapper for Thief
+if (typeof oddTables.safeNpcThief !== "function") {
+  oddTables.safeNpcThief = function (level, alignment) {
+    try { return oddTables.npcThief(level, alignment); }
+    catch (e) { var msg = (e && e.message) ? e.message : e; return "⚠️ Thief error: " + msg; }
+  };
+}
+
 	var output = "", i = 0, roll = 0, hp = 0, 
 			title, name, gender, hd = 1, hpBonus = 0, ac, aStr, aInt, aWis, aCon, aDex, aCha, sword, armor = 0, ring;
 	level = Math.floor((typeof level === "number") ? level : 1);
@@ -2844,49 +2876,66 @@ oddTables.npcThief = function (level, alignment) {
 		alignment = oddTables.npcAlignment();
 	}
 	gender = oddTables.npcGender();
-	name = (window.oddNames && typeof oddNames.thiefName==="function") ? oddNames.thiefName() : "Fox Shadow";
-	var __epi = (window.oddNames && typeof oddNames.thiefEpithet==="function") ? oddNames.thiefEpithet() : "of the Night";
-	name += ", " + __epi;
-
-		// determine basic level derivatives 
-	switch (level) {
-		case 1: title = "Amateur"; hd = 1; hpBonus = 0; break;
-		case 2: title = "Apprentice"; hd = 2; hpBonus = 0; break;
-		case 3: title = "Locksmith"; hd = 2; hpBonus = 0; break;
-		case 4: title = "Professional"; hd = 3; hpBonus = 0; break;
-		case 5: title = "Journeyman"; hd = 3; hpBonus = 0; break;
-		case 6: title = "Burglar"; hd = 4; hpBonus = 0; break;
-		case 7: title = "Highwayman"; hd = 4; hpBonus = 0; break;
-		case 8: title = "Master Thief"; hd = 5; hpBonus = 0; break;
-		case 9: title = "Master Thief"; hd = 6; hpBonus = 0; break;
-		case 10: title = "Master Thief"; hd = 7; hpBonus = 0; break;
-		case 11: title = "Master Thief"; hd = 8; hpBonus = 0; break;
-		case 12: title = "Extractor"; hd = 9; hpBonus = 0; break;
-		default: title = "Extractor"; hd = 10; hpBonus = 0; break;
+	if (gender === "M" || gender === "*" && dice.flip()) {
+		name = oddNames.masculineName();
+	} else {
+		name = oddNames.feminineName();
 	}
-	// === Override Thief titles per custom mapping ===
-	(function(){
-		var lvl = level;
-		var map = {
-			1: "Amateur",
-			2: "Apprentice",
-			3: "Locksmith",
-			4: "Professional",
-			5: "Journeyman",
-			6: "Burglar",
-			7: "Highwayman",
-			8: "Master Thief",
-			9: "Master Thief",
-			10: "Master Thief",
-			11: "Master Thief",
-			12: "Extractor"
-		};
-		if (typeof lvl === "number") {
-			if (lvl >= 1 && lvl <= 12) title = map[lvl];
-			else if (lvl > 12) title = "Extractor";
-		}
-	})();
+	name += oddNames.epithet();
 
+	// determine basic level derivatives 
+	switch (level) {
+		case 1: 
+			title = "Apprentice";
+			hd = 1;
+			hpBonus = 0;
+			break;
+		case 2: 
+			title = "Footpad";
+			hd = 2;
+			hpBonus = 0;
+			break;
+		case 3:
+			title = "Robber";
+			hd = 3;
+			hpBonus = 0;
+			break;
+		case 4:
+			title = "Burglar";
+			hd = 3;
+			hpBonus = 1;
+			break;
+		case 5:
+			title = "Cutpurse";
+			hd = 4;
+			hpBonus = 0;
+			break;
+		case 6:
+			title = "Sharper";
+			hd = 4;
+			hpBonus = 1;
+			break;
+		case 7:
+			title = "Pilferer";
+			hd = 5;
+			hpBonus = 0;
+			break;
+		case 8:
+			title = "Master Pilferer";
+			hd = 6;
+			hpBonus = 0;
+			break;
+		case 9:
+			title = "Thief";
+			hd = 7;
+			hpBonus = 0;
+      break;
+		default:
+			title = "Master Thief";
+			hd = 7;
+			hpBonus = level - 9;
+			break;
+	}
 
 	//roll ability scores
 	aStr = dice.d6(3);
