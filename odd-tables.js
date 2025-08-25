@@ -2828,141 +2828,82 @@ oddTables.npcHalfling = function (level, alignment) {
 	return output;
 };
 
+// === House Rule Thief Generator Start ===
 oddTables.npcThief = function (level, alignment) {
-	var output = "", i = 0, roll = 0, hp = 0, 
-			title, name, gender, hd = 1, hpBonus = 0, ac, aStr, aInt, aWis, aCon, aDex, aCha, sword, armor = 0, ring;
-	level = Math.floor((typeof level === "number") ? level : 1);
-	level = (level < 1 ? 1 : level);
+  var output = "", i = 0, hp = 0,
+      title, name, aStr, aInt, aWis, aCon, aDex, aCha, sword, armor = 0, ac;
+  level = Math.floor((typeof level === "number") ? level : 1);
+  if (level < 1) level = 1;
 
-	//randomly pick basics
-	if (!(alignment == "L" || alignment == "N" || alignment == "C")) {
-		alignment = oddTables.npcAlignment();
-	}
-	gender = oddTables.npcGender();
-	if (gender === "M" || gender === "*" && dice.flip()) {
-		name = oddNames.masculineName();
-	} else {
-		name = oddNames.feminineName();
-	}
-	name += oddNames.epithet();
+  if (!(alignment == "L" || alignment == "N" || alignment == "C")) {
+    alignment = oddTables.npcAlignment();
+  }
 
-	// determine basic level derivatives 
-	switch (level) {
-		case 1: 
-			title = "Apprentice";
-			hd = 1;
-			hpBonus = 0;
-			break;
-		case 2: 
-			title = "Footpad";
-			hd = 2;
-			hpBonus = 0;
-			break;
-		case 3:
-			title = "Robber";
-			hd = 3;
-			hpBonus = 0;
-			break;
-		case 4:
-			title = "Burglar";
-			hd = 3;
-			hpBonus = 1;
-			break;
-		case 5:
-			title = "Cutpurse";
-			hd = 4;
-			hpBonus = 0;
-			break;
-		case 6:
-			title = "Sharper";
-			hd = 4;
-			hpBonus = 1;
-			break;
-		case 7:
-			title = "Pilferer";
-			hd = 5;
-			hpBonus = 0;
-			break;
-		case 8:
-			title = "Master Pilferer";
-			hd = 6;
-			hpBonus = 0;
-			break;
-		case 9:
-			title = "Thief";
-			hd = 7;
-			hpBonus = 0;
-      break;
-		default:
-			title = "Master Thief";
-			hd = 7;
-			hpBonus = level - 9;
-			break;
-	}
+  // Names: Adjective + Noun (variants expanded)
+  var adjRaw = ["Hood(ed)","Cloak(ed)","Danger","Grey","Hidden","Silver","Shadow","Shade","Dash","Slim","Swift","Secret","Silent","Spy","Crouching","Whisper","Sharp","Split","Jack","Cold"];
+  var nounRaw = ["Viper","Crawler","Snake","Serpent","Scorpion","Spider","Rat(ter)","Mouse(r)","Cat","Tiger","Leopard","Snapper","Swiper","Strike(r)","Fox","Weasel","Stote","Dagger","Knife","Blade"];
+  function expand(token){ var m = token.match(/^(.*)\((.*)\)$/); return m ? [m[1], m[1]+m[2]] : [token]; }
+  function flat(list){ var out=[]; for (var i=0;i<list.length;i++){ var v=expand(list[i]); for(var j=0;j<v.length;j++) out.push(v[j]); } return out; }
+  var adjs = flat(adjRaw), nouns = flat(nounRaw);
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  name = pick(adjs) + " " + pick(nouns);
 
-	//roll ability scores
-	aStr = dice.d6(3);
-	aInt = dice.d6(3);
-	aWis = dice.d6(3);
-	aCon = dice.d6(3);
-	aDex = dice.d6(3);
-	aCha = dice.d6(3);
+  // Titles
+  function thiefTitleForLevel(lv){
+    if (lv >= 13) return "Extractor";
+    switch(lv){
+      case 1: return "Amateur";
+      case 2: return "Apprentice";
+      case 3: return "Locksmith";
+      case 4: return "Professional";
+      case 5: return "Journeyman";
+      case 6: return "Burglar";
+      case 7: return "Highwayman";
+      case 8: case 9: case 10: case 11: return "Master Thief";
+      case 12: return "Extractor";
+      default: return "Amateur";
+    }
+  }
+  title = thiefTitleForLevel(level);
 
-	//roll HP
-	for (i = 0; i < hd; i++) {
-		roll = dice.d6() + oddTables.abilityMod(aCon);
-		roll = (roll < 1) ? 1 : roll;
-		hp += roll;
-	}
-	hp += hpBonus;
+  // Stats 3d6
+  function d6(){ return dice.d6(); }
+  function roll3d6(){ return d6()+d6()+d6(); }
+  aStr = roll3d6(); aInt = roll3d6(); aWis = roll3d6(); aCon = roll3d6(); aDex = roll3d6(); aCha = roll3d6();
 
-	//generate magic items
-	if (dice.percentChance(level * 5)) {
-		sword = oddTables.magicSword();
-	}
-	if (dice.percentChance(level * 5)) {
-		armor = oddTables.armorOnly();
-	}
-	if (dice.percentChance(level * 5)) {
-		ring = oddTables.ring(true);
-	}
-	//OED version: sword, armor(+shield?), potion, misc.
-	//default to +1, then half chance to increase by 1, repeating
+  // HP: 1d6 per level, min 1
+  for (i=0;i<level;i++){ var r = d6(); if(r<1) r=1; hp += r; }
+  if (hp<1) hp=1;
 
-	//calculate AC
-	//assume leather for base AC 7
-	ac = 7 - armor - oddTables.abilityMod(aDex);
-	if (ring === "Ring of Protection") {
-		ac = 2;
-	}
+  // AC: 7 - Dex mod
+  function dexMod(s){ if(s<=3) return -3; if(s<=5) return -2; if(s<=8) return -1; if(s<=12) return 0; if(s<=15) return 1; if(s<=17) return 2; return 3; }
+  ac = 7 - dexMod(aDex);
 
-	//generate output string
-	output += title + " " + name + "\n";
-	output += gender + " ";
-	output += alignment + " ";
-	output += "T" + level + " ";
-	output += "S:" + aStr + " ";
-	output += "I:" + aInt + " ";
-	output += "W:" + aWis + " ";
-	output += "C:" + aCon + " ";
-	output += "D:" + aDex + " ";
-	output += "X:" + aCha + " ";
-	output += "HP:" + hp + " ";
-	output += "AC:" + ac + " ";
-	output += "\n";
-	if (armor > 0) {
-		output += "Leather Armor +" + armor + "\n";
-	}
-	if (ring) {
-		output += ring + "\n";
-	}
-	if (sword) {
-		output += sword;
-	}
-	output = output.trim();
-	output += "\n";
-	return output;
+  sword = "Dagger";
+
+  // Epithets from globals (MU + Ftr N/C)
+  function arr(x){ return Array.isArray(x)?x:[]; }
+  var pools = [].concat(
+    arr(window.magicUserEpithets),
+    arr(window.neutralFightingManEpithets),
+    arr(window.chaoticFightingManEpithets),
+    arr(window.neutralFightingManAmazonEpithets),
+    arr(window.chaoticFightingManAmazonEpithets)
+  );
+  if (!pools.length) pools = ["the Silent Knife","the Shadowed Hand","the Quick Step","the Whisper in Alley"];
+  var epithet = pick(pools);
+
+  var result = "";
+  result += title + " (" + level + ") " + name + " the " + epithet + "\n";
+  result += alignment + " ";
+  result += "S:" + aStr + " I:" + aInt + " W:" + aWis + " C:" + aCon + " D:" + aDex + " X:" + aCha + " ";
+  result += "HP:" + hp + " AC:" + ac + " ";
+  if (sword) result += "\n" + sword;
+  result = result.trim();
+  if (oddTables.cleanUp) result = oddTables.cleanUp(result);
+  return result;
 };
+// === House Rule Thief Generator End ===
 
 oddTables.npcCleric = function (level, alignment) {
 	var output = "", i = 0, roll = 0, hp = 0, 
