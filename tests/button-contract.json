@@ -1,0 +1,11 @@
+{
+  "thiefBtn": "NPC.generateThief",
+  "magicUserBtn": "NPC.generateMagicUser",
+  "clericBtn": "NPC.generateCleric",
+  "dwarfBtn": "NPC.generateDwarf",
+  "halflingBtn": "NPC.generateHalfling",
+  "elfBtn": "NPC.generateElf",
+  "fnameBtn": "generateCommonFeminineName",
+  "mnameBtn": "generateCommonMasculineName",
+  "epithetBtn": "generateCommonEpithet"
+}
