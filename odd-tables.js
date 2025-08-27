@@ -2880,6 +2880,7 @@ oddTables.npcThief = function (level, alignment) {
   ac = 7 - dexMod(aDex);
 
   sword = "Dagger";
+  var gotMagicWeapon = false;
 
   // Epithets from globals (MU + Ftr N/C)
   function arr(x){ return Array.isArray(x)?x:[]; }
@@ -2898,9 +2899,50 @@ oddTables.npcThief = function (level, alignment) {
   result += alignment + " ";
   result += "S:" + aStr + " I:" + aInt + " W:" + aWis + " C:" + aCon + " D:" + aDex + " X:" + aCha + " ";
   result += "HP:" + hp + " AC:" + ac + " ";
-  if (sword) result += "\n" + sword;
+
   result = result.trim();
   if (oddTables.cleanUp) result = oddTables.cleanUp(result);
+  // Baby step: optional Potion for Thieves (low risk)
+if (dice.percentChance(level * 20)) {
+  result += "\n" + oddTables.potion(true);
+}
+// Baby step: optional Misc Magic for Thieves
+if (dice.percentChance(level * 10)) {
+  result += "\n" + oddTables.miscMagic();
+}
+if (dice.percentChance(level * 10)) {
+  result += "\n" + oddTables.ring(true);
+}
+// Baby step: optional Magic Weapon for Thieves
+if (dice.percentChance(level * 15)) {
+  function has(fn) { return typeof fn === "function"; }
+  var picks = [];
+
+function thiefyWeapon() {
+  var w;
+  for (var i = 0; i < 5; i++) {                 // try a few times for a thief-appropriate result
+    w = oddTables.miscWeapon();
+    if (/Dagger|Short Sword|Bow|Arrow/i.test(w)) return w;
+  }
+  return w;                                      // fallback if none matched
+}
+
+// Magic Weapon for Thieves (scales with level, biased 2:1 to thiefy misc)
+if (dice.percentChance(level * 15)) {
+  function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+  var choices = [
+    function(){ return oddTables.magicSword(); },  // 1 part sword
+    function(){ return thiefyWeapon(); },          // 2 parts misc (filtered)
+    function(){ return thiefyWeapon(); }
+  ];
+  var fn = pick(choices);
+  result += "\n" + fn();
+  gotMagicWeapon = true;
+}
+
+// (optional future) baseline dagger fallback is suppressed for now
+// if (!gotMagicWeapon && sword) result += "\n" + sword;
+}
   return result;
 };
 // === House Rule Thief Generator End ===
