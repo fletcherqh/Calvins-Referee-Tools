@@ -2623,14 +2623,13 @@ oddTables.npcDwarf = function (level, alignment) {
 		alignment = "L";
 	}
 	gender = oddTables.npcGender();
-	if (gender === "M" || gender === "*" && dice.flip()) {
-		name = oddNames.masculineName();
+	if (gender === 'M' || (gender === '*' && dice.flip())) {
+		name = oddNames.dwarfFirstName('M');
 	} else {
-		name = oddNames.feminineName();
+		name = oddNames.dwarfFirstName('F');
 	}
-	name += oddNames.epithet();
-
-	// determine basic level derivatives 
+	name += ' ' + oddNames.dwarfSurname();
+// determine basic level derivatives 
 	switch (level) {
 		case 1: 
 			title = "Dwarf Veteran";
@@ -2643,7 +2642,7 @@ oddTables.npcDwarf = function (level, alignment) {
 			hpBonus = 0;
 			break;
 		case 3:
-			title = "Dwarf Swordsman";
+			title = "Dwarfhammer";
 			hd = 3;
 			hpBonus = 0;
 			break;
@@ -2653,12 +2652,12 @@ oddTables.npcDwarf = function (level, alignment) {
 			hpBonus = 0;
 			break;
 		case 5:
-			title = "Dwarf Swashbuckler";
+			title = "Dwarvenshield";
 			hd = 5;
 			hpBonus = 1;
 			break;
 		default:
-			title = "Dwarf Myrmidon";
+			title = "Dwarfmaster";
 			hd = 6;
 			hpBonus = 0;
 			break;
@@ -2736,14 +2735,13 @@ oddTables.npcHalfling = function (level, alignment) {
 		alignment = "L";
 	}
 	gender = oddTables.npcGender();
-	if (gender === "M" || gender === "*" && dice.flip()) {
-		name = oddNames.masculineName();
+	if (gender === 'M' || (gender === '*' && dice.flip())) {
+		name = oddNames.dwarfFirstName('M');
 	} else {
-		name = oddNames.feminineName();
+		name = oddNames.dwarfFirstName('F');
 	}
-	name += oddNames.epithet();
-
-	// determine basic level derivatives 
+	name += ' ' + oddNames.dwarfSurname();
+// determine basic level derivatives 
 	switch (level) {
 		case 1: 
 			title = "Halfling Veteran";
@@ -3366,14 +3364,13 @@ oddTables.npcElf = function (level, alignment) {
 		alignment = "L";
 	}
 	gender = oddTables.npcGender();
-	if (gender === "M" || gender === "*" && dice.flip()) {
-		name = oddNames.masculineName();
+	if (gender === 'M' || (gender === '*' && dice.flip())) {
+		name = oddNames.dwarfFirstName('M');
 	} else {
-		name = oddNames.feminineName();
+		name = oddNames.dwarfFirstName('F');
 	}
-	name += oddNames.epithet();
-
-	// determine basic level derivatives 
+	name += ' ' + oddNames.dwarfSurname();
+// determine basic level derivatives 
 	switch (level) {
 		case 1: 
 			title = "Elf Veteran-Medium";
@@ -3519,14 +3516,13 @@ oddTables.npcElfTwoLevels = function (levelFighter, levelMagic, alignment) {
 		alignment = "L";
 	}
 	gender = oddTables.npcGender();
-	if (gender === "M" || gender === "*" && dice.flip()) {
-		name = oddNames.masculineName();
+	if (gender === 'M' || (gender === '*' && dice.flip())) {
+		name = oddNames.dwarfFirstName('M');
 	} else {
-		name = oddNames.feminineName();
+		name = oddNames.dwarfFirstName('F');
 	}
-	name += oddNames.epithet();
-
-	// determine basic level derivatives 
+	name += ' ' + oddNames.dwarfSurname();
+// determine basic level derivatives 
 	switch (levelFighter) {
 		case 1: 
 			title = "Veteran";
