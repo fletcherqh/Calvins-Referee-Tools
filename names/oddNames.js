@@ -158,6 +158,37 @@ oddNames.swordName = function () {
 		"cusher","cutter","eater","edge","flame","hammer","maker","thorn","slayer","splitter","sword","sæx"]);
 };
 
+// === Halfling / Hobbit Names (House Rules) ===
+// Gendered first names
+oddNames.halflingFemale = [
+  "Blossom","Early","Flower","Goldie","Petal","Poppy","Dawn","Eve","Pumpkin","Posey",
+  "Buttercup","Ivy","Dandelion","Snowdrop","Gloria","Nightingale","Lovelace","Petunia","Gladiola","Holly"
+];
+
+oddNames.halflingMale = [
+  "Gaffer","Bobo","Bolo","Bogo","Brogo","Brolo","Bongo","Bolger","Chobo","Fobo",
+  "Fobro","Frobo","Frobro","Gobo","Blobo","Jobo","Tobo","Trobo","Xobo","Yolo"
+];
+
+// Surname parts (dashes removed; combined into one compound word)
+oddNames._halflingPrefix = [
+  "Long","Little","Hairy","Dingle","Fine","Fog","Shinny","Glitter","Gold","Silver",
+  "Proud","Broad","Narrow","Strong","Short","Shimmer","Bright","Flash","Twinkle","Swift"
+];
+oddNames._halflingSuffix = [
+  "foot","feet","shins","calf","calves","toe","toes","heel","heels","sole",
+  "knee","knees","leg","legs","smial","flood","dairy","dale","brook","berry"
+];
+
+// Pickers
+oddNames.halflingFeminineName  = function(){ return dice.pick(oddNames.halflingFemale); };
+oddNames.halflingMasculineName = function(){ return dice.pick(oddNames.halflingMale); };
+oddNames.halflingSurname = function(){
+  var L = dice.pick(oddNames._halflingPrefix);
+  var R = dice.pick(oddNames._halflingSuffix);
+  return L + R; // e.g., Longfoot, Glitterbrook, Hairycalves
+};
+
 /* Orc Tribes 
 Grinning Skull
 Bloddy Axe

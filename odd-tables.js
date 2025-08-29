@@ -2735,35 +2735,27 @@ oddTables.npcHalfling = function (level, alignment) {
 		alignment = "L";
 	}
 	gender = oddTables.npcGender();
-	if (gender === 'M' || (gender === '*' && dice.flip())) {
-		name = oddNames.dwarfFirstName('M');
-	} else {
-		name = oddNames.dwarfFirstName('F');
-	}
-	name += ' ' + oddNames.dwarfSurname();
-// determine basic level derivatives 
-	switch (level) {
-		case 1: 
-			title = "Halfling Veteran";
-			hd = 1;
-			hpBonus = 1;
-			break;
-		case 2: 
-			title = "Halfling Warrior";
-			hd = 2;
-			hpBonus = 0;
-			break;
-		case 3:
-			title = "Halfling Swordsman";
-			hd = 3;
-			hpBonus = 0;
-			break;
-		default:
-			title = "Halfling Hero";
-			hd = 4;
-			hpBonus = 0;
-			break;
-	}
+if (gender === 'M' || (gender === '*' && dice.flip())) {
+  name = oddNames.halflingMasculineName();
+} else {
+  name = oddNames.halflingFeminineName();
+}
+name += ' ' + oddNames.halflingSurname();
+
+// determine basic level derivatives (L1–L6; clamp to 6)
+if (level > 6) level = 6;
+var rank = "";
+switch (level) {
+  case 1: rank = "Halfling Veteran";      hd = 1; hpBonus = 1; break;
+  case 2: rank = "Halfling Warrior";      hd = 2; hpBonus = 0; break;
+  case 3: rank = "Halfling Swordling";    hd = 3; hpBonus = 0; break;
+  case 4: rank = "Halfling Hero";         hd = 4; hpBonus = 0; break;
+  case 5: rank = "Halfling Swashbuckler"; hd = 5; hpBonus = 0; break;
+  default: /* 6 */ rank = "Halfling Thane"; hd = 6; hpBonus = 0; break;
+}
+title = rank;
+if (alignment === "L") { title = title.replace(/^Halfling/, "Hobbit"); }
+
 
 	//roll ability scores
 	aStr = dice.d6(3);
@@ -2833,9 +2825,7 @@ oddTables.npcThief = function (level, alignment) {
   level = Math.floor((typeof level === "number") ? level : 1);
   if (level < 1) level = 1;
 
-  if (!(alignment == "L" || alignment == "N" || alignment == "C")) {
     alignment = oddTables.npcAlignment();
-  }
 
   // Names: Adjective + Noun (variants expanded)
   var adjRaw = ["Hood(ed)","Cloak(ed)","Danger","Grey","Hidden","Silver","Shadow","Shade","Dash","Slim","Swift","Secret","Silent","Spy","Crouching","Whisper","Sharp","Split","Jack","Cold"];
