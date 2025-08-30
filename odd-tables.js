@@ -3342,6 +3342,7 @@ oddTables.npcWizard = function (level, alignment) {
 	output += "\n";
 	return output;
 };
+//ELF BLOCK
 
 oddTables.npcElf = function (level, alignment) {
 	var output = "", i = 0, roll = 0, hp = 0, 
@@ -3355,11 +3356,12 @@ oddTables.npcElf = function (level, alignment) {
 	}
 	gender = oddTables.npcGender();
 	if (gender === 'M' || (gender === '*' && dice.flip())) {
-		name = oddNames.dwarfFirstName('M');
+  	name = elfNames.masculineName();
 	} else {
-		name = oddNames.dwarfFirstName('F');
+  name = elfNames.feminineName();
 	}
-	name += ' ' + oddNames.dwarfSurname();
+// (no surname yet; we’ll wire Elf surnames next)
+
 // determine basic level derivatives 
 	switch (level) {
 		case 1: 
@@ -3507,11 +3509,12 @@ oddTables.npcElfTwoLevels = function (levelFighter, levelMagic, alignment) {
 	}
 	gender = oddTables.npcGender();
 	if (gender === 'M' || (gender === '*' && dice.flip())) {
-		name = oddNames.dwarfFirstName('M');
+  	name = elfNames.masculineName();
 	} else {
-		name = oddNames.dwarfFirstName('F');
-	}
-	name += ' ' + oddNames.dwarfSurname();
+  	name = elfNames.feminineName();
+}
+// (no surname yet)
+
 // determine basic level derivatives 
 	switch (levelFighter) {
 		case 1: 
