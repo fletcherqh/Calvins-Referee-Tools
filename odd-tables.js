@@ -2731,9 +2731,9 @@ oddTables.npcHalfling = function (level, alignment) {
 	level = (level < 1 ? 1 : level);
 
 	//randomly pick basics
-	if (!(alignment == "L" || alignment == "N" || alignment == "C")) {
-		alignment = "L";
-	}
+	if (alignment !== "L" && alignment !== "N") {
+  alignment = (dice.d6() <= 4) ? "L" : "N"; // 2/3 L, 1/3 N
+}
 	gender = oddTables.npcGender();
 if (gender === 'M' || (gender === '*' && dice.flip())) {
   name = oddNames.halflingMasculineName();
