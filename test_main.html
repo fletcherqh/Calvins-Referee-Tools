@@ -49,10 +49,14 @@
         margin:2px;
       }
     </style>
+    </style>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/calvin.css">
+
   </head>
   <body>
     <div class="container">
-      <img src="calvin_sketch-clean.png" alt="Calvin sketch" style="max-width:100px; float:left; margin:0 1rem 1rem 0;">
+      <img src="calvin_sketch-clean.png" alt="Calvin sketch" style="max-width:90px; float:left; margin:0 1rem 1rem 0;">
       <div class="title-block">
   <div class="title-row1">
     <h1 class="title-crt" style="margin:1.5rem 0 0 0; font-family:'ODD'; color:maroon;">Calvin's Referee Tools</h1>
@@ -62,8 +66,10 @@
   <div class="title-tagline" style="font-size:1.15rem;">Medieval Fantasy Wargames Campaigns</div>
 </div>
       <hr/>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12" style="margin-left:0.5rem;">
+      <div>
+        <div class="row" id="tools-grid"><div id="controls-col">
+
+        <div class="controls-inner">
 
           <h4>Men & Magic</h4>
         
@@ -566,12 +572,15 @@
             <br>
             <input type="text" size="8" name="diceFormula" id="diceFormula" value="2d6x2+5">
             <button id="rollDiceFormula" class="btn btn-default btn-xs" onclick="output(dice.parse(jQuery('#diceFormula').val(),true));">Roll</button>
-            <div class="col-lg-9 col-md-8 col-sm-7 col-xs-12">
-  <textarea id="output-log"
+
+  </div><div id="output-col">
+
+              <textarea id="output-log"
             class="full-text-area"
             rows="20"
             cols="80"
             style="width:100%; min-height:420px;"></textarea>
+            </div></div><!-- /#tools-grid -->
 </div>
 
             <br>

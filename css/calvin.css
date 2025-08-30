@@ -38,3 +38,24 @@ h2 {
 textarea {
     font-family: 'ODD-CAPS';
 }
+
+/* widen + pin the output log in its column */
+#output-col textarea,
+#output-col #output {
+  width: 100%;
+  min-height: 70vh;
+  display: block;
+}
+/* Force two-column layout for controls + output (Bootstrap-independent) */
+#tools-grid { display: flex; flex-wrap: wrap; align-items: flex-start; }
+#controls-col { flex: 0 0 33.333%; max-width: 33.333%; }
+#output-col   { flex: 0 0 66.667%; max-width: 66.667%; min-width: 0; }
+
+/* Make the log fill its column */
+#output-col textarea,
+#output-col #output { width: 100%; min-height: 70vh; display: block; }
+
+/* Stack on small screens */
+@media (max-width: 768px) {
+  #controls-col, #output-col { flex: 0 0 100%; max-width: 100%; }
+}
