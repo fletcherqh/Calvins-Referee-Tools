@@ -3360,7 +3360,8 @@ oddTables.npcElf = function (level, alignment) {
 	} else {
   name = elfNames.feminineName();
 	}
-// (no surname yet; we’ll wire Elf surnames next)
+	name += ' ' + elfNames.surname();
+
 
 // determine basic level derivatives 
 	switch (level) {
@@ -3512,8 +3513,8 @@ oddTables.npcElfTwoLevels = function (levelFighter, levelMagic, alignment) {
   	name = elfNames.masculineName();
 	} else {
   	name = elfNames.feminineName();
-}
-// (no surname yet)
+	}
+	name += ' ' + elfNames.surname();
 
 // determine basic level derivatives 
 	switch (levelFighter) {
