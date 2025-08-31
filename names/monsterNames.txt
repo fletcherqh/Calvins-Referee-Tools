@@ -237,7 +237,7 @@ Letter + d10 + letter + d10
  
 Dragon names by color
  
-Gold Family Name
+Gold Family Name (listed first, and only one per dragon pair or family)
 Ryuu
 Tatsu
 Loong
@@ -245,7 +245,7 @@ Ming
 Tang
 Jin
  
-Gold Personal Name
+Gold Personal Name (Listed after family name)
 Koku
 Kar
 Sekir
@@ -272,7 +272,11 @@ Hong
 Shen
 Bashe
 Teng
- 
+
+Chaotic dragons follow a different logic: Prefix per color, with shared suffix table for all chaotic dragons (Red, Blue, Green, Black, White).
+Followed by separate adjective as dragon epithet. Each dragon gets their own epithet.
+I am open to you suggesting a similar set of adjectives ("-ous" style) but approbatory rather than derogative in nature.
+
 White Prefix:
 Crysta
 Glacia
@@ -339,7 +343,6 @@ Contemptuous
 Deleterious
 Decorous
 Disharmonious
-Dicentuous
 Devious
 Disastrous
 Disingenuous
@@ -397,7 +400,6 @@ Irreligious
 Incongruous
 Incestuous
 Jealous
-Jeapordous
 Lustrous
 Lucious
 Litigious
