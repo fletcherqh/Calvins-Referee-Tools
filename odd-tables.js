@@ -3426,6 +3426,8 @@ oddTables.npcElf = function (level, alignment) {
 			spells.push(oddTables.spellBookMu(4,2).join(", "));
 			break;
 	}
+// house-rule title override
+title = oddTables.elfTitles(level);
 
 	//roll ability scores
 	aStr = dice.d6(3);
@@ -3847,3 +3849,19 @@ oddTables.castleEncounter = function () {
 	}
 	return result.trim() + "\n";
 };
+
+// === Elf (race-as-class) Level Titles — House Rules ===
+// Index matches character level; [0] is unused. Clamp max to 6.
+oddTables.elfTitles = function (level) {
+  const T = [ null,
+    "Veteran",     // 1
+    "Diviner",     // 2
+    "Alfsword",    // 3
+    "Theurge",     // 4
+    "Faebuckler",  // 5
+    "Druid/ess"    // 6+
+  ];
+  const idx = Math.max(1, Math.min(6, Math.floor(+level || 1)));
+  return T[idx];
+};
+
