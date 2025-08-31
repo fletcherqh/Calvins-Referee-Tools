@@ -277,6 +277,22 @@
             <button class="btn btn-default btn-xs" onclick="output(dice.orcName());">Orc Name</button>
           </div>
 
+          <div class="btn-group">
+           <button type="button" class="btn btn-default btn-xs" onclick="output(oddTables.dragonNameLine());">Dragon Name</button>
+           <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+           </button>
+           <ul class="dropdown-menu" role="menu">
+            <li><a href="#" onclick="output(oddTables.dragonNameLine('gold'));">Gold</a></li>
+            <li><a href="#" onclick="output(oddTables.dragonNameLine('white'));">White</a></li>
+            <li><a href="#" onclick="output(oddTables.dragonNameLine('black'));">Black</a></li>
+            <li><a href="#" onclick="output(oddTables.dragonNameLine('green'));">Green</a></li>
+            <li><a href="#" onclick="output(oddTables.dragonNameLine('blue'));">Blue</a></li>
+            <li><a href="#" onclick="output(oddTables.dragonNameLine('red'));">Red</a></li>
+           </ul>
+          </div>
+
           <p class="buttonLabel" data-toggle="collapse" href="#treasure-buttons">Treasure Tables</p>
           <div id="treasure-buttons" class="collapse.in">
             <div class="btn-group">
