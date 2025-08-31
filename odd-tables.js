@@ -3458,11 +3458,8 @@ oddTables.npcElf = function (level, alignment) {
 
 	//calculate AC
 	//assume no armor for base AC 9
-	if (ring === "Ring of Protection") {
-		ac = 2;
-	} else {
-		ac = 4; //default elf AC
-	}
+	ac = 4; // baseline elf AC (shield/helmet assumption)
+	if (ring === "Ring of Protection") ac -= 1;
 
 	//generate output string
 	output += title + " " + name + "\n";
