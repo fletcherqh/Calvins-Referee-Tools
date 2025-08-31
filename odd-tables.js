@@ -3331,7 +3331,7 @@ oddTables.npcWizard = function (level, alignment) {
 	if (ring) {
 		output += ring + "\n";
 	}
-	if (miscItem > 0) {
+	if (miscItem) {
 		output += miscItem + "\n";
 	}
 	if (sword) {
@@ -3461,7 +3461,7 @@ oddTables.npcElf = function (level, alignment) {
 	if (ring === "Ring of Protection") {
 		ac = 2;
 	} else {
-		ac = 5; //default elf AC
+		ac = 4; //default elf AC
 	}
 
 	//generate output string
@@ -3641,11 +3641,9 @@ oddTables.npcElfTwoLevels = function (levelFighter, levelMagic, alignment) {
 
 	//calculate AC
 	//assume no armor for base AC 9
-	if (ring === "Ring of Protection") {
-		ac = 2;
-	} else {
-		ac = 5; //default elf AC, presumably mail
-	}
+	ac = 4;
+	if (ring === "Ring of Protection") ac -= 1;
+
 
 	//generate output string
 	output += title + " " + name + "\n";
