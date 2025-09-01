@@ -46,7 +46,7 @@ window.testFromHelpers = "helpers loaded";
     let base = `${prefix}${suffix}`;
 
     if (opts.addAdjective && adjectives.length) {
-      base = `${base} the ${pick(adjectives)}`;
+      base = `${base} ${pick(adjectives)}`;
     }
     return { name: base, family: null, suffix: suffix || null };
   };
