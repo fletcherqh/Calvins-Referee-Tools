@@ -1212,7 +1212,7 @@ oddEncounters.cloudgiants = function () {
 	return result;
 };
 
-/* Dragons */
+/* DRAGONS */
 
 function DragonType (color, breathType, breathShape, hdLow, hdMid, hdHi, talkChance, spellChance, maxSpellLvl, sleepChance) {
 	this.color = color;
@@ -1306,7 +1306,9 @@ oddEncounters.dragon = function (age, type) {
 };
 
 oddEncounters.dragonEncounter = function (type) {
-	var i, numberEncountered, dragons, maxAge, hoard, result;
+	window.sharedNameOpts = {};
+    var sharedNameOpts = window.sharedNameOpts;
+
 
 	// type = type || 
 	// 	dice.pick(dragonTypes.white,dragonTypes.black,dragonTypes.green,dragonTypes.blue,dragonTypes.red,dragonTypes.gold);
@@ -1322,23 +1324,65 @@ oddEncounters.dragonEncounter = function (type) {
 	}
 
 
-	numberEncountered = dice.d4(1);
-	dragons = [];
-	if (numberEncountered === 1) {
-		dragons.push(oddEncounters.dragon(dice.d6(1), type));
-	} else if (numberEncountered === 2) {
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-	} else if (numberEncountered === 3) {
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(1, type));
-	} else if (numberEncountered === 4) {
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(1, type));
-		dragons.push(oddEncounters.dragon(1, type));
-	}
+	// shared name parts for this encounter
+
+numberEncountered = dice.d4(1);
+dragons = [];
+
+if (numberEncountered === 1) {
+  dragons.push(oddEncounters.dragon(dice.d6(1), type));
+
+  // share surname/family for this encounter
+  if (type === dragonTypes.gold && !sharedNameOpts.family) {
+    sharedNameOpts.family = window.oddTables.dragonName('gold').family;
+  }
+  if (['red','blue','green','black','white'].includes(type.color.toLowerCase()) && !sharedNameOpts.suffix) {
+    sharedNameOpts.suffix = window.oddTables.dragonName(type.color).suffix;
+  }
+
+} else if (numberEncountered === 2) {
+  dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
+
+  // share surname/family for this encounter
+  if (type === dragonTypes.gold && !sharedNameOpts.family) {
+    sharedNameOpts.family = window.oddTables.dragonName('gold').family;
+  }
+  if (['red','blue','green','black','white'].includes(type.color.toLowerCase()) && !sharedNameOpts.suffix) {
+    sharedNameOpts.suffix = window.oddTables.dragonName(type.color).suffix;
+  }
+
+  dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
+
+} else if (numberEncountered === 3) {
+  dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
+
+  // share surname/family for this encounter
+  if (type === dragonTypes.gold && !sharedNameOpts.family) {
+    sharedNameOpts.family = window.oddTables.dragonName('gold').family;
+  }
+  if (['red','blue','green','black','white'].includes(type.color.toLowerCase()) && !sharedNameOpts.suffix) {
+    sharedNameOpts.suffix = window.oddTables.dragonName(type.color).suffix;
+  }
+
+  dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
+  dragons.push(oddEncounters.dragon(1, type));
+
+} else { // numberEncountered === 4
+  dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
+  dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
+
+  // share surname/family for this encounter
+  if (type === dragonTypes.gold && !sharedNameOpts.family) {
+    sharedNameOpts.family = window.oddTables.dragonName('gold').family;
+  }
+  if (['red','blue','green','black','white'].includes(type.color.toLowerCase()) && !sharedNameOpts.suffix) {
+    sharedNameOpts.suffix = window.oddTables.dragonName(type.color).suffix;
+  }
+
+  dragons.push(oddEncounters.dragon(1, type));
+  dragons.push(oddEncounters.dragon(1, type));
+}
+
 
 	maxAge = 0;
 	for (i = 0; i < dragons.length; i++) {
@@ -1353,11 +1397,13 @@ oddEncounters.dragonEncounter = function (type) {
 	}
 
 	result = "DRAGON ENCOUNTER";
-	for (i = 0; i < dragons.length; i++) {
-		result += "\n" + dragons[i].description + " " + dragons[i].statLine + "\n\t" + dragons[i].extras;
-	} 
-	result += "\n" + hoard;
-	return result;
+    for (i = 0; i < dragons.length; i++) {
+    var d = dragons[i];
+    var nameLine = window.oddTables.dragonNameLine(d.type.color, sharedNameOpts);
+    result += "\n" + nameLine + d.description + " " + d.statLine + "\n\t" + d.extras;
+    }
+    result += "\n" + hoard;
+    return result;
 };
 
 
