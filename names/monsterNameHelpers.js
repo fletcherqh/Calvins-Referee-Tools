@@ -50,12 +50,12 @@ window.testFromHelpers = "helpers loaded";
     }
     return { name: base, family: null, suffix: suffix || null };
   };
-  window.oddTables.dragonNameLine = function(color){
+  window.oddTables.dragonNameLine = function(color, opts){
   const colors = ['white','black','green','blue','red','gold'];
   const c = color ? String(color).toLowerCase()
                   : colors[Math.floor(Math.random() * colors.length)];
   const cap = c.charAt(0).toUpperCase() + c.slice(1);
-  const { name } = window.oddTables.dragonName(c, { addAdjective: true });
+  const { name } = window.oddTables.dragonName(c, Object.assign({ addAdjective: true }, opts || {}));
   return `${cap} Dragon: ${name}\n`;
 };
 })();
