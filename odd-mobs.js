@@ -1305,60 +1305,86 @@ oddEncounters.dragon = function (age, type) {
 	return dragon;
 };
 
-oddEncounters.dragonEncounter = function (type) {
-	var i, numberEncountered, dragons, maxAge, hoard, result;
+		oddEncounters.dragonEncounter = function (type) {
+		var i, numberEncountered, dragons, maxAge, hoard, result;
 
-	// type = type || 
-	// 	dice.pick(dragonTypes.white,dragonTypes.black,dragonTypes.green,dragonTypes.blue,dragonTypes.red,dragonTypes.gold);
-	if (!type) {
-		switch(dice.d6()) {
+		// pick color if none provided
+		if (!type) {
+			switch (dice.d6()) {
 			case 1: type = dragonTypes.white; break;
 			case 2: type = dragonTypes.black; break;
 			case 3: type = dragonTypes.green; break;
 			case 4: type = dragonTypes.blue; break;
 			case 5: type = dragonTypes.red; break;
 			default: type = dragonTypes.gold; break;
+			}
 		}
-	}
 
+		// ---- shared naming state (encounter-scoped) ----
+		window.sharedNameOpts = {};
+		var sharedNameOpts = window.sharedNameOpts;
 
-	numberEncountered = dice.d4(1);
-	dragons = [];
-	if (numberEncountered === 1) {
-		dragons.push(oddEncounters.dragon(dice.d6(1), type));
-	} else if (numberEncountered === 2) {
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-	} else if (numberEncountered === 3) {
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(1, type));
-	} else if (numberEncountered === 4) {
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(dice.d3(1)+3, type));
-		dragons.push(oddEncounters.dragon(1, type));
-		dragons.push(oddEncounters.dragon(1, type));
-	}
+		// normalize color (helpers use 'gold', not 'golden')
+		var encColor = String(type.color || '').toLowerCase();
+		if (encColor === 'golden') encColor = 'gold';
+		var chaotic = { white:1, black:1, green:1, blue:1, red:1 };
 
-	maxAge = 0;
-	for (i = 0; i < dragons.length; i++) {
-		maxAge = dragons[i].age > maxAge ? dragons[i].age : maxAge;
-	}
-	if (maxAge >= 6) {
-		hoard = oddTables.treasureTypeHDouble();
-	} else if (maxAge <= 3) {
-		hoard = oddTables.treasureTypeHHalf();
-	} else {
-		hoard = oddTables.treasureTypeH();
-	}
+		// lock one shared family (gold) or one shared suffix (chaotic)
+		(function seedShared() {
+			var seed = oddTables.dragonName(encColor); // random sample to grab family/suffix
+			if (encColor === 'gold' && seed.family) sharedNameOpts.family = seed.family;
+			if (chaotic[encColor] && seed.suffix)   sharedNameOpts.suffix = seed.suffix;
+		})();
 
-	result = "DRAGON ENCOUNTER";
-	for (i = 0; i < dragons.length; i++) {
-		result += "\n" + dragons[i].description + " " + dragons[i].statLine + "\n\t" + dragons[i].extras;
-	} 
-	result += "\n" + hoard;
-	return result;
-};
+		// ---- build dragons ----
+		dragons = [];
+		numberEncountered = dice.d4(1);
+		if (numberEncountered === 1) {
+			dragons.push(oddEncounters.dragon(dice.d6(1), type));
+		} else if (numberEncountered === 2) {
+			dragons.push(oddEncounters.dragon(dice.d3(1) + 3, type));
+			dragons.push(oddEncounters.dragon(dice.d3(1) + 3, type));
+		} else if (numberEncountered === 3) {
+			dragons.push(oddEncounters.dragon(dice.d3(1) + 3, type));
+			dragons.push(oddEncounters.dragon(dice.d3(1) + 3, type));
+			dragons.push(oddEncounters.dragon(1, type));
+		} else { // 4
+			dragons.push(oddEncounters.dragon(dice.d3(1) + 3, type));
+			dragons.push(oddEncounters.dragon(dice.d3(1) + 3, type));
+			dragons.push(oddEncounters.dragon(1, type));
+			dragons.push(oddEncounters.dragon(1, type));
+		}
+
+		// ---- hoard based on eldest age (unchanged logic) ----
+		maxAge = 0;
+		for (i = 0; i < dragons.length; i++) {
+			maxAge = dragons[i].age > maxAge ? dragons[i].age : maxAge;
+		}
+		if (maxAge >= 6) {
+			hoard = oddTables.treasureTypeHDouble();
+		} else if (maxAge <= 3) {
+			hoard = oddTables.treasureTypeHHalf();
+		} else {
+			hoard = oddTables.treasureTypeH();
+		}
+
+		// ---- print ----
+		result = "DRAGON ENCOUNTER\n\n"; // keep header + add a full blank line
+
+		var capColor = encColor.charAt(0).toUpperCase() + encColor.slice(1);
+		for (i = 0; i < dragons.length; i++) {
+			if (i > 0) result += "\n";
+			var nameOpts = { addAdjective: true };
+			if (encColor === 'gold' && sharedNameOpts.family) nameOpts.family = sharedNameOpts.family;
+			if (chaotic[encColor] && sharedNameOpts.suffix)   nameOpts.suffix = sharedNameOpts.suffix;
+
+			var nameObj = oddTables.dragonName(encColor, nameOpts);
+			result += capColor + " Dragon: " + nameObj.name + "\n";
+			result += dragons[i].description + " " + dragons[i].statLine + "\t" + dragons[i].extras;
+		}
+		result += "\n" + hoard;
+		return result;
+		};
 
 
 //http://odd74.proboards.com/thread/7606/analysis-od-treasure-types
