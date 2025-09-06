@@ -1043,32 +1043,32 @@ dice.musicalinstrumentTable = function () { return dice.pick(["Pan pipes",
 	"Quijada",
 	"Tabor & Three-hole Pipe",]); };
 
-/* Insantity table: improve upon later */
-dice.insanityTable = function () { return dice.pick(["Amnesia",
-"Catatonia",
-"Repetition (immediate)",
-"Doubling (again that day)",
-"Ritualizing",
-"Counting",
-"Hallucinations of (random monster)",
-"Hysteria",
-"Melancholia",
-"Phantom limb",
-"Arachnophobia",
-"Agoraphobia",
-"Claustrophobia",
-"Staurophobia",
-"Acrophobia",
-"Hemophobia",
-"Nyctophobia",
-"Nosophobia",
-"Ophidiophobia",
-"Delusions of grandeur",
-"Delusions of persecution",
-"Delusions of significance (connecting events)",
-"Delusions of reading other minds",
-"Delusions of mind being read",
-"Delusions of thoughts being injected",]); };
+/* Insantity table: old, updated as its own js file */
+//dice.insanityTable = function () { return dice.pick(["Amnesia",
+//"Catatonia",
+//"Repetition (immediate)",
+//"Doubling (again that day)",
+//"Ritualizing",
+//"Counting",
+//"Hallucinations of (random monster)",
+//"Hysteria",
+//"Melancholia",
+//"Phantom limb",
+//"Arachnophobia",
+//"Agoraphobia",
+//"Claustrophobia",
+//"Staurophobia",
+//"Acrophobia",
+//"Hemophobia",
+//"Nyctophobia",
+//"Nosophobia",
+//"Ophidiophobia",
+//"Delusions of grandeur",
+//"Delusions of persecution",
+//"Delusions of significance (connecting events)",
+//"Delusions of reading other minds",
+//"Delusions of mind being read",
+//"Delusions of thoughts being injected",]); };
 
 /* specialized dice for assorted games */
 dice.dF = function (number) {
@@ -1096,3 +1096,25 @@ dice.inNomineD666 = function () {
 dice.dMathematicians = function () {
 	return dice.pick("0","1","i","e","φ","π");
 };
+
+// ----- Calvin Wargaming · Direction helpers (8-way) v1.0 -----
+;(function (global) {
+  var DIR8 = ["North","NE","East","SE","South","SW","West","NW"];
+
+  function direction8(n) {
+    // n: 1..8 -> "the North" / "the NE" / ...
+    var i = ((n|0) - 1) % 8;
+    if (i < 0) i += 8;
+    var name = DIR8[i];
+    return "the " + name;
+  }
+
+  function randomDirection8() {
+    var n = Math.floor(Math.random() * 8) + 1; // 1..8
+    return direction8(n);
+  }
+
+  // expose globals (non-breaking)
+  global.direction8 = direction8;              // 1..8 -> "the North"
+  global.randomDirection8 = randomDirection8;  // -> "the North"
+})(window);
