@@ -72,13 +72,20 @@
       function () { return "growing a new " + pick(PARTS); },
       function () { return "uncontrollable shaking of character’s " + pick(PARTS); },
       function () { return "a repulsively stinking disease that turns the character’s skin " + skinCondition(); },
-      function () {
-        if (diseaseFn) {
-          var sent = diseaseFn();
-          return "the Disease of " + diseaseNameFromSentence(sent);
-        }
-        return "a wasting disease"; // graceful fallback
-      },
+    function () {
+      var diseaseContract = safe("randomDiseaseContract");
+      if (diseaseContract) {
+       // e.g., "Character contracts Leprosy which, left untreated, ..."
+      var s = diseaseContract();
+       s = s.replace(/^Character contracts /, ""); // drop the leading tag
+       return s; // "Leprosy which, left untreated, ..."
+      }
+      if (diseaseFn) {
+       // fallback: single-sentence version if contract isn't present
+       return diseaseFn();
+      }
+      return "a wasting disease"; // graceful fallback
+    },
       function () {
         if (insanityFn) return insanityFn(); // already a concise single line
         return "a debilitating madness";
