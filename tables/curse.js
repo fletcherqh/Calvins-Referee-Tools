@@ -19,8 +19,8 @@
 
   // ---------- local tables ----------
   var PARTS = [
-    "nose","ears","eyes","hands","feet","fingers","head","mouth","teeth","nails",
-    "hair","arms","legs","trunk","chest","skin","toes","back","shoulders","knees"
+    "nose","ear","eye","hand","foot","finger","head","mouth","set of teeth","nail",
+    "head of hair","arm","leg","trunk","chest","skin","toe","backside","shoulder","knee"
   ];
 
   var SKIN_COLORS = [
