@@ -13,8 +13,10 @@ function rg_distancePhrase() {
   // Distance formula: roll d6 for # of d6, then roll that many d6; sum * 5 miles.
   const howMany = rg_roll(1, 6);
   const miles = rg_roll(howMany, 6) * 5;
-  const dir = (typeof randomDirection8 === "function") ? randomDirection8() : "some direction";
-  return `${miles} miles to the ${dir}`;
+  let dir = (typeof randomDirection8 === "function") ? randomDirection8() : "north";
+  // Avoid "to the the ..." if dir already includes an article
+  const needsThe = !/^the\s+/i.test(dir);
+  return `${miles} miles to ${needsThe ? 'the ' : ''}${dir}`;
 }
 
 /* ---------- base tables ---------- */
@@ -52,10 +54,13 @@ function rg_creature() {
     () => rg_choice(RG_LYCANS),
     () => rg_choice(RG_UNDEAD),
     () => rg_choice(RG_POWERS),
-    // Unique monster: defer to existing button tables if available
-    () => (typeof randomMonsterContract === "function"
-            ? randomMonsterContract()
-            : "a unique monster")
+    () => {
+      if (typeof randomMonsterContract === "function") {
+        const um = randomMonsterContract();
+        if (um && typeof um === "string" && um.trim().length > 0) return um;
+      }
+      return "a unique monster";
+    }
   ];
   return rg_choice(buckets)();
 }
@@ -93,7 +98,7 @@ function rg_mission() {
 
   // 1–9: predicate for Object (some require travel)
   const verb = rg_choice(["Rescue","Carry","Fetch","Locate","Destroy","Guard"]);
-  const obj = (verb === "Rescue") ? "" : ` ${rg_object()}`;
+  const obj = ` ${rg_object()}`;
   const needsTravel = ["Rescue","Carry","Fetch","Locate"].includes(verb);
   const travel = needsTravel ? ` ${rg_distancePhrase()}` : "";
   return `${verb}${obj}${travel}.`;
@@ -110,7 +115,7 @@ function randomGeasContract() {
   }
   lines.push(`4d6 CON check or victim loses 1 CON point per day of ignoring command.`);
   lines.push(`Death at CON 0.`);
-  return lines.join("\n");
+  return lines.filter(Boolean).join("\n");
 }
 
 function randomQuestContract() {
@@ -125,7 +130,7 @@ function randomQuestContract() {
     ? randomCurseContract()
     : "Character cursed with a grievous malediction.";
   lines.push(`Failure to comply: ${curseText}`);
-  return lines.join("\n");
+  return lines.filter(Boolean).join("\n");
 }
 
 /* ---------- GUI glue (optional) ---------- */
