@@ -86,10 +86,24 @@
       }
       return "a wasting disease"; // graceful fallback
     },
-      function () {
-        if (insanityFn) return insanityFn(); // already a concise single line
-        return "a debilitating madness";
-      },
+    function () {
+      var ic = safe("randomInsanityContract");
+      if (ic) {
+       var text = ic();                  // full 4-line contract
+       var lines = String(text).split("\n");
+       var l1 = lines[1] || "";          // "Save against Adversity of permanent NAME."
+       var l2 = lines[2] || "";          // "If save succeeds, then character suffers NAME for …"
+       var l3 = lines[3] || "";          // "Save to halve the length of time."
+       // Extract NAME from l1
+       var m = l1.match(/permanent (.+)\./);
+       var name = m ? m[1] : "a debilitating madness";
+       // Return multi-line block: first line = NAME, then l1–l3 unchanged
+       return [name, l1, l2, l3].join("\n");
+      }
+      // Fallback: one-liner if contract function isn’t available
+      if (insanityFn) return insanityFn();
+      return "a debilitating madness";
+    },
       function () {
         if (exileFn) {
           // ex: "Exiled to the Abyss." -> make it a noun phrase
@@ -120,8 +134,17 @@
   }
 
   function randomCurseContract() {
-  return "Character cursed with " + curseLine() + ".";
+   var text = curseLine();
+   if (text.indexOf("\n") !== -1) {
+    // Multi-line case (e.g., Insanity)
+    var parts = text.split("\n");
+    var first = parts.shift(); // name only, no trailing period
+    return ["Character cursed with " + first + ".", parts.join("\n")].join("\n");
+   }
+   // Single-line case (all other curse options)
+   return "Character cursed with " + text + ".";
   }
+
 
   // ---------- expose globals ----------
   global.randomCurse = randomCurse;
