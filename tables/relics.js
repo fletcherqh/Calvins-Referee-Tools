@@ -69,15 +69,13 @@
     { law: "a Femur", chaos: "a Femur" }                            // 12 (spelling corrected)
   ];
 
-  // Zeal 9+ "voice" table
-  var ZEAL_POWER_LINES = [
-    "Exhorts the faithful",
-    "Converts the infidel",
-    "Blesses the faithful",
-    "Curses the infidel",
-    "Reveals the truth (as spell of true seeing) to its wielder",
-    "Teaches the noble lie to the infidel"
+  // Zeal 9+ "voice" effects (alignment-split)
+  var ZEAL_SPOKEN_EFFECTS = [
+   { law: "exhorts the faithful",                            chaos: "converts the infidel" },
+   { law: "blesses the faithful",                            chaos: "curses the infidel" },
+   { law: "reveals the truth (as spell of true seeing) to its wielder", chaos: "decieves the infidel with the noble lie" },
   ];
+
 
   // Sagacious powers by threshold number (2..15+). Alignment picks side where split.
   function sagaciousPowerFor(n, isLaw) {
@@ -255,8 +253,10 @@
     // Voice line (Zeal ≥ 9)
     var voiceLine = null;
     if (zeal !== null && zeal >= 9) {
-      var who = isLaw ? ("Saint " + clericName) : (clericName + " the Damned");
-      voiceLine = "With the voice of " + who + " the relic " + pick(ZEAL_POWER_LINES) + ".";
+     var who = isLaw ? ("Saint " + clericName) : (clericName + " the Damned");
+     var spoken = pick(ZEAL_SPOKEN_EFFECTS);
+     var effect = isLaw ? spoken.law : spoken.chaos;
+     voiceLine = "With the voice of " + who + " the relic " + effect + ".";
     }
 
     // Quest lines (always LAST)
