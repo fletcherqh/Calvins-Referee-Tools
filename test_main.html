@@ -626,6 +626,16 @@
     <script src="tables/relics.js"></script>
     <script src="tables/books.js"></script>
     <script src="./odd-tables.js"></script>
+    <script src="js/treasure-adapter.js"></script>
+    <script>console.log('adapter at tag:', typeof window.treasureAdapter);</script>
+    <script>
+    // Step 2: activate the adapter globally without editing odd-tables.js
+    window.addEventListener('load', function () {
+    if (window.treasureAdapter?.install) {
+     treasureAdapter.install();
+    }
+    });
+    </script>
     <script src="./odd-mobs.js"></script>
     <script>
     $(document).ready(function(){
