@@ -1,127 +1,96 @@
-/* ===========================================================
- * Treasure Adapter — Step 1: Map-vs-Magic Hook (20%)
- * Scope:
- *  - 1-in-5 swap of a Magic Item → “Treasure Map …”
- *  - Maps print before Magic; maps NEVER counted in totals
- *  - One-time force toggle for acceptance testing
- * Works with BOTH styles of treasure builders:
- *  (A) return an object { magicItems, treasureMaps, totals, ... }
- *  (B) return a STRING already formatted for output
- * =========================================================== */
+/* =========================================================
+ * Treasure Adapter — Step 1 (clean pass)
+ * Map-vs-Magic hook with 20% swap, string + object support.
+ * No edits to odd-tables.js required.
+ * ======================================================= */
 (function (root) {
   const g = (typeof window !== 'undefined') ? window : globalThis;
+
+  // ---- config & flags (tweakable from console) ----
+  const adapter = g.treasureAdapter = g.treasureAdapter || {};
+  adapter.config = adapter.config || { mapChance: 0.20 }; // 20%
+  adapter.flags  = Object.assign({
+    useMapVsMagicHook: true,
+    forceMapOnce: false,           // next eligible swap = 100%, then auto-reset
+    mapSwapChancePercent: 20       // fallback when no dice.percentChance()
+  }, adapter.flags || {});
 
   // ---- tiny debug switch (leave false) ----
   const DEBUG = false;
   const dbg = (...a) => { if (DEBUG && g.console) console.log('[TreasureAdapter]', ...a); };
 
-  // ---- fallback dice.percentChance(n) if none exists ----
+  // ---- fallback d100 if project dice helper not present ----
   const fallbackDice = {
-    percentChance: function (n) {
+    percentChance(n) {
       const r = Math.floor(Math.random() * 100) + 1; // 1..100
       return r <= n;
     }
   };
 
-  // ---- singleton adapter ----
-  const adapter = g.treasureAdapter = g.treasureAdapter || {};
-  adapter.config = { mapChance: 0.20 };
+  // ---- helpers ----
+  function sanitize(s) { return String(s).replace(/\s+/g, ' ').trim(); }
 
-  adapter.flags = Object.assign({
-    useMapVsMagicHook: true,
-    forceMapOnce: false,            // next eligible swap = 100%, then auto-resets
-    mapSwapChancePercent: 20        // production rate (1-in-5)
-  }, adapter.flags || {});
+  function makeMapPlaceholderFrom(magicItem) {
+    try {
+      const note = sanitize(magicItem);
+      if (note) return `Treasure Map (found instead of: ${note})`;
+    } catch (_) {}
+    return `Treasure Map`;
+  }
 
-  // ========== OBJECT PATH (builders that return a hoard object) ==========
-  adapter.applyMapVsMagic = function applyMapVsMagic(hoard) {
-    if (!adapter.flags.useMapVsMagicHook || !hoard) return hoard;
-
-    const d = (g.dice && typeof g.dice.percentChance === 'function') ? g.dice : fallbackDice;
-
-    hoard.magicItems   = hoard.magicItems   || [];
-    hoard.treasureMaps = hoard.treasureMaps || [];
-
-    const keptMagic = [];
-    for (let i = 0; i < hoard.magicItems.length; i++) {
-      const item = hoard.magicItems[i];
-      const force  = adapter.flags.forceMapOnce === true;
-      const chance = d.percentChance(adapter.flags.mapSwapChancePercent);
-      const should = force || chance;
-
-      if (should) {
-        if (force) adapter.flags.forceMapOnce = false; // consume one-shot
-        hoard.treasureMaps.push(makeMapPlaceholderFrom(item));
-      } else {
-        keptMagic.push(item);
-      }
-    }
-
-    hoard.magicItems = keptMagic;
-
-    // Maps have no gp value → totals unchanged.
-    // Print hint: maps before magic.
-    hoard._printOrder = hoard._printOrder || [
-      'treasureMaps', 'magicItems', 'books', 'valuables', 'jewelry', 'gems', 'relics', 'coins'
-    ];
-
-    dbg('applyMapVsMagic (object) ran');
-    return hoard;
-  };
-
-  // ========== STRING PATH (builders that return already-formatted text) ==========
+  // (B) STRING PATH — swap inside a formatted string
   function swapMapIntoTextIfNeeded(text) {
     if (!adapter.flags.useMapVsMagicHook) return text;
+    if (typeof text !== 'string') return text;
 
     const d = (g.dice && typeof g.dice.percentChance === 'function') ? g.dice : fallbackDice;
-    const force  = adapter.flags.forceMapOnce === true;
-    const chance = d.percentChance(adapter.flags.mapSwapChancePercent);
-    if (!(force || chance)) return text;
-    if (force) adapter.flags.forceMapOnce = false;
+    const force = adapter.flags.forceMapOnce === true;
+    const should = force || d.percentChance(adapter.config?.mapChance ? Math.round(adapter.config.mapChance * 100) : adapter.flags.mapSwapChancePercent);
 
-    const lines = String(text).split(/\r?\n/);
+    if (!should) return text;
 
-    // Heuristic: first line that *looks like* a magic item entry
-    // pick the first line that is NOT coins/gems/jewelry/map/header
-// pick the first line that is NOT coins/gems/jewelry/map/header
-const magicLineIdx = lines.findIndex((l) => {
-  const s = String(l).trim();
-  if (!s) return false;
-  if (/^Treasure Type/i.test(s)) return false;                      // header
-  if (/^Map to/i.test(s)) return false;                             // legacy maps
-  if (/^[0-9,]+\s*(cp|sp|gp)\b/i.test(s)) return false;             // coins
-  if (/^\d+\s+gems?\s+worth\b/i.test(s)) return false;              // gems plural
-  if (/^a\s+gem\s+worth\b/i.test(s)) return false;                  // gem singular
-  if (/^\d+\s+pieces?\s+of\s+jewelry\s+worth\b/i.test(s)) return false; // jewelry plural
-  if (/^a\s+piece\s+of\s+jewelry\s+worth\b/i.test(s)) return false;     // jewelry singular
-  return true; // likely a magic item line (armor, weapon, scroll, potion, ring, etc.)
-});
+    // Try to find the first "magic line" heuristically.
+    // We look for common magic keywords; if none, we leave text unchanged.
+    const lines = text.split(/\r?\n/);
+    const magicIdx = lines.findIndex(l =>
+      /\b(potion|scroll|ring|wand|staff|rod|sword|armor|shield|arrows?|spell|wand|cloak|boots|bracers|amulet|necklace|misc(ellany)?|magic)\b/i.test(l)
+    );
+    if (magicIdx === -1) return text;
 
-    if (magicLineIdx === -1) return text; // nothing to swap in this roll
+    const replaced = makeMapPlaceholderFrom(lines[magicIdx]);
+    lines[magicIdx] = replaced;
 
-    const stolen = lines.splice(magicLineIdx, 1)[0].trim();
-    const cleaned = stolen.replace(/^a\s+|^an\s+/i, '');
-    const mapLine = `Treasure Map (found instead of: ${cleaned})`;
-
-    // Insert the map where that first magic line was (keeps order; maps “before” remaining magic)
-    lines.splice(magicLineIdx, 0, mapLine);
-
-    dbg('applyMapVsMagic (string) ran');
+    if (force) adapter.flags.forceMapOnce = false; // consume the one-shot
     return lines.join('\n');
   }
 
-  // ========== UTILITIES ==========
-  function makeMapPlaceholderFrom(magicItem) {
-    let note = '';
-    try {
-      const text = (typeof magicItem === 'string') ? magicItem
-               : (magicItem && (magicItem.label || magicItem.name || magicItem.title || magicItem.type)) || '';
-      if (text) note = ` (found instead of: ${sanitize(text)})`;
-    } catch (_) {}
-    return `Treasure Map${note}`;
+  // (A) OBJECT PATH — move first magic item into treasureMaps[]
+  function applyMapVsMagic(hoard) {
+    if (!adapter.flags.useMapVsMagicHook || !hoard || typeof hoard !== 'object') return hoard;
+
+    const d = (g.dice && typeof g.dice.percentChance === 'function') ? g.dice : fallbackDice;
+    const force = adapter.flags.forceMapOnce === true;
+    const chancePercent = adapter.config?.mapChance ? Math.round(adapter.config.mapChance * 100) : adapter.flags.mapSwapChancePercent;
+    const should = force || d.percentChance(chancePercent);
+
+    if (!should) return hoard;
+
+    const magic = Array.isArray(hoard.magicItems) ? hoard.magicItems : [];
+    if (magic.length === 0) return hoard;
+
+    const first = magic.shift(); // remove first magic item
+    hoard.magicItems = magic;
+
+    if (!Array.isArray(hoard.treasureMaps)) hoard.treasureMaps = [];
+    hoard.treasureMaps.push(makeMapPlaceholderFrom(first));
+
+    if (force) adapter.flags.forceMapOnce = false; // consume the one-shot
+    return hoard;
   }
 
-  function sanitize(s) { return String(s).replace(/\s+/g, ' ').trim(); }
+  // Expose string swapper for a possible future output() hook (not needed now)
+  adapter.swapText = swapMapIntoTextIfNeeded;
+  adapter.applyMapVsMagic = applyMapVsMagic;
 
   // ========== INSTALL WRAPPER ==========
   // Wrap treasure builders under oddTables.* so the hook runs for GUI clicks.
@@ -131,6 +100,7 @@ const magicLineIdx = lines.findIndex((l) => {
     for (const k in ot) {
       if (!Object.prototype.hasOwnProperty.call(ot, k)) continue;
       if (typeof ot[k] !== 'function') continue;
+      // Only wrap functions that *start* with treasure/hoard to avoid helpers.
       if (/^(treasure|hoard)/i.test(k)) candidates.push(k);
     }
 
@@ -144,13 +114,14 @@ const magicLineIdx = lines.findIndex((l) => {
 
         // Path A: object hoard
         if (result && typeof result === 'object') {
-          try { adapter.applyMapVsMagic(result); } catch (_) {}
-          return result;
+          try { return applyMapVsMagic(result); } catch (_) { return result; }
         }
+
         // Path B: formatted string
         if (typeof result === 'string') {
           try { return swapMapIntoTextIfNeeded(result); } catch (_) { return result; }
         }
+
         return result;
       };
       wrapped.__treasureAdapterWrapped = true;
