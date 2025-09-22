@@ -25,6 +25,7 @@
 
   // ---- singleton adapter ----
   const adapter = g.treasureAdapter = g.treasureAdapter || {};
+  adapter.config = { mapChance: 0.20 };
 
   adapter.flags = Object.assign({
     useMapVsMagicHook: true,
@@ -130,7 +131,7 @@ const magicLineIdx = lines.findIndex((l) => {
     for (const k in ot) {
       if (!Object.prototype.hasOwnProperty.call(ot, k)) continue;
       if (typeof ot[k] !== 'function') continue;
-      if (/treasure|hoard|type[a-z]/i.test(k)) candidates.push(k);
+      if (/^(treasure|hoard)/i.test(k)) candidates.push(k);
     }
 
     candidates.forEach((fnName) => {
