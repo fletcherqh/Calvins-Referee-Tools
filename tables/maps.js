@@ -79,12 +79,12 @@
 
   // ---------- Source ----------
   const sourceTemplates = [
-    "[MU name]’s Geography of [extraction]",
+    "[MU name]’s Geography of the [extraction]",
     "The Travels of [MU name] throughout the [extraction]",
-    "[MU name]’s Cartography of [extraction]",
-    "[MU name]’s Atlas of [extraction (plural)]",
+    "[MU name]’s Cartography of the [extraction]",
+    "[MU name]’s Atlas of the [extraction (plural)]",
     "The Journals of [MU name]’s Travels in the [extraction]",
-    "An epistle of [CL name]’s to [extraction]",
+    "An epistle of [CL name]’s to the [extraction]",
     "Parchment written with blood for ink",
     "Sketch of shaking hand on parchment",
     "Torn out page of a book with curious notes in the margin",
