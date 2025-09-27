@@ -1166,7 +1166,7 @@ oddTables.magicOrMap = function () {
 	if (roll <= 75) {
 		return oddTables.magicItem();
 	}  else {
-		return oddTables.treasureMap();
+		return maps.treasureMap();
 	}
 };
 
