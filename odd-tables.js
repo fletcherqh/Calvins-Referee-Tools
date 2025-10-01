@@ -1230,23 +1230,11 @@ oddTables.gemValue = function () {
 // };
 
 oddTables.gems = function (number) {
-	var items, val, groups, result;
-	number = (typeof number === "number") ? number : 1;
-	number = (number < 1) ? 1 : number;
-	items = [];
-	groups = [];
-	result = "";
-	while (number > 0) {
-		// result += "1 gem worth " + oddTables.gemValue() + "gp\n\t";
-		// items.push(oddTables.gemValue());
-		val = oddTables.gemValue();
-		if (typeof groups[val] === "number") {
-			groups[val] = groups[val] + 1;
-		} else {
-			groups[val] = 1;
-		}
-		number--;
-	}
+  number = (typeof number === "number") ? number : 1;
+  if (number < 1) number = 1;
+  return houseGems.linesForCount(number);
+};
+
 	// items.sort(function(a,b){return b-a;});
 	// while (number < items.length) {
 	// 	// result += "a gem worth " + item[number] + "gp\n\t";
@@ -1257,62 +1245,30 @@ oddTables.gems = function (number) {
 	// 	}
 	// 	number++;
 	// }
-	groups.forEach(function(item, index){ 
-		result += (item === 1 ? "a gem" : item + " gems") +
-			" worth " + index + "gp" +
-			(item === 1 ? "" : " each") +
-			"\n\t";
-		});
-	return result;
-};
+
 
 oddTables.jewelry = function (number) {
-	var roll, items, val, groups, result;
-	number = (typeof number === "number") ? number : 1;
-	number = (number < 1) ? 1 : number;
-	items = [];
-	groups = [];
-	result = "";
-	while (number > 0) {
-		roll = dice.d100(1);
-		if (roll <= 20) {
-			// result += "a piece of jewelry worth " + (dice.d6(3) * 100) + "gp\n\t";
-			// items.push(dice.d6(3) * 100);
-			val = dice.d6(3) * 100;
-		} else if (roll <= 80) {
-			// result += "a piece of jewelry worth " + (dice.d6(1) * 1000) + "gp\n\t";
-			// items.push(dice.d6(1) * 1000);
-			val = dice.d6(1) * 1000;
-		} else {
-			// result += "a piece of jewelry worth " + (dice.d10(1) * 1000) + "gp\n\t";
-			// items.push(dice.d10(1) * 1000);
-			val = dice.d10(1) * 1000;
-		}
-		if (typeof groups[val] === "number") {
-			groups[val] = groups[val] + 1;
-		} else {
-			groups[val] = 1;
-		}
-		number--;
-	}
-	// items.sort(function(a,b){return b-a;});
-	// while (number < items.length) {
-	// 	// result += "a piece of jewelry worth " + item[number] + "gp\n\t";
-	// 	if (typeof items[number] != undefined) {
-	// 		groups[items[number]] = 1;
-	// 	} else {
-	// 		groups[items[number]] = groups[items[number]] + 1;
-	// 	}
-	// 	number++;
-	// }
-	groups.forEach(function(item, index){ 
-		result += (item === 1 ? "a piece" : item + " pieces") +
-			" of jewelry worth " + index + "gp" +
-			(item === 1 ? "" : " each") +
-			"\n\t";
-		});
-	return result;
+  number = (typeof number === "number") ? number : 1;
+  if (number < 1) number = 1;
+
+  var values = [];
+  while (number > 0) {
+    var roll = dice.d100(1);
+    var val;
+    if (roll <= 20) {
+      val = dice.d6(3) * 100;      // 3d6 × 100 gp
+    } else if (roll <= 80) {
+      val = dice.d6(1) * 1000;     // 1d6 × 1,000 gp
+    } else {
+      val = dice.d10(1) * 1000;    // 1d10 × 1,000 gp
+    }
+    values.push(val);
+    number--;
+  }
+
+  return houseJewelry.linesForValues(values);
 };
+
 
 oddTables.treasureMap = function () {
 	var roll1, roll2, i, result;
