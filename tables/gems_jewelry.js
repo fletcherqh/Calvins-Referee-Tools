@@ -387,16 +387,27 @@
       return gemSingletonLine(generateGem());
     },
     linesForCount: function (count) {
-      count = (typeof count === "number" && count > 0) ? Math.floor(count) : 1;
-      var agg = gemGroupsFrom(count);
-      var lines = agg.groups.map(function (g) {
-        // "500gp. value (50p.) from sum of 5 Medium Rubies, 100gp. (10p.) each"
-        return gp(g.totalGp) + " value (" + pUnits(g.totalP) + ") from sum of " +
-               g.count + " " + g.size + " " + pluralGemType(g.type) + ", " +
-               gp(g.value) + " (" + pUnits(g.enc) + ") each";
-      });
-      lines.push(gp(agg.totalGp) + " Total gem value (" + pUnits(agg.totalP) + " Total gem encumbrance)");
-      return lines.join("\n") + "\n";
+  count = (typeof count === "number" && count > 0) ? Math.floor(count) : 1;
+  var agg = gemGroupsFrom(count);
+    var lines = agg.groups.map(function (g) {
+        var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
+        if (g.count === 1) {
+         // Singleton wording: one item, singular, no "value", no "each"
+         return gp(g.value) + " (" + pUnits(g.enc) + ") " + g.size + " " + g.type;
+       } else {
+         // Group wording: keep totals line
+         return lead + " from sum of " + g.count + " " + g.size + " " +
+          pluralGemType(g.type) + ", " +
+          gp(g.value) + " (" + pUnits(g.enc) + ") each";
+       }
+    });
+
+    if (agg.groups.length > 1) {
+        lines.push(gp(agg.totalGp) + " Total gem value (" +
+                   pUnits(agg.totalP) + " Total gem encumbrance)");
+    }
+    return lines.join("\n") + "\n";
+
     }
   };
 
@@ -421,15 +432,19 @@
 
     if (g.count === 1) {
         // Singleton wording, fixed encumbrance at 100p.
-        return lead + " " + itemLabel + ", " + gp(g.eachGp) + " (" + pUnits(100) + ")";
+        return gp(g.eachGp) + " (" + pUnits(100) + ") " + itemLabel;
     } else {
         // Group wording, fixed per-item encumbrance at 100p.
         return lead + " from sum of " + g.count + " " + itemLabel + ", " +
             gp(g.eachGp) + " (" + pUnits(100) + ") each";
     }
 });
-    lines.push(gp(agg.totalGp) + " Total jewelry value (" + pUnits(agg.totalP) + " Total jewelry encumbrance)");
-    return lines.join("\n") + "\n";
+    if (agg.groups.length > 1) {
+  lines.push(gp(agg.totalGp) + " Total jewelry value (" +
+             pUnits(agg.totalP) + " Total jewelry encumbrance)");
+}
+return lines.join("\n") + "\n";
+
 }
 };
 
