@@ -392,9 +392,15 @@
     var lines = agg.groups.map(function (g) {
         var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
         if (g.count === 1) {
-         // Singleton wording: one item, singular, no "value", no "each"
-         return gp(g.value) + " (" + pUnits(g.enc) + ") " + g.size + " " + g.type;
-       } else {
+        // Singleton wording: one item, singular, no "value", no "each"
+        var line = gp(g.value) + " (" + pUnits(g.enc) + ") " + g.size + " " + g.type;
+        if (g.value >= 1000) {
+         var effect = pickEnchantment(false, null);
+         line += ", enchanted to " + effect;
+       }
+       return line;
+    } else {
+
          // Group wording: keep totals line
          return lead + " from sum of " + g.count + " " + g.size + " " +
           pluralGemType(g.type) + ", " +
@@ -431,9 +437,15 @@
     var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
 
     if (g.count === 1) {
-        // Singleton wording, fixed encumbrance at 100p.
-        return gp(g.eachGp) + " (" + pUnits(100) + ") " + itemLabel;
-    } else {
+     // Singleton wording, fixed encumbrance at 100p. (no "value")
+     var line = gp(g.eachGp) + " (" + pUnits(100) + ") " + itemLabel;
+     if (g.eachGp >= 7000) {
+      var jEffect = pickEnchantment(true, null);
+      line += ", enchanted to " + jEffect;
+     }
+     return line;
+   } else {
+
         // Group wording, fixed per-item encumbrance at 100p.
         return lead + " from sum of " + g.count + " " + itemLabel + ", " +
             gp(g.eachGp) + " (" + pUnits(100) + ") each";
@@ -452,5 +464,9 @@ return lines.join("\n") + "\n";
 // expose
 global.houseGems = houseGems;
 global.houseJewelry = houseJewelry;
+global.generateGem = generateGem;
+global.generateJewelryItem = generateJewelryItem;
+global.gemSingletonLine = gemSingletonLine;
+global.jewelrySingletonLine = jewelrySingletonLine;
 })(typeof window !== "undefined" ? window : (typeof globalThis !== "undefined" ? globalThis : this));
 
