@@ -136,3 +136,7 @@ function randomQuestContract() {
 /* ---------- GUI glue (optional) ---------- */
 function geasButton()  { printToLog(randomGeasContract()); }
 function questButton() { printToLog(randomQuestContract()); }
+
+// expose for gems/jewelry subtables
+window.randomGeasContract  = randomGeasContract;
+window.randomQuestContract = randomQuestContract;

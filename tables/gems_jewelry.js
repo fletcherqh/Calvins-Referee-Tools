@@ -234,16 +234,26 @@
   }
 
   function gemSingletonLine(gem) {
-    // "100gp. (10p.) Medium Diamond"
-    var line = gp(gem.value) + " (" + pUnits(gem.enc) + ") " + gem.size + " " + gem.type;
-    // Gems >= 1000gp → enchanted
-    if (gem.value >= 1000) {
-      var effect = pickEnchantment(false, null);
-      line += "; enchanted to " + effect;
-      line += maybeAppendSubtableLines(effect);
-    }
-    return line;
-  }
+   // "100gp. (10p.) Medium Diamond"
+   var line = gp(gem.value) + " (" + pUnits(gem.enc) + ") " + gem.size + " " + gem.type;
+
+   // Gems ≥ 1000gp → enchanted (probability/threshold unchanged)
+   if (gem.value >= 1000) {
+    var effect = pickEnchantment(false, null);
+
+    // Strip trailing placeholder: " of [index ... table]" (Quest/Geas/Curse)
+    var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
+
+    // Main line prints the clean effect
+    line += "; enchanted to " + clean;
+
+    // Newline: keep existing subtable expansion behavior
+    line += maybeAppendSubtableLines(effect);
+   }
+
+   return line;
+ }
+
 
   function gemGroupsFrom(count) {
     var groups = {}; // key -> {count, value, enc, size, type, totalGp, totalP, label}
@@ -389,32 +399,38 @@
     linesForCount: function (count) {
   count = (typeof count === "number" && count > 0) ? Math.floor(count) : 1;
   var agg = gemGroupsFrom(count);
-    var lines = agg.groups.map(function (g) {
-        var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
-        if (g.count === 1) {
-        // Singleton wording: one item, singular, no "value", no "each"
-        var line = gp(g.value) + " (" + pUnits(g.enc) + ") " + g.size + " " + g.type;
-        if (g.value >= 1000) {
-         var effect = pickEnchantment(false, null);
-         line += ", enchanted to " + effect;
-       }
-       return line;
+
+  var lines = agg.groups.map(function (g) {
+    var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
+    if (g.count === 1) {
+      // Singleton wording: one item, singular, no "value", no "each"
+      var line = gp(g.value) + " (" + pUnits(g.enc) + ") " + g.size + " " + g.type;
+
+      if (g.value >= 1000) {
+        var effect = pickEnchantment(false, null);
+        var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
+        line += ", enchanted to " + clean;
+        line += maybeAppendSubtableLines(effect);
+      }
+
+      return line;
     } else {
-
-         // Group wording: keep totals line
-         return lead + " from sum of " + g.count + " " + g.size + " " +
-          pluralGemType(g.type) + ", " +
-          gp(g.value) + " (" + pUnits(g.enc) + ") each";
-       }
-    });
-
-    if (agg.groups.length > 1) {
-        lines.push(gp(agg.totalGp) + " Total gem value (" +
-                   pUnits(agg.totalP) + " Total gem encumbrance)");
+      // Group wording: keep totals line unchanged
+      return lead + " from sum of " + g.count + " " + g.size + " " +
+             pluralGemType(g.type) + ", " + gp(g.value) +
+             " (" + pUnits(g.enc) + ") each";
     }
-    return lines.join("\n") + "\n";
+  });
 
-    }
+  if (agg.groups.length > 1) {
+    lines.push(
+      gp(agg.totalGp) + " Total gem value (" + pUnits(agg.totalP) + " Total gem encumbrance)"
+    );
+  }
+
+  return lines.join("\n") + "\n";
+}
+
   };
 
   var houseJewelry = {
