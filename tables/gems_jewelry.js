@@ -471,13 +471,32 @@
 
     if (g.count === 1) {
      // Singleton wording, fixed encumbrance at 100p. (no "value")
-     var line = gp(g.eachGp) + " (" + pUnits(100) + ") " + itemLabel;
+     var line = gp(g.eachGp) + " (100p.) " + itemLabel;
      if (g.eachGp >= 7000) {
-      var jeffect = pickEnchantment(true, g.metal);
-      line += ", enchanted to " + jEffect;
-     }
-     return line;
-   } else {
+      var e = pickEnchantment(true, g.metal);
+      var rawE = e; // keep raw for subtable detection/append
+
+      // If the enchantment lists abilities in brackets, pick exactly one (20% each)
+      var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
+      if (abilityListRe.test(e)) {
+       var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
+       e = e.replace(abilityListRe, function () {
+        return _opts[Math.floor(Math.random() * _opts.length)];
+       });
+      }
+
+      // Strip generic bracket placeholders (e.g., [index quest table])
+      e = e.replace(/\[[^\]]+\]/g, "").replace(/\s{2,}/g, " ").trim();
+      // Clean trailing "of" left by removing placeholders like "... of [index quest table]"
+      e = e.replace(/\s+of\s*$/i, "");
+
+      line += ", enchanted to " + e;
+      if (typeof maybeAppendSubtableLines === "function") {
+       line += maybeAppendSubtableLines(rawE) || "";
+      }
+    }
+    return line;
+  } else {
 
         // Group wording, fixed per-item encumbrance at 100p.
         return lead + " from sum of " + g.count + " " + itemLabel + ", " +
