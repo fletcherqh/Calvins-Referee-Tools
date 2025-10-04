@@ -370,7 +370,8 @@
     // Clean trailing "of" left by removing placeholders like "... of [index quest table]"
     e = e.replace(/\s+of\s*$/i, "");
 
-    line += "; enchanted to " + e;
+    if (/^stone set in worked/i.test(e)) { line += "; enchanted with " + e; }
+    else { line += "; enchanted to " + e; }
     line += j.extra || ""; // may add multi-line contract text
    }
    return line;
@@ -508,7 +509,9 @@
       // Clean trailing "of" left by removing placeholders like "... of [index quest table]"
       e = e.replace(/\s+of\s*$/i, "");
 
-      line += ", enchanted to " + e;
+      if (/^stone set in worked/i.test(e)) { line += ", enchanted with " + e; }
+      else { line += ", enchanted to " + e; }
+
       if (typeof maybeAppendSubtableLines === "function") {
        line += maybeAppendSubtableLines(rawE) || "";
       }
