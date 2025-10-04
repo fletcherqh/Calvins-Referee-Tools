@@ -241,6 +241,15 @@
    if (gem.value >= 1000) {
     var effect = pickEnchantment(false, null);
 
+   // If the enchantment lists abilities in brackets, pick exactly one (20% each)
+   var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
+   if (abilityListRe.test(effect)) {
+    var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
+    effect = effect.replace(abilityListRe, function () {
+     return _opts[Math.floor(Math.random() * _opts.length)];
+    });
+   }
+
     // Strip trailing placeholder: " of [index ... table]" (Quest/Geas/Curse)
     var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
 
@@ -253,7 +262,6 @@
 
    return line;
  }
-
 
   function gemGroupsFrom(count) {
     var groups = {}; // key -> {count, value, enc, size, type, totalGp, totalP, label}
@@ -425,6 +433,16 @@
 
       if (g.value >= 1000) {
         var effect = pickEnchantment(false, null);
+
+      // If the enchantment lists abilities in brackets, pick exactly one (20% each)
+      var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
+      if (abilityListRe.test(effect)) {
+       var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
+       effect = effect.replace(abilityListRe, function () {
+        return _opts[Math.floor(Math.random() * _opts.length)];
+       });
+      }
+
         var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
         line += ", enchanted to " + clean;
         line += maybeAppendSubtableLines(effect);
@@ -481,7 +499,7 @@
       if (abilityListRe.test(e)) {
        var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
        e = e.replace(abilityListRe, function () {
-        return _opts[Math.floor(Math.random() * _opts.length)];
+      
        });
       }
 
