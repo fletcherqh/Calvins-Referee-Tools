@@ -344,13 +344,30 @@
   }
 
   function jewelrySingletonLine(j) {
-    var line = gp(j.gp) + " (100p.) " + j.metal + " & " + j.stone + " " + j.item;
-    if (j.enchant) {
-      line += "; enchanted to " + j.enchant;
-      line += j.extra; // may add multi-line text
+   var line = gp(j.gp) + " (100p.) " + j.metal + " & " + j.stone + " " + j.item;
+   if (j.enchant) {
+    var e = j.enchant;
+
+    // If the enchantment lists abilities in brackets, pick exactly one (20% each)
+    var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
+    if (abilityListRe.test(e)) {
+      var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
+      e = e.replace(abilityListRe, function () {
+        return _opts[Math.floor(Math.random() * _opts.length)];
+      });
     }
-    return line;
+
+    // Strip generic bracket placeholders (e.g., [index quest table])
+    e = e.replace(/\[[^\]]+\]/g, "").replace(/\s{2,}/g, " ").trim();
+    // Clean trailing "of" left by removing placeholders like "... of [index quest table]"
+    e = e.replace(/\s+of\s*$/i, "");
+
+    line += "; enchanted to " + e;
+    line += j.extra || ""; // may add multi-line contract text
+   }
+   return line;
   }
+
 
   function jewelryGroupsFrom(gpArray) {
     var groups = {}; // key -> {count, eachGp, totalGp, totalP, metal, stone, item}
@@ -456,7 +473,7 @@
      // Singleton wording, fixed encumbrance at 100p. (no "value")
      var line = gp(g.eachGp) + " (" + pUnits(100) + ") " + itemLabel;
      if (g.eachGp >= 7000) {
-      var jEffect = pickEnchantment(true, null);
+      var jeffect = pickEnchantment(true, g.metal);
       line += ", enchanted to " + jEffect;
      }
      return line;
