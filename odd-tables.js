@@ -1267,7 +1267,7 @@ oddTables.jewelry = function (number) {
       if (/\bgp\.\s*Book\b/.test(lines[i])) { gpIdx = i; break; }
     }
     var titleIdx = (gpIdx === 0 && lines.length > 1) ? 1 : (gpIdx > 0 ? 0 : -1);
-    if (gpIdx !== -1 && titleIdx !== -1) return lines[gpIdx] + " " + lines[titleIdx];
+    if (gpIdx !== -1 && titleIdx !== -1) return lines[titleIdx] + " " + lines[gpIdx];
     return lines.join(" ");
   }
 
@@ -1307,6 +1307,7 @@ oddTables.jewelry = function (number) {
 
   return out;
 };
+// TODO: normalize _bookOneLine() order (title vs gp) during output cleanup
 // === End Jewelry patch ===
 
 
