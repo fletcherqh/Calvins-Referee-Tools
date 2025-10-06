@@ -1247,27 +1247,68 @@ oddTables.gems = function (number) {
 	// }
 
 
+// === JEWELRY with 1-in-6 swap to Book/Valuable (house rule) ===
 oddTables.jewelry = function (number) {
   number = (typeof number === "number") ? number : 1;
   if (number < 1) number = 1;
 
-  var values = [];
+  var values = [];   // jewelry values that stay jewelry
+  var swaps  = [];   // single-line strings for swapped items
+
+  // Normalize bookFromValue(gp) to one line with value first.
+  function _bookOneLine(gp) {
+    var s = bookFromValue(gp);
+    if (typeof s !== "string") return (s + "");
+    var lines = s.split("\n").map(function(t){ return t.trim(); }).filter(Boolean);
+    if (lines.length === 1) return lines[0];
+    // Find the "1100gp. Book (100p.) ..." line and the title line, then reorder.
+    var gpIdx = -1;
+    for (var i = 0; i < lines.length; i++) {
+      if (/\bgp\.\s*Book\b/.test(lines[i])) { gpIdx = i; break; }
+    }
+    var titleIdx = (gpIdx === 0 && lines.length > 1) ? 1 : (gpIdx > 0 ? 0 : -1);
+    if (gpIdx !== -1 && titleIdx !== -1) return lines[gpIdx] + " " + lines[titleIdx];
+    return lines.join(" ");
+  }
+
   while (number > 0) {
     var roll = dice.d100(1);
     var val;
+
     if (roll <= 20) {
-      val = dice.d6(3) * 100;      // 3d6 × 100 gp
+      val = dice.d6(3) * 100;        // 300–1800 gp (low band)
     } else if (roll <= 80) {
-      val = dice.d6(1) * 1000;     // 1d6 × 1,000 gp
+      val = dice.d6(1) * 1000;       // 1000–6000 gp (mid band)
     } else {
-      val = dice.d10(1) * 1000;    // 1d10 × 1,000 gp
+      val = dice.d10(1) * 1000;      // 1000–10000 gp (high band)
     }
-    values.push(val);
+
+    // 1-in-6 substitution per item
+    if (dice.d6(1) === 1) {
+      // Low band -> Book; Mid/High -> Valuable
+      if (roll <= 20) {
+        swaps.push(_bookOneLine(val));          // e.g., "1100gp. Book (100p.) Title"
+      } else {
+        swaps.push(valuableFromValue(val));     // e.g., "2000gp. (50p.) <valuable>"
+      }
+    } else {
+      values.push(val); // keep as jewelry
+    }
+
     number--;
   }
 
-  return houseJewelry.linesForValues(values);
+  // Build output: jewelry lines (grouped) + each swap as its own line.
+  var out = houseJewelry.linesForValues(values);  // preserves existing formatting/totals
+  if (swaps.length) {
+    if (out && out.slice(-1) !== "\n") out += "\n";
+    out += swaps.join("\n");
+  }
+
+  return out;
 };
+// === End Jewelry patch ===
+
 
 
 oddTables.treasureMap = function () {
