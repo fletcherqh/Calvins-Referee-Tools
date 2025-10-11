@@ -41,7 +41,6 @@ var NeutralFemaleMagicuserTitles = [
     "Medium",
     "Seeress",
     "Conjuress",
-    
     "Theurgist",
     "Thaumaturge",
     "Magician",

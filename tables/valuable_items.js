@@ -29,7 +29,7 @@
   })();
 
   // ------------------------------------------------------------
-  // B. Hooks so we don’t guess external function names
+  // B. Hooks so we don’t guess external function names THESE ARE WRONG
   //    (Set these from outside later if desired)
   // ------------------------------------------------------------
   const hooks = global.valuablesHooks || {};
@@ -138,32 +138,116 @@
   const STATUE_MATERIALS = ['Alabaster','Onyx','Porphyry','Obsidian','Rare Wood','Wood','Stone','Marble','Granite','Bronze','Golden','Jade'];
 
   function depiction_StatuetteBust() {
-    const kind = dice.pick(['KING','QUEEN','SAGE','SAINT']);
-    if (kind === 'KING') {
-      const name = hooks.fmName ? hooks.fmName() : 'Unnamed';
-      const epithet = hooks.fmEpithet ? hooks.fmEpithet(randomAlignLNC()) : null;
-      const full = epithet ? `${name} the ${epithet}` : name;
-      return `King ${full}`;
+     const kind = dice.pick(['KING','QUEEN','SAGE','SAINT']);
+     if (kind === 'KING') {
+     // FM names are not alignment-gated; pick from Fighting Man names
+     const name = dice.pick((global.fightingManNames) || ['Unnamed']);
+
+     // FM/AM epithets: pick alignment uniformly L/N/C, then pick from the matching pool
+     const alignForEpithet = dice.pick(['L','N','C']);
+     let epiPool =
+      (alignForEpithet === 'L') ? (global.lawfulFightingManAmazonEpithets || []) :
+      (alignForEpithet === 'N') ? (global.neutralFightingManAmazonEpithets || []) :
+                                (global.chaoticFightingManAmazonEpithets || []);
+
+     const epithet = (epiPool.length ? dice.pick(epiPool) : null);
+     const full = epithet ? `${name} the ${epithet}` : name;
+
+     return `King ${full}`;
     }
+
     if (kind === 'QUEEN') {
-      const name = hooks.amName ? hooks.amName() : 'Unnamed';
-      const epithet = hooks.amEpithet ? hooks.amEpithet(randomAlignLNC()) : null;
-      const full = epithet ? `${name} the ${epithet}` : name;
-      return `Queen ${full}`;
+     // AM names are global via var in names/fighters/fighter-names.js
+     const name = dice.pick((window.amazonNames) || ['Unnamed']);
+
+     // FM/AM epithets: choose L/N/C uniformly, then pick from the matching pool
+     const alignForEpithet = dice.pick(['L','N','C']);
+     const epiPool =
+      (alignForEpithet === 'L') ? (window.lawfulFightingManAmazonEpithets || []) :
+      (alignForEpithet === 'N') ? (window.neutralFightingManAmazonEpithets || []) :
+                                (window.chaoticFightingManAmazonEpithets || []);
+     const epithet = (epiPool.length ? dice.pick(epiPool) : null);
+
+     const full = epithet ? `${name} the ${epithet}` : name;
+     return `Queen ${full}`;
     }
+ 
     if (kind === 'SAGE') {
-      const name = hooks.muName ? hooks.muName() : 'Unnamed';
-      const epithet = hooks.muEpithet ? hooks.muEpithet(randomAlignLNC()) : null;
-      const full = epithet ? `${name} ${epithet} the Sage` : `${name} the Sage`;
-      return full;
-    }
+    // MU names + epithets (random gender)
+    const gender = dice.pick(['M','F']);
+
+    // Name pool (robust to globals that aren’t attached to window)
+    const namePool = (gender === 'M')
+     ? (
+        (Array.isArray(window.maleMagicUserNames) && window.maleMagicUserNames.length) ? window.maleMagicUserNames :
+        (typeof maleMagicUserNames !== 'undefined' && Array.isArray(maleMagicUserNames) && maleMagicUserNames.length) ? maleMagicUserNames :
+        ['Unnamed']
+       )
+     : (
+        (Array.isArray(window.femaleMagicuserNames) && window.femaleMagicuserNames.length) ? window.femaleMagicuserNames :
+        (typeof femaleMagicuserNames !== 'undefined' && Array.isArray(femaleMagicuserNames) && femaleMagicuserNames.length) ? femaleMagicuserNames :
+        ['Unnamed']
+       );
+    const name = dice.pick(namePool);
+
+    // Epithet pool
+    const epiPool =
+     (Array.isArray(window.magicUserEpithets) && window.magicUserEpithets.length) ? window.magicUserEpithets :
+     (typeof magicUserEpithets !== 'undefined' && Array.isArray(magicUserEpithets) && magicUserEpithets.length) ? magicUserEpithets :
+     [];
+    const epithet = epiPool.length ? dice.pick(epiPool) : null;
+
+    // “[mu name] [mu epithet] the Sage”
+    const full = epithet ? `${name} ${epithet} the Sage` : `${name} the Sage`;
+    return full;
+   }
+
     // SAINT / THE DAMNED — alignment L/C, names and patrons must match
-    const align = randomAlignLC();
-    const saintOrDamned = (align === 'L') ? 'Saint' : 'The Damned';
-    const name = hooks.clName ? hooks.clName(align) : 'Unnamed';
-    const patron = hooks.clPatron ? hooks.clPatron(align) : 'unknown patron';
-    return `${saintOrDamned} ${name} of ${patron}`;
+    if (kind === 'SAINT') {
+    const align  = dice.pick(['L','C']);              // choose alignment first
+    const title  = (align === 'L') ? 'Saint' : 'The Damned';
+    const gender = dice.pick(['M','F']);              // random gender
+
+    // Name pools by alignment+gender (robust whether attached to window or not)
+    const LMC = (Array.isArray(window.LawfulMaleClericNames)    && window.LawfulMaleClericNames.length)
+              ? window.LawfulMaleClericNames
+              : (typeof LawfulMaleClericNames    !== 'undefined' ? LawfulMaleClericNames    : []);
+    const LFC = (Array.isArray(window.LawfulFemaleClericNames)  && window.LawfulFemaleClericNames.length)
+              ? window.LawfulFemaleClericNames
+              : (typeof LawfulFemaleClericNames  !== 'undefined' ? LawfulFemaleClericNames  : []);
+    const CMC = (Array.isArray(window.ChaoticMaleClericNames)   && window.ChaoticMaleClericNames.length)
+              ? window.ChaoticMaleClericNames
+              : (typeof ChaoticMaleClericNames   !== 'undefined' ? ChaoticMaleClericNames   : []);
+    const CFC = (Array.isArray(window.ChaoticFemaleClericNames) && window.ChaoticFemaleClericNames.length)
+              ? window.ChaoticFemaleClericNames
+              : (typeof ChaoticFemaleClericNames !== 'undefined' ? ChaoticFemaleClericNames : []);
+
+    // Patron pools by alignment
+    const LPat = (Array.isArray(window.LawfulClericPatrons)   && window.LawfulClericPatrons.length)
+               ? window.LawfulClericPatrons
+               : (typeof LawfulClericPatrons   !== 'undefined' ? LawfulClericPatrons   : []);
+    const CPat = (Array.isArray(window.ChaoticClericPatrons)  && window.ChaoticClericPatrons.length)
+               ? window.ChaoticClericPatrons
+               : (typeof ChaoticClericPatrons  !== 'undefined' ? ChaoticClericPatrons  : []);
+
+    // Pick name matched to alignment+gender
+    let namePool;
+    if (align === 'L') {
+     namePool = (gender === 'M') ? LMC : LFC;
+    } else {
+     namePool = (gender === 'M') ? CMC : CFC;
+    }
+    const name = (namePool && namePool.length) ? dice.pick(namePool) : 'Unnamed';
+
+    // Pick patron matched to alignment
+    const patronPool = (align === 'L') ? LPat : CPat;
+    const patron     = (patronPool && patronPool.length) ? dice.pick(patronPool) : 'unknown patron';
+
+    return `${title} ${name} of ${patron}`;
+   }
   }
+
+
 
   // ------------------------------------------------------------
   // I. Painting/Tapestry depictions (no enchantment)
@@ -211,23 +295,26 @@
   ];
 
   function expandEnchantment(raw) {
-    if (raw.includes('[index quest table]')) {
-      const tail = hooks.quest ? hooks.quest() : '[index quest table]';
-      return raw.replace('[index quest table]', tail);
-    }
-    if (raw.includes('[index geas table]')) {
-      const tail = hooks.geas ? hooks.geas() : '[index geas table]';
-      return raw.replace('[index geas table]', tail);
-    }
-    if (raw.includes('[index curse table]')) {
-      const tail = hooks.curse ? hooks.curse() : '[index curse table]';
-      return raw.replace('[index curse table]', tail);
-    }
-    if (raw.includes('[Intelligence/Strength/Wisdom/Constitution/Dexterity]')) {
-      const stat = dice.pick(['Intelligence','Strength','Wisdom','Constitution','Dexterity']);
-      return raw.replace('[Intelligence/Strength/Wisdom/Constitution/Dexterity]', stat);
-    }
-    return raw;
+   // Match gems_jewelry.js: expand via global quest/geas/curse generators
+   if (raw.indexOf('[index quest table]') !== -1 &&
+      typeof global.randomQuestContract === "function") {
+     return raw.replace('[index quest table]', global.randomQuestContract());
+   }
+   if (raw.indexOf('[index geas table]') !== -1 &&
+      typeof global.randomGeasContract === "function") {
+    return raw.replace('[index geas table]', global.randomGeasContract());
+   }
+   if (raw.indexOf('[index curse table]') !== -1 &&
+      typeof global.randomCurseContract === "function") {
+    return raw.replace('[index curse table]', global.randomCurseContract());
+   }
+
+   // Stat placeholder fill-in remains the same
+   if (raw.indexOf('[Intelligence/Strength/Wisdom/Constitution/Dexterity]') !== -1) {
+    const stat = dice.pick(['Intelligence','Strength','Wisdom','Constitution','Dexterity']);
+    return raw.replace('[Intelligence/Strength/Wisdom/Constitution/Dexterity]', stat);
+   }
+   return raw;
   }
 
   // ------------------------------------------------------------

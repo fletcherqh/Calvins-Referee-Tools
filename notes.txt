@@ -6,7 +6,16 @@ nested dropdowns; or radio buttons; or check boxes
 
 Display of Character information:
 
-Title : Name : Epithet/CL Patron : Alignment (or, side) : Class w/Lvl# :Extraction/CL Religious Order
+Title : Name : Epithet/CL Patron :
+Alignment abbrv. : Class abbrv. w/Lvl# : Extraction/CL Religious Order
+Character Ability Scores: i : s : w : c : d : x
+HD#; ST#; HP#
+AC#; CC#; MV#
+XP#; gp#
+Language(s): Common; etc.
+Beneficiary: Name
+Magic-items:
+Spell information
 
 Display of arcane spell book information:
 Spell Book:
@@ -20,6 +29,8 @@ Level 7: one random per level starting at level 6 until complete
 Display of clerical prayer book information:
 Prayer Book(s): level one; level two; etc.
 or, if level one with bonuses: May cast healing once (or twice) per day
+
+Display "Potion of" with name of potion.
 
 Java.Script STUFF:
 
@@ -55,7 +66,30 @@ JavaScript stuff:
 Character stuff:
 Include gold for pregen characters
 Redo chances of magic items for character generation
-Eventually make distinction between PR Convention rules and PR Friday rules!
+[Eventually make distinction between PR Convention rules and PR Friday rules!]
+
+FM/AM hp: 2d6 take higher of the two per level
+All other class: first HD 2d6 take higher of the two: 1d6 each HD thereafter, +1 hp each level that does not gain an additional HD
+
+Language stuff:
+All characters: Common
+If Elf: Elvish; if dwarf: Dwarvish; if Hobbit: Elemental
+If 13-15INT: +one additional language; if 16+INT +two additional languages:
+Ancient
+Barbarian
+Fell
+Elvish (unless already)
+Dwarvish (unless already)
+Celestial
+Elemental (unless already)
+Chthonic
+If MU:
+Ancient
+Barbarian
+Fell
+Elvish
+Dwarvish
+Alignmened language: (L) Celestial; (N) Elemental; (C) Chthonic
 
 Spell stuff:
 Spell description button
@@ -70,7 +104,7 @@ Level 7: one random per level starting at level 6 until complete
 
 Prayer Book:
 Prayer Book(s): level one at cleric level 2; level two at cleric level 3; etc.
-If level one cleric 13-15WIS may cast healing once per day; if 16+WIS may cast healing twice per day
+If level one cleric no spell book, but: 13-15WIS may cast healing once per day; if 16+WIS may cast healing twice per day
 
 Elf spells:
 Randomly choose from both arcane and clerical lists
@@ -81,8 +115,7 @@ Level three: above and +one level one spell
 Level four: above and one random level two spell; + one level one spell
 Level five: above and one random level two spell
 Level six: above and one random level three spell; +one random level two spell
-Level seven+: above +one random spell from leves one through three
-
+Level seven+: above +one random spell from levels one through three
 
 Monster stuff:
 Always include stats when monsters displayed, even for underworld
