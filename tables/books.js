@@ -233,7 +233,7 @@
       var isTheoretical = (gp <= 1200);                    // Arcane split
       title = arcaneTitle(isTheoretical);
     }
-    return title + "\n" + gp + "gp. Book (100p.)";
+    return gp + "gp. (100p.) Book: " + title;
   }
 
   function randomBook(){
