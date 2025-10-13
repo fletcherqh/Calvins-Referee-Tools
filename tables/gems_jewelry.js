@@ -241,13 +241,22 @@
    if (gem.value >= 1000) {
     var effect = pickEnchantment(false, null);
 
-   // If the enchantment lists abilities in brackets, pick exactly one (20% each)
-   var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
-   if (abilityListRe.test(effect)) {
-    var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
-    effect = effect.replace(abilityListRe, function () {
-     return _opts[Math.floor(Math.random() * _opts.length)];
-    });
+   // if the enchantment lists abilities in brackets, pick exactly one (20% each)
+   var ABILITIES = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
+   var abilityBracketRe = /\[[^\]]*(Intelligence|Strength|Wisdom|Constitution|Dexterity)[^\]]*\]/i;
+
+   // Fill explicit [Ability] lists (e.g., "[Intelligence|Strength|...]")
+   if (abilityBracketRe.test(e)) {
+    e = e.replace(abilityBracketRe, pick(ABILITIES));
+   }
+   // If a phrase still ends with "Grant a bonus to", finish it with a stat.
+   if (/Grant a bonus to\s*$/i.test(e)) {
+    e += " " + pick(ABILITIES);
+   }
+
+   // Final safety: if any path left "undefined", choose a stat now.
+   if (/undefined/i.test(e)) {
+    e = e.replace(/undefined/ig, pick(ABILITIES));
    }
 
     // Strip trailing placeholder: " of [index ... table]" (Quest/Geas/Curse)
@@ -356,14 +365,24 @@
    if (j.enchant) {
     var e = j.enchant;
 
-    // If the enchantment lists abilities in brackets, pick exactly one (20% each)
-    var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
-    if (abilityListRe.test(e)) {
-      var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
-      e = e.replace(abilityListRe, function () {
-        return _opts[Math.floor(Math.random() * _opts.length)];
-      });
+    // if the enchantment lists abilities in brackets, pick exactly one (20% each)
+    var ABILITIES = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
+    var abilityBracketRe = /\[[^\]]*(Intelligence|Strength|Wisdom|Constitution|Dexterity)[^\]]*\]/i;
+
+    // Fill explicit [Ability] lists (e.g., "[Intelligence|Strength|...]")
+    if (abilityBracketRe.test(e)) {
+     e = e.replace(abilityBracketRe, pick(ABILITIES));
     }
+
+    // If a phrase still ends with "Grant a bonus to", finish it with a stat.
+    if (/Grant a bonus to\s*$/i.test(e)) {
+     e += " " + pick(ABILITIES);
+    }
+
+   // Final safety: if any path left "undefined", choose a stat now.
+   if (/undefined/i.test(e)) {
+    e = e.replace(/undefined/ig, pick(ABILITIES));
+   }
 
     // Strip generic bracket placeholders (e.g., [index quest table])
     e = e.replace(/\[[^\]]+\]/g, "").replace(/\s{2,}/g, " ").trim();
@@ -374,9 +393,11 @@
     else { line += "; enchanted to " + e; }
     line += j.extra || ""; // may add multi-line contract text
    }
+   if (/Grant a bonus to\s*$/i.test(line)) line += " " + pick(ABILITIES);
+   line = line.replace(/\bundefined\b/ig, pick(ABILITIES));
+
    return line;
   }
-
 
   function jewelryGroupsFrom(gpArray) {
     var groups = {}; // key -> {count, eachGp, totalGp, totalP, metal, stone, item}
@@ -436,18 +457,18 @@
         var effect = pickEnchantment(false, null);
 
       // If the enchantment lists abilities in brackets, pick exactly one (20% each)
-      var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
-      if (abilityListRe.test(effect)) {
-       var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
-       effect = effect.replace(abilityListRe, function () {
-        return _opts[Math.floor(Math.random() * _opts.length)];
-       });
+      var _ABIL = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
+      var abilityBracketRe = /\[[^\]]*(Intelligence|Strength|Wisdom|Constitution|Dexterity)[^\]]*\]/i;
+      if (abilityBracketRe.test(effect)) {
+       effect = effect.replace(abilityBracketRe, pick(_ABIL));
       }
 
         var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
         line += ", enchanted to " + clean;
         line += maybeAppendSubtableLines(effect);
       }
+      if (/Grant a bonus to\s*$/i.test(line)) { line += " " + pick(_ABIL); }
+      line = line.replace(/\bundefined\b/ig, pick(_ABIL));
 
       return line;
     } else {
