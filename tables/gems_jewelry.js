@@ -32,7 +32,12 @@
 
   /* ========== RNG helpers (standalone, dice-faithful) ========== */
   function r(d) { return Math.floor(Math.random() * d) + 1; }            // 1..d
-  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }   // uniform
+
+  function pick(a) {
+   if (!Array.isArray(a) || a.length === 0) { return ""; }
+   return a[Math.floor(Math.random() * a.length)];
+  }  // uniform, fail-safe
+
   function oneIn(n) { return r(n) === 1; }
   function dPercent() { return r(100); }
 
