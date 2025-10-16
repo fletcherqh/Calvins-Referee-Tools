@@ -401,8 +401,33 @@
    if (/Grant a bonus to\s*$/i.test(line)) line += " " + pick(ABILITIES);
    line = line.replace(/\bundefined\b/ig, pick(ABILITIES));
 
+   // ---- ability/stat guard (jewelry) ----
+   (function () {
+   var ABILITIES = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
+
+   // Replace any bracketed ability list like [Str|Int|...] with a single pick
+   var abilityListRe = /\[(?:Strength|Intelligence|Wisdom|Constitution|Dexterity)(?:\|(?:Strength|Intelligence|Wisdom|Constitution|Dexterity))*\]/g;
+    line = line.replace(abilityListRe, function () {
+    return ABILITIES[Math.floor(Math.random() * ABILITIES.length)];
+    });
+
+    // If we have a dangling "Grant a bonus to ..." with no stat, complete it
+    if (/Grant a bonus to/i.test(line) && !/(Strength|Intelligence|Wisdom|Constitution|Dexterity)\b/.test(line)) {
+    line = line.replace(/Grant a bonus to\s*$/i, "")  // tidy trailing spaces if present
+               .replace(/Grant a bonus to\b/i, function () {
+                 return "Grant a bonus to " + ABILITIES[Math.floor(Math.random() * ABILITIES.length)];
+               });
+    }
+
+    // Final safety: any literal 'undefined' gets swapped to a valid ability
+    line = line.replace(/\bundefined\b/g, function () {
+    return ABILITIES[Math.floor(Math.random() * ABILITIES.length)];
+    });
+   })();
+   // --------------------------------------
    return line;
-  }
+
+   }
 
   function jewelryGroupsFrom(gpArray) {
     var groups = {}; // key -> {count, eachGp, totalGp, totalP, metal, stone, item}
