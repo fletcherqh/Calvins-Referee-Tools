@@ -1485,7 +1485,7 @@ oddTables.treasureTypeAWater = function () {
 		result += "\n\t" + oddTables.jewelry(dice.d6(1) * 10).trim();
 	}
 	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.treasureMap().trim();
+		result += "\n\t" + maps.treasureMap().trim();
 	}
 	result += "\n";
 	return result;
