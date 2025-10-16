@@ -876,7 +876,11 @@ oddTables.scroll = function () {
 	} else if (roll <= 50) {
 		return oddTables.spellScroll(7);
 	} else if (roll <= 60) {
-		return "Curse Scroll: " + oddTables.scrollCurse();
+		return "Cursed Scroll — " + (
+         (typeof randomCurseContract === "function") ? randomCurseContract() :
+         (typeof randomCurse === "function") ? randomCurse() :
+         oddTables.scrollCurse()
+        );
 	} else if (roll <= 70) {
 		return "Scroll of Protection: Lycanthropes";
 	} else if (roll <= 80) {
