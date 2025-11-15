@@ -118,6 +118,12 @@ function randomGeasContract() {
   return lines.filter(Boolean).join("\n");
 }
 
+/* ---------- simple-line geas ---------- */
+function randomGeas() {
+  // Returns a single one-line geas, using the same mission generator as randomGeasContract.
+  return rg_mission();
+}
+
 function randomQuestContract() {
   const lines = [];
   lines.push(`Save or Character must ${rg_mission()}`);
@@ -138,5 +144,6 @@ function geasButton()  { printToLog(randomGeasContract()); }
 function questButton() { printToLog(randomQuestContract()); }
 
 // expose for gems/jewelry subtables
+window.randomGeas        = randomGeas;
 window.randomGeasContract  = randomGeasContract;
 window.randomQuestContract = randomQuestContract;
