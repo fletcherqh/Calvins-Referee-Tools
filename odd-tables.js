@@ -821,7 +821,7 @@ oddTables.clericItem = function () {
 oddTables.magicItem = function () {
 	var roll = dice.d100(1);
 	if (roll <= 20) {
-		return oddTables.magicSword();
+		return swordOrRelic();
 	} else if (roll <= 35) {
 		return oddTables.armor();
 	} else if (roll <= 40) {
@@ -851,44 +851,67 @@ oddTables.magicItemArms = function () {
 };
 
 oddTables.magicItemNoSwords = function () {
-	var roll = dice.d100(1);
-	while (roll <= 20) {
-		roll = dice.d100(1);
-	}
-	if (roll <= 35) {
-		return oddTables.armor();
-	} else if (roll <= 40) {
-		return oddTables.miscWeapon();
-	} else if (roll <= 65) {
-		return oddTables.potion(true);
-	} else if (roll <= 85) {
-		return oddTables.scroll();
-	} else if (roll <= 90) {
-		return oddTables.ring(true);
-	} else if (roll <= 95) {
-		return oddTables.wand();
-	} else {
-		return oddTables.miscMagic();
-	}
+    var roll = dice.d20(1);
+
+    if (roll <= 4) {
+        // Armor (20%)
+        return oddTables.armor();
+    } else if (roll <= 7) {
+        // Misc Weapon (15%) — swords still excluded by caller logic
+        return oddTables.miscWeapon();
+    } else if (roll <= 12) {
+        // Potions (25%)
+        return oddTables.potion(true);
+    } else if (roll <= 16) {
+        // Scrolls (20%)
+        return oddTables.scroll();
+    } else if (roll === 17) {
+        // Rings (5%)
+        return oddTables.ring(true);
+    } else if (roll === 18) {
+        // Wands (5%)
+        return oddTables.wand();
+    } else if (roll === 19) {
+        // Misc Magic (5%)
+        return oddTables.miscMagic();
+    } else {
+        // 20: Relic (5%)
+        if (typeof randomRelic === "function") {
+            return randomRelic();
+        } else {
+            // Fallback if relics file not loaded
+            return oddTables.miscMagic();
+        }
+    }
 };
 
+// --- REPLACEMENT: No-Arms Magic Item Table (d20) ---
+// New weights:
+//  1–7   Potion
+//  8–12  Scroll
+// 13–14  Ring
+// 15–16  Wand
+// 17–18  Misc Magic
+// 19–20  Relic
 oddTables.magicItemNoArms = function () {
-	var roll = dice.d100(1);
-	while (roll <= 40) {
-		roll = dice.d100(1);
-	}
-	if (roll <= 65) {
-		return oddTables.potion(true);
-	} else if (roll <= 85) {
-		return oddTables.scroll();
-	} else if (roll <= 90) {
-		return oddTables.ring(true);
-	} else if (roll <= 95) {
-		return oddTables.wand();
-	} else {
-		return oddTables.miscMagic();
-	}
+    var roll = dice.d20(1);
+
+    if (roll <= 7) {
+        return oddTables.potion(true);
+    } else if (roll <= 12) {
+        return oddTables.scroll();
+    } else if (roll <= 14) {
+        return oddTables.ring(true);
+    } else if (roll <= 16) {
+        return oddTables.wand();
+    } else if (roll <= 18) {
+        return oddTables.miscMagic();
+    } else {
+        // 19–20
+        return randomRelic();
+    }
 };
+
 
 oddTables.magicOrMap = function () {
 	var roll = dice.d100(1);
