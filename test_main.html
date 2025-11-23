@@ -304,6 +304,8 @@
 
           <!-- Treasure Tables -->
 
+                    <!-- Treasure Tables -->
+
           <p class="buttonLabel" data-toggle="collapse" href="#treasure-buttons">Treasure Tables</p>
           <div id="treasure-buttons" class="collapse.in">
             <div class="btn-group">
@@ -313,7 +315,7 @@
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#" onclick="output(oddTables.magicSword());">Sword</a></li>
+                <li><a href="#" onclick="output(swordOrRelic());">Sword or Relic</a></li>
                 <li><a href="#" onclick="output(oddTables.miscWeapon());">Weapon</a></li>
                 <li><a href="#" onclick="output(oddTables.armor());">Armor</a></li>
                 <li><a href="#" onclick="output(oddTables.potion(true));">Potion</a></li>
@@ -324,15 +326,34 @@
                 <li><a href="#" onclick="output(maps.treasureMap());">Treasure Map</a></li>
               </ul>
             </div>
-             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-xs" onclick="output(randomRelic());">Relic</button>
-              </div>
-             <div class="btn-group">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" onclick="output(magicSword());">Magic Sword</button>
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="output(lawfulSword());">Lawful Sword</a></li>
+                <li><a href="#" onclick="output(neutralSword());">Neutral Sword</a></li>
+                <li><a href="#" onclick="output(chaoticSword());">Chaotic Sword</a></li>
+                <li><a href="#" onclick="output(lifeDrainingSword());">Life-Draining Sword</a></li>
+                <li><a href="#" onclick="output(cursedSword());">Cursed Sword</a></li>
+                <li><a href="#" onclick="output(flamingSword());">Flaming Sword</a></li>
+                <li><a href="#" onclick="output(locateObjectSword());">Locate Object Sword</a></li>
+                <li><a href="#" onclick="output(wishesSword());">Wishes Sword</a></li>
+                <li><a href="#" onclick="output(charmPersonSword());">Charm Person Sword</a></li>
+                <li><a href="#" onclick="output(missionSword());">Mission Sword</a></li>
+                <li><a href="#" onclick="output(randomRelic());">Relic</a></li>
+              </ul>
+            </div>
+
+            <div class="btn-group">
               <button type="button" class="btn btn-default btn-xs" onclick="output(randomBook());">Book</button>
             </div>
             <div class="btn-group">
-             <button type="button" class="btn btn-default btn-xs" onclick="output(randomValuable())">Item</button>
+              <button type="button" class="btn btn-default btn-xs" onclick="output(randomValuable())">Item</button>
             </div>
+
 
             <div class="btn-group">
               <button type="button" class="btn btn-default btn-xs"  onclick="output(oddTables.treasureTypeA());">Type A Land</button>
