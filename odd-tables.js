@@ -1172,30 +1172,69 @@ oddTables.treasureMap = function () {
 //treasure table I
 oddTables.treasureTypeA = function () {
 	var result, i;
-	result = "Treasure Type A (Land)";
+	var coins = "";
+	var gems = "";
+	var jewelry = "";
+	var magicMaps = "";
+
+	// Coins
 	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d6(1) * 1000) + "cp";
+		coins += (coins ? "\n" : "") + (dice.d6(1) * 1000) + "cp";
 	}
 	if (dice.percentChance(30)) {
-		result += "\n\t" + (dice.d6(1) * 1000) + "sp";
+		coins += (coins ? "\n" : "") + (dice.d6(1) * 1000) + "sp";
 	}
 	if (dice.percentChance(35)) {
-		result += "\n\t" + (dice.d6(2) * 1000) + "gp";
+		coins += (coins ? "\n" : "") + (dice.d6(2) * 1000) + "gp";
 	}
+
+	// Gems
 	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.gems(dice.d6(6)).trim();
+		gems = oddTables.gems(dice.d6(6)).trim();
 	}
+
+	// Jewelry
 	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.jewelry(dice.d6(6)).trim();
+		jewelry = oddTables.jewelry(dice.d6(6)).trim();
 	}
-	if (dice.percentChance(40)) {
+
+	// Magic items / maps
+	var magicEntries = [];
+	 if (dice.percentChance(40)) {
 		for (i = 0; i < 3; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
+			var entry = oddTables.magicOrMap().trim();
+			if (entry) {
+				magicEntries.push(entry);
+			}
 		}
 	}
+	if (magicEntries.length) {
+		// One blank line before first item, one blank line between items, no trailing extra newline
+		magicMaps = "\n" + magicEntries.join("\n\n");
+	}
+
+	// Assemble result in canonical order
+	result = "// Treasure Type A (Land) //";
+
+	if (magicMaps) {
+		result += "\n\nMAGIC ITEMS / TREASURE MAPS:\n" + magicMaps;
+	}
+	if (jewelry) {
+		result += "\n\nJEWELRY:\n\n" + jewelry;
+	}
+	if (gems) {
+		result += "\n\nGEMS:\n\n" + gems;
+	}
+	if (coins) {
+		result += "\n\nCOINAGE:\n\n" + coins;
+	}
+
 	result += "\n";
 	return result;
 };
+
+
+
 
 oddTables.treasureTypeADesert = function () {
 	var result, i;
