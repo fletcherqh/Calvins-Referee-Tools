@@ -238,44 +238,47 @@
     };
   }
 
-  function gemSingletonLine(gem) {
-   // "100gp. (10p.) Medium Diamond"
-   var line = gp(gem.value) + " (" + pUnits(gem.enc) + ") " + gem.size + " " + gem.type;
+    function gemSingletonLine(gem) {
+    // "100gp. (10p.) Medium Diamond"
+    var line = gp(gem.value) + " (" + pUnits(gem.enc) + ") " + gem.size + " " + gem.type;
 
-   // Gems ≥ 1000gp → enchanted (probability/threshold unchanged)
-   if (gem.value >= 1000) {
-    var effect = pickEnchantment(false, null);
+    // Gems ≥ 1000gp → enchanted
+    if (gem.value >= 1000) {
+      var effect = pickEnchantment(false, null);
 
-   // if the enchantment lists abilities in brackets, pick exactly one (20% each)
-   var ABILITIES = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
-   var abilityBracketRe = /\[[^\]]*(Intelligence|Strength|Wisdom|Constitution|Dexterity)[^\]]*\]/i;
+      // ---- ability/stat guard (gems) ----
+      var ABILITIES = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
+      var abilityBracketRe = /\[[^\]]*(Intelligence|Strength|Wisdom|Constitution|Dexterity)[^\]]*\]/i;
 
-   // Fill explicit [Ability] lists (e.g., "[Intelligence|Strength|...]")
-   if (abilityBracketRe.test(e)) {
-    e = e.replace(abilityBracketRe, pick(ABILITIES));
-   }
-   // If a phrase still ends with "Grant a bonus to", finish it with a stat.
-   if (/Grant a bonus to\s*$/i.test(e)) {
-    e += " " + pick(ABILITIES);
-   }
+      // Fill explicit [Ability] lists (e.g., "[Intelligence|Strength|...]")
+      if (abilityBracketRe.test(effect)) {
+        effect = effect.replace(abilityBracketRe, pick(ABILITIES));
+      }
 
-   // Final safety: if any path left "undefined", choose a stat now.
-   if (/undefined/i.test(e)) {
-    e = e.replace(/undefined/ig, pick(ABILITIES));
-   }
+      // If a phrase still ends with "Grant a bonus to", finish it with a stat.
+      if (/Grant a bonus to\s*$/i.test(effect)) {
+        effect += " " + pick(ABILITIES);
+      }
 
-    // Strip trailing placeholder: " of [index ... table]" (Quest/Geas/Curse)
-    var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
+      // Final safety: if any path left "undefined", choose a stat now.
+      if (/undefined/i.test(effect)) {
+        effect = effect.replace(/undefined/ig, pick(ABILITIES));
+      }
+      // ---- end stat guard ----
 
-    // Main line prints the clean effect
-    line += "; enchanted to " + clean;
+      // Strip trailing placeholder: " of [index ... table]" (Quest/Geas/Curse)
+      var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
 
-    // Newline: keep existing subtable expansion behavior
-    line += maybeAppendSubtableLines(effect);
-   }
+      // Main line prints the clean effect
+      line += "; enchanted to " + clean;
 
-   return line;
- }
+      // Keep existing subtable expansion behavior
+      line += maybeAppendSubtableLines(effect);
+    }
+
+    return line;
+  }
+
 
   function gemGroupsFrom(count) {
     var groups = {}; // key -> {count, value, enc, size, type, totalGp, totalP, label}
@@ -470,120 +473,153 @@
   /* ========== Public API ========== */
 
   var houseGems = {
-    lineForOne: function () {
-      return gemSingletonLine(generateGem());
-    },
-    linesForCount: function (count) {
-  count = (typeof count === "number" && count > 0) ? Math.floor(count) : 1;
-  var agg = gemGroupsFrom(count);
+  lineForOne: function () {
+    return gemSingletonLine(generateGem());
+  },
 
-  var lines = agg.groups.map(function (g) {
-    var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
-    if (g.count === 1) {
-      // Singleton wording: one item, singular, no "value", no "each"
-      var line = gp(g.value) + " (" + pUnits(g.enc) + ") " + g.size + " " + g.type;
+  linesForCount: function (count) {
+    count = (typeof count === "number" && count > 0) ? Math.floor(count) : 1;
+    var agg = gemGroupsFrom(count);
 
-      if (g.value >= 1000) {
-        var effect = pickEnchantment(false, null);
+    var lines = agg.groups.map(function (g) {
+      var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
+      if (g.count === 1) {
+        // Singleton wording: one item, singular, no "value", no "each"
+        var line = gp(g.value) + " (" + pUnits(g.enc) + ") " + g.size + " " + g.type;
 
-      // If the enchantment lists abilities in brackets, pick exactly one (20% each)
-      var _ABIL = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
-      var abilityBracketRe = /\[[^\]]*(Intelligence|Strength|Wisdom|Constitution|Dexterity)[^\]]*\]/i;
-      if (abilityBracketRe.test(effect)) {
-       effect = effect.replace(abilityBracketRe, pick(_ABIL));
+        if (g.value >= 1000) {
+          var effect = pickEnchantment(false, null);
+
+          // If the enchantment lists abilities in brackets, pick exactly one (20% each)
+          var _ABIL = ["Strength","Intelligence","Wisdom","Constitution","Dexterity"];
+          var abilityBracketRe = /\[[^\]]*(Intelligence|Strength|Wisdom|Constitution|Dexterity)[^\]]*\]/i;
+          if (abilityBracketRe.test(effect)) {
+            effect = effect.replace(abilityBracketRe, pick(_ABIL));
+          }
+
+          var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
+          line += ", enchanted to " + clean;
+          line += maybeAppendSubtableLines(effect);
+        }
+        if (/Grant a bonus to\s*$/i.test(line)) { line += " " + pick(_ABIL); }
+        line = line.replace(/\bundefined\b/ig, pick(_ABIL));
+
+        return line;
+      } else {
+        // Group wording: keep totals line unchanged
+        return lead + " from sum of " + g.count + " " + g.size + " " +
+               pluralGemType(g.type) + ", " + gp(g.value) +
+               " (" + pUnits(g.enc) + ") each";
       }
+    });
 
-        var clean = effect.replace(/\s+of\s+\[index\s+(quest|geas|curse)\s+table\]/i, "");
-        line += ", enchanted to " + clean;
-        line += maybeAppendSubtableLines(effect);
-      }
-      if (/Grant a bonus to\s*$/i.test(line)) { line += " " + pick(_ABIL); }
-      line = line.replace(/\bundefined\b/ig, pick(_ABIL));
-
-      return line;
-    } else {
-      // Group wording: keep totals line unchanged
-      return lead + " from sum of " + g.count + " " + g.size + " " +
-             pluralGemType(g.type) + ", " + gp(g.value) +
-             " (" + pUnits(g.enc) + ") each";
+    if (agg.groups.length > 1) {
+      lines.push(
+        gp(agg.totalGp) + " Total gem value (" + pUnits(agg.totalP) + " Total gem encumbrance)"
+      );
     }
-  });
 
-  if (agg.groups.length > 1) {
-    lines.push(
-      gp(agg.totalGp) + " Total gem value (" + pUnits(agg.totalP) + " Total gem encumbrance)"
-    );
+    return lines.join("\n") + "\n";
+  },
+
+  // NEW: structured helper – text + totals
+  bundleForCount: function (count) {
+    count = (typeof count === "number" && count > 0) ? Math.floor(count) : 1;
+    var agg = gemGroupsFrom(count);
+    return {
+      text: houseGems.linesForCount(count),
+      totalGp: agg.totalGp,
+      totalP: agg.totalP
+    };
   }
+};
 
-  return lines.join("\n") + "\n";
-}
-
-  };
 
   var houseJewelry = {
     lineForValue: function (gpVal) {
       gpVal = (typeof gpVal === "number" && gpVal > 0) ? Math.floor(gpVal) : 300;
       return jewelrySingletonLine(generateJewelryItem(gpVal));
     },
+
     linesForValues: function (gpArray) {
-  gpArray = Array.isArray(gpArray) ? gpArray.slice() : [];
-  if (gpArray.length === 0) return ""; // nothing to print
+      gpArray = Array.isArray(gpArray) ? gpArray.slice() : [];
+      if (gpArray.length === 0) return ""; // nothing to print
 
-  var agg = jewelryGroupsFrom(gpArray);
+      var agg = jewelryGroupsFrom(gpArray);
 
-  var lines = agg.groups.map(function (g) {
-    // Build the item label, pluralize only when count > 1
-    var itemPlural = pluralItemType(g.item);
-    var itemLabel = g.metal + " & " + g.stone + " " + (g.count === 1 ? g.item : itemPlural);
+      var lines = agg.groups.map(function (g) {
+        // Build the item label, pluralize only when count > 1
+        var itemPlural = pluralItemType(g.item);
+        var itemLabel = g.metal + " & " + g.stone + " " + (g.count === 1 ? g.item : itemPlural);
 
-    // Common lead: total value + total encumbrance for this group
-    var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
+        // Common lead: total value + total encumbrance for this group
+        var lead = gp(g.totalGp) + " value (" + pUnits(g.totalP) + ")";
 
-    if (g.count === 1) {
-     // Singleton wording, fixed encumbrance at 100p. (no "value")
-     var line = gp(g.eachGp) + " (100p.) " + itemLabel;
-     if (g.eachGp >= 7000) {
-      var e = pickEnchantment(true, g.metal);
-      var rawE = e; // keep raw for subtable detection/append
+        if (g.count === 1) {
+          // Singleton wording, fixed encumbrance at 100p. (no "value")
+          var line = gp(g.eachGp) + " (100p.) " + itemLabel;
+          if (g.eachGp >= 7000) {
+            var e = pickEnchantment(true, g.metal);
+            var rawE = e; // keep raw for subtable detection/append
 
-      // If the enchantment lists abilities in brackets, pick exactly one (20% each)
-      var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
-      if (abilityListRe.test(e)) {
-       var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
-       e = e.replace(abilityListRe, function () {
-      
-       });
+            // If the enchantment lists abilities in brackets, pick exactly one (20% each)
+            var abilityListRe = /\[(?:Intelligence|Strength|Wisdom|Constitution|Dexterity)(?:\/(?:Intelligence|Strength|Wisdom|Constitution|Dexterity))*\]/i;
+            if (abilityListRe.test(e)) {
+              var _opts = ["Intelligence","Strength","Wisdom","Constitution","Dexterity"];
+              e = e.replace(abilityListRe, function () {
+                // existing behavior preserved (even if it’s a bit odd)
+              });
+            }
+
+            // Strip generic bracket placeholders (e.g., [index quest table])
+            e = e.replace(/\[[^\]]+\]/g, "").replace(/\s{2,}/g, " ").trim();
+            // Clean trailing "of" left by removing placeholders like "... of [index quest table]"
+            e = e.replace(/\s+of\s*$/i, "");
+
+            if (/^stone set in worked/i.test(e)) { line += ", enchanted with " + e; }
+            else { line += ", enchanted to " + e; }
+
+            if (typeof maybeAppendSubtableLines === "function") {
+              line += maybeAppendSubtableLines(rawE) || "";
+            }
+          }
+          return line;
+        } else {
+          // Group wording, fixed per-item encumbrance at 100p.
+          return lead + " from sum of " + g.count + " " + itemLabel + ", " +
+                 gp(g.eachGp) + " (" + pUnits(100) + ") each";
+        }
+      });
+
+      if (agg.groups.length > 1) {
+        lines.push(
+          gp(agg.totalGp) + " Total jewelry value (" +
+          pUnits(agg.totalP) + " Total jewelry encumbrance)"
+        );
+      }
+      return lines.join("\n") + "\n";
+    },
+
+    // NEW: structured helper – text + totals for jewelry
+    bundleForValues: function (gpArray) {
+      gpArray = Array.isArray(gpArray) ? gpArray.slice() : [];
+      if (gpArray.length === 0) {
+        return {
+          text: "",
+          totalGp: 0,
+          totalP: 0
+        };
       }
 
-      // Strip generic bracket placeholders (e.g., [index quest table])
-      e = e.replace(/\[[^\]]+\]/g, "").replace(/\s{2,}/g, " ").trim();
-      // Clean trailing "of" left by removing placeholders like "... of [index quest table]"
-      e = e.replace(/\s+of\s*$/i, "");
+      var agg = jewelryGroupsFrom(gpArray);
 
-      if (/^stone set in worked/i.test(e)) { line += ", enchanted with " + e; }
-      else { line += ", enchanted to " + e; }
-
-      if (typeof maybeAppendSubtableLines === "function") {
-       line += maybeAppendSubtableLines(rawE) || "";
-      }
+      return {
+        text: houseJewelry.linesForValues(gpArray), // existing formatted output (unchanged)
+        totalGp: agg.totalGp,                       // numeric total jewelry value
+        totalP: agg.totalP                          // numeric total jewelry encumbrance
+      };
     }
-    return line;
-  } else {
-
-        // Group wording, fixed per-item encumbrance at 100p.
-        return lead + " from sum of " + g.count + " " + itemLabel + ", " +
-            gp(g.eachGp) + " (" + pUnits(100) + ") each";
-    }
-});
-    if (agg.groups.length > 1) {
-  lines.push(gp(agg.totalGp) + " Total jewelry value (" +
-             pUnits(agg.totalP) + " Total jewelry encumbrance)");
-}
-return lines.join("\n") + "\n";
-
-}
-};
-
+  };
 
 // expose
 global.houseGems = houseGems;
