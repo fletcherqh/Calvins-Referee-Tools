@@ -522,18 +522,51 @@
     return lines.join("\n") + "\n";
   },
 
-  // NEW: structured helper – text + totals
+    // NEW: structured helper – text + totals (parsed from text)
   bundleForCount: function (count) {
     count = (typeof count === "number" && count > 0) ? Math.floor(count) : 1;
-    var agg = gemGroupsFrom(count);
+
+    var text = houseGems.linesForCount(count); // canonical output
+    var totalGp = 0;
+    var totalP = 0;
+
+    // Work from the last non-empty line
+    var lines = text.trim().split(/\n/);
+    var last = lines[lines.length - 1];
+
+    var m;
+
+    // Case 1: full totals line, e.g.
+    // "9620gp. Total gem value (660p. Total gem encumbrance)"
+    m = /(\d+)gp\. Total gem value \((\d+)p\. Total gem encumbrance\)/.exec(last);
+    if (m) {
+      totalGp = parseInt(m[1], 10);
+      totalP = parseInt(m[2], 10);
+    } else {
+      // Case 2: grouped line without overall totals (single group), e.g.
+      // "500gp. value (50p.) from sum of 5 Medium Rubies, 100gp. (10p.) each"
+      m = /(\d+)gp\. value \((\d+)p\.\)/.exec(last);
+      if (m) {
+        totalGp = parseInt(m[1], 10);
+        totalP = parseInt(m[2], 10);
+      } else {
+        // Case 3: singleton line, e.g.
+        // "100gp. (10p.) Medium Diamond"
+        m = /(\d+)gp\. \((\d+)p\.\)/.exec(last);
+        if (m) {
+          totalGp = parseInt(m[1], 10);
+          totalP = parseInt(m[2], 10);
+        }
+      }
+    }
+
     return {
-      text: houseGems.linesForCount(count),
-      totalGp: agg.totalGp,
-      totalP: agg.totalP
+      text: text,
+      totalGp: totalGp,
+      totalP: totalP
     };
   }
 };
-
 
   var houseJewelry = {
     lineForValue: function (gpVal) {
@@ -601,7 +634,7 @@
     },
 
     // NEW: structured helper – text + totals for jewelry
-    bundleForValues: function (gpArray) {
+        bundleForValues: function (gpArray) {
       gpArray = Array.isArray(gpArray) ? gpArray.slice() : [];
       if (gpArray.length === 0) {
         return {
@@ -611,15 +644,48 @@
         };
       }
 
-      var agg = jewelryGroupsFrom(gpArray);
+      var text = houseJewelry.linesForValues(gpArray); // canonical output
+      var totalGp = 0;
+      var totalP = 0;
+
+      // Work from the last non-empty line
+      var lines = text.trim().split(/\n/);
+      var last = lines[lines.length - 1];
+
+      var m;
+
+      // Case 1: full totals line, e.g.
+      // "73800gp. Total jewelry value (2200p. Total jewelry encumbrance)"
+      m = /(\d+)gp\. Total jewelry value \((\d+)p\. Total jewelry encumbrance\)/.exec(last);
+      if (m) {
+        totalGp = parseInt(m[1], 10);
+        totalP = parseInt(m[2], 10);
+      } else {
+        // Case 2: grouped line without overall totals (single group), e.g.
+        // "5000gp. value (500p.) from sum of 5 Gold & Ruby Rings, 1000gp. (100p.) each"
+        m = /(\d+)gp\. value \((\d+)p\.\)/.exec(last);
+        if (m) {
+          totalGp = parseInt(m[1], 10);
+          totalP = parseInt(m[2], 10);
+        } else {
+          // Case 3: singleton line, e.g.
+          // "7000gp. (100p.) Silver & Sapphire Bracer, enchanted to …"
+          m = /(\d+)gp\. \((\d+)p\.\)/.exec(last);
+          if (m) {
+            totalGp = parseInt(m[1], 10);
+            totalP = parseInt(m[2], 10);
+          }
+        }
+      }
 
       return {
-        text: houseJewelry.linesForValues(gpArray), // existing formatted output (unchanged)
-        totalGp: agg.totalGp,                       // numeric total jewelry value
-        totalP: agg.totalP                          // numeric total jewelry encumbrance
+        text: text,
+        totalGp: totalGp,
+        totalP: totalP
       };
     }
   };
+
 
 // expose
 global.houseGems = houseGems;

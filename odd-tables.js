@@ -1178,7 +1178,11 @@ oddTables.treasureTypeA = function () {
 	var gpCoins = 0;
 	var spCoins = 0;
 	var cpCoins = 0;
+
 	var gems = "";
+	var gemsValue = 0;
+	var gemsEnc = 0;
+
 	var jewelry = "";
 	var valuables = []; // placeholder for future valuable items
 	var books = [];     // placeholder for future books
@@ -1195,7 +1199,11 @@ oddTables.treasureTypeA = function () {
 		gpCoins = 0;
 		spCoins = 0;
 		cpCoins = 0;
+
 		gems = "";
+		gemsValue = 0;
+		gemsEnc = 0;
+
 		jewelry = "";
 		valuables = [];
 		books = [];
@@ -1216,11 +1224,24 @@ oddTables.treasureTypeA = function () {
 
 		// GEMS
 		if (dice.percentChance(50)) {
-			gems = oddTables.gems(dice.d6(6)).trim();
+			var gemCount = dice.d6(6);
+			// Use structured helper when available; fall back to legacy string if not.
+			if (typeof houseGems === "object" && typeof houseGems.bundleForCount === "function") {
+				var gemBundle = houseGems.bundleForCount(gemCount);
+				gems = (gemBundle.text || "").trim();
+				gemsValue = gemBundle.totalGp || 0;
+				gemsEnc = gemBundle.totalP || 0;
+			} else {
+				// Legacy path: preserve behavior if helper is unavailable
+				gems = oddTables.gems(gemCount).trim();
+				gemsValue = 0;
+				gemsEnc = 0;
+			}
 		}
 
 		// JEWELRY
 		if (dice.percentChance(50)) {
+			// For now, keep using the existing adapter; totals will be wired in a later step.
 			jewelry = oddTables.jewelry(dice.d6(6)).trim();
 		}
 
@@ -1331,10 +1352,12 @@ oddTables.treasureTypeA = function () {
 		);
 	}
 
+	// Coin totals (always computed; only printed when more than one type)
+	var totalCoinGpValue = gpCoins + spValueGp + cpValueGp;
+	var totalCoinEncumbrance = gpCoins + spCoins + cpCoins; // 1p. per coin
+
 	// Total coin value line only when more than one coin type appears
 	if (coinTypes > 1) {
-		var totalCoinGpValue = gpCoins + spValueGp + cpValueGp;
-		var totalCoinEncumbrance = gpCoins + spCoins + cpCoins; // 1p. per coin
 		coinLines.push(
 			totalCoinGpValue +
 				"gp Total coin value (" +
@@ -1353,6 +1376,35 @@ oddTables.treasureTypeA = function () {
 	appendSection("JEWELRY", jewelryBody);
 	appendSection("GEMS", gemsBody);
 	appendSection("COINAGE", coinsBody);
+
+	// --- GRAND TOTAL (for now: coins + gems only) ---
+var gtGp = 0;
+var gtEnc = 0;
+var gtParts = 0;
+
+// Include coins
+if (totalCoinGpValue > 0) {
+  gtGp += totalCoinGpValue;
+  gtEnc += totalCoinEncumbrance;
+  gtParts += 1;
+}
+
+// Include gems
+if (gemsValue > 0) {
+  gtGp += gemsValue;
+  gtEnc += gemsEnc;
+  gtParts += 1;
+}
+
+// Print only if more than one contributing category
+if (gtParts > 1) {
+  result +=
+    "\n\nGRAND TOTAL:\n" +
+    gtGp +
+    "gp. Treasure value (" +
+    gtEnc +
+    "p. encumbrance)";
+}
 
 	result += "\n";
 	return result;
