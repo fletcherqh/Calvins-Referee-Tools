@@ -59,21 +59,22 @@
   global.treasureEngine = treasureEngine;
 
   // ---------------------------------------------------------------
-  // 1. Public API placeholders (no logic yet)
+  // 1. Public API + Nil-Safeguard Helpers
   // ---------------------------------------------------------------
 
   // Run the treasure engine for a given schema key.
   //
   // Schema contract (for now, minimal and generic):
   //   treasureEngine.TREASURE_SCHEMAS[schemaKey] = {
-  //     title: string,                      // title line for output
-  //     rollNonMagic: function (state) {},  // rolls coins/gems/jewelry/books/valuables
+  //     title: string,                        // title line for output
+  //     rollNonMagic: function (state) {},    // rolls coins/gems/jewelry/books/valuables
   //     rollMagicAndMaps: function (state) {} // rolls magic items and maps
   //   };
   //
   // This function:
   //   - Creates a fresh state object.
-  //   - Calls schema.rollNonMagic(state) if present.
+  //   - Calls schema.rollNonMagic(state) via applyNilSafeguard()
+  //       to enforce the "no nil non-magic treasure" rule.
   //   - Calls schema.rollMagicAndMaps(state) if present.
   //   - Uses buildFullOutput(title, state) to assemble sections + GRAND TOTAL.
   //
@@ -106,12 +107,12 @@
     state.valuablesGpValue = 0;
     state.valuablesEncumbrance = 0;
 
-    // 1) Roll all NON-MAGIC treasure first (coins/gems/jewelry/books/valuables)
+    // 1) Roll all NON-MAGIC treasure with nil-safeguard
     if (typeof schema.rollNonMagic === "function") {
-      schema.rollNonMagic(state);
+      treasureEngine.applyNilSafeguard(schema.rollNonMagic, state, 5);
     }
 
-    // 2) Roll MAGIC ITEMS / MAPS (never rerolled by nil-safeguard later)
+    // 2) Roll MAGIC ITEMS / MAPS (never rerolled by nil-safeguard)
     if (typeof schema.rollMagicAndMaps === "function") {
       schema.rollMagicAndMaps(state);
     }
@@ -121,6 +122,83 @@
                 ("// Treasure (" + schemaKey + ") //");
 
     return treasureEngine.buildFullOutput(title, state);
+  };
+
+  // ---------------------------------------------------------------
+  // Nil-safeguard helpers
+  // ---------------------------------------------------------------
+
+  // Return true if any non-magic category contributes gp value.
+  treasureEngine.hasNonMagicValue = function (state) {
+    if (!state) return false;
+
+    var gp =
+      (state.totalCoinGpValue || 0) +
+      (state.gemsGpValue || 0) +
+      (state.jewelryGpValue || 0) +
+      (state.booksGpValue || 0) +
+      (state.valuablesGpValue || 0);
+
+    return gp > 0;
+  };
+
+  // Reroll only NON-MAGIC treasure (coins/gems/jewelry/books/valuables)
+  // until some gp value appears or maxAttempts is reached.
+  // Magic items and maps on state are NEVER reset or rerolled here.
+  treasureEngine.applyNilSafeguard = function (rollNonMagicFn, state, maxAttempts) {
+    if (typeof rollNonMagicFn !== "function") {
+      return;
+    }
+
+    // Default safety cap = 5 attempts
+    var cap = (typeof maxAttempts === "number" && maxAttempts > 0)
+      ? Math.floor(maxAttempts)
+      : 5;
+
+    function resetNonMagic(s) {
+      // Coins
+      s.cpCoins = 0;
+      s.spCoins = 0;
+      s.gpCoins = 0;
+      s.spValueGp = 0;
+      s.cpValueGp = 0;
+      s.totalCoinGpValue = 0;
+      s.totalCoinEncumbrance = 0;
+      s.coinLines = [];
+
+      // Gems
+      s.gemsText = "";
+      s.gemsGpValue = 0;
+      s.gemsEncumbrance = 0;
+
+      // Jewelry
+      s.jewelryText = "";
+      s.jewelryGpValue = 0;
+      s.jewelryEncumbrance = 0;
+
+      // Books
+      s.booksLines = [];
+      s.booksGpValue = 0;
+      s.booksEncumbrance = 0;
+
+      // Valuables
+      s.valuablesLines = [];
+      s.valuablesGpValue = 0;
+      s.valuablesEncumbrance = 0;
+    }
+
+    var attempt = 0;
+
+    while (attempt < cap) {
+      resetNonMagic(state);
+      rollNonMagicFn(state);
+
+      if (treasureEngine.hasNonMagicValue(state)) {
+        break;
+      }
+
+      attempt += 1;
+    }
   };
 
   // Empty registries to be populated in future phases.
