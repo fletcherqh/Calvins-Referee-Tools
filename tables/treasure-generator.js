@@ -128,6 +128,7 @@
     return treasureEngine.buildFullOutput(title, state);
   };
 
+
   // ---------------------------------------------------------------
   // Nil-safeguard helpers
   // ---------------------------------------------------------------
@@ -1380,6 +1381,329 @@ treasureEngine.TREASURE_SCHEMAS.TTI = {
     treasureEngine.rollMagicAndMaps("TTI", state);
   }
 };
+
+  // ======================================================================
+  // SECTION Y — DUNGEON LEVEL TREASURE TABLES (Levels 1–13)
+  // ======================================================================
+  //
+  // Mirrors legacy:
+  //   oddTables.treasureLevel1()
+  //   oddTables.treasureLevel2to3()
+  //   oddTables.treasureLevel4to5()
+  //   oddTables.treasureLevel6to7()
+  //   oddTables.treasureLevel8to9()
+  //   oddTables.treasureLevel10to12()
+  //   oddTables.treasureLevel13()
+  //
+  // NOTE:
+  //   - Titles follow the new engine convention: "// Level X Treasure //"
+  //   - Non-magic uses the standard engines (coins/gems/jewelry).
+  //   - Magic plans preserve legacy percent chances, each with 1 magicOrMap roll.
+  //   - Nil-safeguard applies to all non-magic as with wilderness schemas.
+  // ======================================================================
+
+  // -------------------------
+  // MAGIC PLANS (Levels 1–13)
+  // -------------------------
+
+  // DL1 magic plan (10%, 1 roll magicOrMap)
+  treasureEngine.MAGIC_PLANS.DL1 = function (state) {
+    if (!dice.percentChance(10)) return;
+    treasureEngine._magicOrMapRolls(1, state);
+  };
+
+  // DL2_3 magic plan (15%, 1 roll magicOrMap)
+  treasureEngine.MAGIC_PLANS.DL2_3 = function (state) {
+    if (!dice.percentChance(15)) return;
+    treasureEngine._magicOrMapRolls(1, state);
+  };
+
+  // DL4_5 magic plan (20%, 1 roll magicOrMap)
+  treasureEngine.MAGIC_PLANS.DL4_5 = function (state) {
+    if (!dice.percentChance(20)) return;
+    treasureEngine._magicOrMapRolls(1, state);
+  };
+
+  // DL6_7 magic plan (25%, 1 roll magicOrMap)
+  treasureEngine.MAGIC_PLANS.DL6_7 = function (state) {
+    if (!dice.percentChance(25)) return;
+    treasureEngine._magicOrMapRolls(1, state);
+  };
+
+  // DL8_9 magic plan (30%, 1 roll magicOrMap)
+  treasureEngine.MAGIC_PLANS.DL8_9 = function (state) {
+    if (!dice.percentChance(30)) return;
+    treasureEngine._magicOrMapRolls(1, state);
+  };
+
+  // DL10_12 magic plan (35%, 1 roll magicOrMap)
+  treasureEngine.MAGIC_PLANS.DL10_12 = function (state) {
+    if (!dice.percentChance(35)) return;
+    treasureEngine._magicOrMapRolls(1, state);
+  };
+
+  // DL13 magic plan (40%, 1 roll magicOrMap)
+  treasureEngine.MAGIC_PLANS.DL13 = function (state) {
+    if (!dice.percentChance(40)) return;
+    treasureEngine._magicOrMapRolls(1, state);
+  };
+
+  // -------------------------
+  // SCHEMAS (Levels 1–13)
+  // -------------------------
+
+  // ----- Level 1 -----
+  // Legacy:
+  //   "Level 1 Treasure"
+  //   cp: d6 * 200
+  //   sp: d6 * 100
+  //   gp: d6 * 10
+  //   gems: 10% (gems d6(1))
+  //   jewelry: 10% (jewelry d6(1))
+  //   magicOrMap: 10%
+  treasureEngine.TREASURE_SCHEMAS.DL1 = {
+    title: "// Level 1 Treasure //",
+
+    coins: [
+      { type: "cp", chance: 100, dice: "d6", count: 1, multiplier: 200 },
+      { type: "sp", chance: 100, dice: "d6", count: 1, multiplier: 100 },
+      { type: "gp", chance: 100, dice: "d6", count: 1, multiplier: 10 }
+    ],
+
+    gems: [
+      { chance: 10, dice: "d6", count: 1 }
+    ],
+
+    rollNonMagic: function (state) {
+      treasureEngine.rollCoins(this, state);
+      treasureEngine.rollGems(this, state);
+
+      // Jewelry: 10% → oddTables.jewelry(d6(1))
+      if (dice.percentChance(10)) {
+        treasureEngine.rollJewelryWithSwaps(dice.d6(1), state);
+      }
+    },
+
+    rollMagicAndMaps: function (state) {
+      treasureEngine.rollMagicAndMaps("DL1", state);
+    }
+  };
+
+  // ----- Levels 2–3 -----
+  // Legacy:
+  //   "Level 2-3 Treasure"
+  //   cp: d12 * 200
+  //   sp: d12 * 100
+  //   gp: d6 * 100
+  //   gems: 20% (gems d6(1))
+  //   jewelry: 20% (jewelry d6(1))
+  //   magicOrMap: 15%
+  treasureEngine.TREASURE_SCHEMAS.DL2_3 = {
+    title: "// Level 2-3 Treasure //",
+
+    coins: [
+      { type: "cp", chance: 100, dice: "d12", count: 1, multiplier: 200 },
+      { type: "sp", chance: 100, dice: "d12", count: 1, multiplier: 100 },
+      { type: "gp", chance: 100, dice: "d6",  count: 1, multiplier: 100 }
+    ],
+
+    gems: [
+      { chance: 20, dice: "d6", count: 1 }
+    ],
+
+    rollNonMagic: function (state) {
+      treasureEngine.rollCoins(this, state);
+      treasureEngine.rollGems(this, state);
+
+      if (dice.percentChance(20)) {
+        treasureEngine.rollJewelryWithSwaps(dice.d6(1), state);
+      }
+    },
+
+    rollMagicAndMaps: function (state) {
+      treasureEngine.rollMagicAndMaps("DL2_3", state);
+    }
+  };
+
+  // ----- Levels 4–5 -----
+  // Legacy:
+  //   "Level 4-5 Treasure"
+  //   cp: d6 * 2000
+  //   sp: d6 * 1000
+  //   gp: d6 * 200
+  //   gems: 30% (gems d6(1))
+  //   jewelry: 30% (jewelry d6(1))
+  //   magicOrMap: 20%
+  treasureEngine.TREASURE_SCHEMAS.DL4_5 = {
+    title: "// Level 4-5 Treasure //",
+
+    coins: [
+      { type: "cp", chance: 100, dice: "d6", count: 1, multiplier: 2000 },
+      { type: "sp", chance: 100, dice: "d6", count: 1, multiplier: 1000 },
+      { type: "gp", chance: 100, dice: "d6", count: 1, multiplier: 200 }
+    ],
+
+    gems: [
+      { chance: 30, dice: "d6", count: 1 }
+    ],
+
+    rollNonMagic: function (state) {
+      treasureEngine.rollCoins(this, state);
+      treasureEngine.rollGems(this, state);
+
+      if (dice.percentChance(30)) {
+        treasureEngine.rollJewelryWithSwaps(dice.d6(1), state);
+      }
+    },
+
+    rollMagicAndMaps: function (state) {
+      treasureEngine.rollMagicAndMaps("DL4_5", state);
+    }
+  };
+
+  // ----- Levels 6–7 -----
+  // Legacy:
+  //   "Level 6-7 Treasure"
+  //   cp: d6 * 5000
+  //   sp: d6 * 2000
+  //   gp: d6 * 500
+  //   gems: 40% (gems d6(1))
+  //   jewelry: 40% (jewelry d6(1))
+  //   magicOrMap: 25%
+  treasureEngine.TREASURE_SCHEMAS.DL6_7 = {
+    title: "// Level 6-7 Treasure //",
+
+    coins: [
+      { type: "cp", chance: 100, dice: "d6", count: 1, multiplier: 5000 },
+      { type: "sp", chance: 100, dice: "d6", count: 1, multiplier: 2000 },
+      { type: "gp", chance: 100, dice: "d6", count: 1, multiplier: 500 }
+    ],
+
+    gems: [
+      { chance: 40, dice: "d6", count: 1 }
+    ],
+
+    rollNonMagic: function (state) {
+      treasureEngine.rollCoins(this, state);
+      treasureEngine.rollGems(this, state);
+
+      if (dice.percentChance(40)) {
+        treasureEngine.rollJewelryWithSwaps(dice.d6(1), state);
+      }
+    },
+
+    rollMagicAndMaps: function (state) {
+      treasureEngine.rollMagicAndMaps("DL6_7", state);
+    }
+  };
+
+  // ----- Levels 8–9 -----
+  // Legacy:
+  //   "Level 8-9 Treasure"
+  //   cp: d6 * 5000
+  //   sp: d6 * 5000
+  //   gp: d6 * 1000
+  //   gems: 50% (gems d12(1))
+  //   jewelry: 50% (jewelry d12(1))
+  //   magicOrMap: 30%
+  treasureEngine.TREASURE_SCHEMAS.DL8_9 = {
+    title: "// Level 8-9 Treasure //",
+
+    coins: [
+      { type: "cp", chance: 100, dice: "d6", count: 1, multiplier: 5000 },
+      { type: "sp", chance: 100, dice: "d6", count: 1, multiplier: 5000 },
+      { type: "gp", chance: 100, dice: "d6", count: 1, multiplier: 1000 }
+    ],
+
+    gems: [
+      { chance: 50, dice: "d12", count: 1 }
+    ],
+
+    rollNonMagic: function (state) {
+      treasureEngine.rollCoins(this, state);
+      treasureEngine.rollGems(this, state);
+
+      if (dice.percentChance(50)) {
+        treasureEngine.rollJewelryWithSwaps(dice.d12(1), state);
+      }
+    },
+
+    rollMagicAndMaps: function (state) {
+      treasureEngine.rollMagicAndMaps("DL8_9", state);
+    }
+  };
+
+  // ----- Levels 10–12 -----
+  // Legacy:
+  //   "Level 10-12 Treasure"
+  //   cp: d6 * 10000
+  //   sp: d6 * 5000
+  //   gp: d6 * 2000
+  //   gems: 60% (gems d12(1))
+  //   jewelry: 60% (jewelry d12(1))
+  //   magicOrMap: 35%
+  treasureEngine.TREASURE_SCHEMAS.DL10_12 = {
+    title: "// Level 10-12 Treasure //",
+
+    coins: [
+      { type: "cp", chance: 100, dice: "d6", count: 1, multiplier: 10000 },
+      { type: "sp", chance: 100, dice: "d6", count: 1, multiplier: 5000 },
+      { type: "gp", chance: 100, dice: "d6", count: 1, multiplier: 2000 }
+    ],
+
+    gems: [
+      { chance: 60, dice: "d12", count: 1 }
+    ],
+
+    rollNonMagic: function (state) {
+      treasureEngine.rollCoins(this, state);
+      treasureEngine.rollGems(this, state);
+
+      if (dice.percentChance(60)) {
+        treasureEngine.rollJewelryWithSwaps(dice.d12(1), state);
+      }
+    },
+
+    rollMagicAndMaps: function (state) {
+      treasureEngine.rollMagicAndMaps("DL10_12", state);
+    }
+  };
+
+  // ----- Level 13+ -----
+  // Legacy:
+  //   "Level 13+ Treasure"
+  //   cp: d6 * 20000
+  //   sp: d6 * 10000
+  //   gp: d6 * 5000
+  //   gems: 70% (gems d12(1))
+  //   jewelry: 70% (jewelry d12(1))
+  //   magicOrMap: 40%
+  treasureEngine.TREASURE_SCHEMAS.DL13 = {
+    title: "// Level 13+ Treasure //",
+
+    coins: [
+      { type: "cp", chance: 100, dice: "d6", count: 1, multiplier: 20000 },
+      { type: "sp", chance: 100, dice: "d6", count: 1, multiplier: 10000 },
+      { type: "gp", chance: 100, dice: "d6", count: 1, multiplier: 5000 }
+    ],
+
+    gems: [
+      { chance: 70, dice: "d12", count: 1 }
+    ],
+
+    rollNonMagic: function (state) {
+      treasureEngine.rollCoins(this, state);
+      treasureEngine.rollGems(this, state);
+
+      if (dice.percentChance(70)) {
+        treasureEngine.rollJewelryWithSwaps(dice.d12(1), state);
+      }
+    },
+
+    rollMagicAndMaps: function (state) {
+      treasureEngine.rollMagicAndMaps("DL13", state);
+    }
+  };
 
   // ==================================================================
   // END OF CURRENT IMPLEMENTATION PHASE

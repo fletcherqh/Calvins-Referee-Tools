@@ -1223,139 +1223,41 @@ oddTables.treasureTypeI = function () {
   return treasureEngine.run("TTI");
 };
 
-//level treasure tables
+// level treasure tables (now delegating to treasureEngine)
 
+// Level 1 → DL1 schema
 oddTables.treasureLevel1 = function () {
-	var result;
-	result = "Level 1 Treasure";
-	result += "\n\t" + (dice.d6(1) * 200) + "cp";
-	result += "\n\t" + (dice.d6(1) * 100) + "sp";
-	result += "\n\t" + (dice.d6(1) * 10) + "gp";
-	if (dice.percentChance(10)) {
-		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(10)) {
-		result += "\n\t" + oddTables.jewelry(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(10)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("DL1");
 };
 
+// Levels 2–3 → DL2_3 schema
 oddTables.treasureLevel2to3 = function () {
-	var result;
-	result = "Level 2-3 Treasure";
-	result += "\n\t" + (dice.d12(1) * 200) + "cp";
-	result += "\n\t" + (dice.d12(1) * 100) + "sp";
-	result += "\n\t" + (dice.d6(1) * 100) + "gp";
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.jewelry(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(15)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("DL2_3");
 };
 
+// Levels 4–5 → DL4_5 schema
 oddTables.treasureLevel4to5 = function () {
-	var result;
-	result = "Level 4-5 Treasure";
-	result += "\n\t" + (dice.d6(1) * 2000) + "cp";
-	result += "\n\t" + (dice.d6(1) * 1000) + "sp";
-	result += "\n\t" + (dice.d6(1) * 200) + "gp";
-	if (dice.percentChance(30)) {
-		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(30)) {
-		result += "\n\t" + oddTables.jewelry(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("DL4_5");
 };
 
+// Levels 6–7 → DL6_7 schema
 oddTables.treasureLevel6to7 = function () {
-	var result;
-	result = "Level 6-7 Treasure";
-	result += "\n\t" + (dice.d6(1) * 5000) + "cp";
-	result += "\n\t" + (dice.d6(1) * 2000) + "sp";
-	result += "\n\t" + (dice.d6(1) * 500) + "gp";
-	if (dice.percentChance(40)) {
-		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(40)) {
-		result += "\n\t" + oddTables.jewelry(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("DL6_7");
 };
 
+// Levels 8–9 → DL8_9 schema
 oddTables.treasureLevel8to9 = function () {
-	var result;
-	result = "Level 8-9 Treasure";
-	result += "\n\t" + (dice.d6(1) * 5000) + "cp";
-	result += "\n\t" + (dice.d6(1) * 5000) + "sp";
-	result += "\n\t" + (dice.d6(1) * 1000) + "gp";
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.gems(dice.d12(1)).trim();
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.jewelry(dice.d12(1)).trim();
-	}
-	if (dice.percentChance(30)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("DL8_9");
 };
 
+// Levels 10–12 → DL10_12 schema
 oddTables.treasureLevel10to12 = function () {
-	var result;
-	result = "Level 10-12 Treasure";
-	result += "\n\t" + (dice.d6(1) * 10000) + "cp";
-	result += "\n\t" + (dice.d6(1) * 5000) + "sp";
-	result += "\n\t" + (dice.d6(1) * 2000) + "gp";
-	if (dice.percentChance(60)) {
-		result += "\n\t" + oddTables.gems(dice.d12(1)).trim();
-	}
-	if (dice.percentChance(60)) {
-		result += "\n\t" + oddTables.jewelry(dice.d12(1)).trim();
-	}
-	if (dice.percentChance(35)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("DL10_12");
 };
 
+// Level 13+ → DL13 schema
 oddTables.treasureLevel13 = function () {
-	var result;
-	result = "Level 13+ Treasure";
-	result += "\n\t" + (dice.d6(1) * 20000) + "cp";
-	result += "\n\t" + (dice.d6(1) * 10000) + "sp";
-	result += "\n\t" + (dice.d6(1) * 5000) + "gp";
-	if (dice.percentChance(70)) {
-		result += "\n\t" + oddTables.gems(dice.d12(1)).trim();
-	}
-	if (dice.percentChance(70)) {
-		result += "\n\t" + oddTables.jewelry(dice.d12(1)).trim();
-	}
-	if (dice.percentChance(40)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("DL13");
 };
 
 //dungeon encounters
