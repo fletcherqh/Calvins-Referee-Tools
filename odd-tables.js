@@ -1169,557 +1169,58 @@ oddTables.treasureMap = function () {
 	return result;
 };
 
-// wilderness treasure tables
+// Wilderness Treasure Tables A–I — Now Routed Through treasureEngine
 
 oddTables.treasureTypeA = function () {
-	var result, i;
-
-	// Non-magic treasure state
-	var gpCoins = 0;
-	var spCoins = 0;
-	var cpCoins = 0;
-
-	var gems = "";
-	var gemsValue = 0;
-	var gemsEnc = 0;
-
-	var jewelry = "";
-	var valuables = []; // placeholder for future valuable items
-	var books = [];     // placeholder for future books
-
-	// Magic and maps state
-	var magicItems = [];
-	var mapsList = [];
-
-	// Helper: roll all NON-MAGIC treasure once (coins, gems, jewelry, valuables, books)
-	function rollNonMagicOnce() {
-		var amount;
-
-		// Reset non-magic state before each pass
-		gpCoins = 0;
-		spCoins = 0;
-		cpCoins = 0;
-
-		gems = "";
-		gemsValue = 0;
-		gemsEnc = 0;
-
-		jewelry = "";
-		valuables = [];
-		books = [];
-
-		// COINAGE
-		if (dice.percentChance(25)) {
-			amount = dice.d6(1) * 1000;
-			cpCoins += amount;
-		}
-		if (dice.percentChance(30)) {
-			amount = dice.d6(1) * 1000;
-			spCoins += amount;
-		}
-		if (dice.percentChance(35)) {
-			amount = dice.d6(2) * 1000;
-			gpCoins += amount;
-		}
-
-		// GEMS
-		if (dice.percentChance(50)) {
-			var gemCount = dice.d6(6);
-			// Use structured helper when available; fall back to legacy string if not.
-			if (typeof houseGems === "object" && typeof houseGems.bundleForCount === "function") {
-				var gemBundle = houseGems.bundleForCount(gemCount);
-				gems = (gemBundle.text || "").trim();
-				gemsValue = gemBundle.totalGp || 0;
-				gemsEnc = gemBundle.totalP || 0;
-			} else {
-				// Legacy path: preserve behavior if helper is unavailable
-				gems = oddTables.gems(gemCount).trim();
-				gemsValue = 0;
-				gemsEnc = 0;
-			}
-		}
-
-		// JEWELRY
-		if (dice.percentChance(50)) {
-			// For now, keep using the existing adapter; totals will be wired in a later step.
-			jewelry = oddTables.jewelry(dice.d6(6)).trim();
-		}
-
-		// VALUABLE ITEMS / BOOKS will be wired in here later, when those sources are connected.
-	}
-
-	// --- First pass: roll NON-MAGIC once ---
-	rollNonMagicOnce();
-
-	// --- Magic items and maps: roll ONCE and never reroll ---
-	if (dice.percentChance(40)) {
-		for (i = 0; i < 3; i++) {
-			var roll = dice.d100(1);
-			var entry;
-			if (roll <= 75) {
-				entry = oddTables.magicItem().trim();
-				if (entry) {
-					magicItems.push(entry);
-				}
-			} else {
-				entry = maps.treasureMap().trim();
-				if (entry) {
-					mapsList.push(entry);
-				}
-			}
-		}
-	}
-
-	// --- "No nil treasure" rule ---
-	// If there is no non-magic gp value at all (no coins, no gems, no jewelry, no valuables, no books),
-	// reroll NON-MAGIC ONLY until something of value appears or a safety cap is reached.
-	if (
-		gpCoins === 0 &&
-		spCoins === 0 &&
-		cpCoins === 0 &&
-		!gems &&
-		!jewelry &&
-		valuables.length === 0 &&
-		books.length === 0
-	) {
-		var attempts = 0;
-		while (
-			gpCoins === 0 &&
-			spCoins === 0 &&
-			cpCoins === 0 &&
-			!gems &&
-			!jewelry &&
-			valuables.length === 0 &&
-			books.length === 0 &&
-			attempts < 100
-		) {
-			attempts += 1;
-			rollNonMagicOnce();
-		}
-	}
-
-	// --- Build output ---
-
-	// Start result with title
-	result = "// Treasure Type A (Land) //";
-
-	// Helper to append non-empty sections, omitting empty ones
-	function appendSection(label, body) {
-		if (!body) return;
-		// Two newlines before each heading gives:
-		// one blank line after title / between sections
-		result += "\n\n" + label + ":\n" + body;
-	}
-
-	// MAGIC ITEMS body (multi-line blocks separated by blank lines)
-	var magicBody = magicItems.length ? magicItems.join("\n\n") : "";
-
-	// TREASURE MAPS body (multi-line blocks separated by blank lines)
-	var mapsBody = mapsList.length ? mapsList.join("\n\n") : "";
-
-	// VALUABLE ITEMS / BOOKS bodies (placeholders for future wiring)
-	var valuablesBody = valuables.length ? valuables.join("\n") : "";
-	var booksBody = books.length ? books.join("\n") : "";
-
-	// JEWELRY and GEMS bodies (compact)
-	var jewelryBody = jewelry ? jewelry : "";
-	var gemsBody = gems ? gems : "";
-
-	// Build COINAGE body with subtotals
-	var coinLines = [];
-	var coinTypes = 0;
-	var spValueGp = 0;
-	var cpValueGp = 0;
-
-	if (gpCoins > 0) {
-		coinTypes += 1;
-		coinLines.push(gpCoins + "gp (" + gpCoins + "p. encumbrance)");
-	}
-	if (spCoins > 0) {
-		coinTypes += 1;
-		// 1gp = 2sp → round UP to nearest gp
-		spValueGp = Math.ceil(spCoins / 2);
-		coinLines.push(
-			spCoins + "sp = " + spValueGp + "gp value (" + spCoins + "p. encumbrance)"
-		);
-	}
-	if (cpCoins > 0) {
-		coinTypes += 1;
-		// 1gp = 3cp → round UP to nearest gp
-		cpValueGp = Math.ceil(cpCoins / 3);
-		coinLines.push(
-			cpCoins + "cp = " + cpValueGp + "gp value (" + cpCoins + "p. encumbrance)"
-		);
-	}
-
-	// Coin totals (always computed; only printed when more than one type)
-	var totalCoinGpValue = gpCoins + spValueGp + cpValueGp;
-	var totalCoinEncumbrance = gpCoins + spCoins + cpCoins; // 1p. per coin
-
-	// Total coin value line only when more than one coin type appears
-	if (coinTypes > 1) {
-		coinLines.push(
-			totalCoinGpValue +
-				"gp Total coin value (" +
-				totalCoinEncumbrance +
-				"p. total coin encumbrance)"
-		);
-	}
-
-	var coinsBody = coinLines.length ? coinLines.join("\n") : "";
-
-	// Canonical order for this table
-	appendSection("MAGIC ITEMS", magicBody);
-	appendSection("TREASURE MAPS", mapsBody);
-	appendSection("VALUABLE ITEMS", valuablesBody);
-	appendSection("BOOKS", booksBody);
-	appendSection("JEWELRY", jewelryBody);
-	appendSection("GEMS", gemsBody);
-	appendSection("COINAGE", coinsBody);
-
-	// --- GRAND TOTAL (for now: coins + gems only) ---
-var gtGp = 0;
-var gtEnc = 0;
-var gtParts = 0;
-
-// Include coins
-if (totalCoinGpValue > 0) {
-  gtGp += totalCoinGpValue;
-  gtEnc += totalCoinEncumbrance;
-  gtParts += 1;
-}
-
-// Include gems
-if (gemsValue > 0) {
-  gtGp += gemsValue;
-  gtEnc += gemsEnc;
-  gtParts += 1;
-}
-
-// Print only if more than one contributing category
-if (gtParts > 1) {
-  result +=
-    "\n\nGRAND TOTAL:\n" +
-    gtGp +
-    "gp. Treasure value (" +
-    gtEnc +
-    "p. encumbrance)";
-}
-
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTA_LAND");
 };
 
 oddTables.treasureTypeADesert = function () {
-	var result, i;
-	result = "Treasure Type A (Desert)";
-	if (dice.percentChance(20)) {
-		result += "\n\t" + (dice.d4(1) * 1000) + "cp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d4(1) * 1000) + "sp";
-	}
-	if (dice.percentChance(30)) {
-		result += "\n\t" + (dice.d6(1) * 1000) + "gp";
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.gems(dice.d4(1) * 10).trim();
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.jewelry(dice.d4(1) * 10).trim();
-	}
-	if (dice.percentChance(60)) {
-		for (i = 0; i < 3; i++) {
-			result += "\n\t" + oddTables.magicItem().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTA_DESERT");
 };
 
 oddTables.treasureTypeAWater = function () {
-	var result;
-	result = "Treasure Type A (Water)";
-	if (dice.percentChance(60)) {
-		result += "\n\t" + (dice.d6(5) * 1000) + "gp";
-	}
-	if (dice.percentChance(60)) {
-		result += "\n\t" + oddTables.gems(dice.d6(1) * 10).trim();
-	}
-	if (dice.percentChance(60)) {
-		result += "\n\t" + oddTables.jewelry(dice.d6(1) * 10).trim();
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + maps.treasureMap().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTA_WATER");
 };
 
 oddTables.treasureTypeB = function () {
-	var result;
-	result = "Treasure Type B";
-	if (dice.percentChance(50)) {
-		result += "\n\t" + (dice.d8(1) * 1000) + "cp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d6(1) * 1000) + "sp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d3(2) * 1000) + "gp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + oddTables.gems(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + oddTables.jewelry(dice.d6(1)).trim();
-	}
-	if (dice.percentChance(10)) {
-		result += "\n\t" + oddTables.magicItemArms().trim();
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTB");
 };
 
 oddTables.treasureTypeC = function () {
-	var result, i;
-	result = "Treasure Type C";
-	if (dice.percentChance(20)) {
-		result += "\n\t" + (dice.d12(1) * 1000) + "cp";
-	}
-	if (dice.percentChance(30)) {
-		result += "\n\t" + (dice.d4(1) * 1000) + "sp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + oddTables.gems(dice.d4(1)).trim();
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + oddTables.jewelry(dice.d4(1)).trim();
-	}
-	if (dice.percentChance(40)) {
-		for (i = 0; i < 2; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTC");
 };
 
 oddTables.treasureTypeD = function () {
-	var result, i;
-	result = "Treasure Type D";
-	if (dice.percentChance(10)) {
-		result += "\n\t" + (dice.d8(1) * 1000) + "cp";
-	}
-	if (dice.percentChance(15)) {
-		result += "\n\t" + (dice.d12(1) * 1000) + "sp";
-	}
-	if (dice.percentChance(60)) {
-		result += "\n\t" + (dice.d6(1) * 1000) + "gp";
-	}
-	if (dice.percentChance(30)) {
-		result += "\n\t" + oddTables.gems(dice.d8(1)).trim();
-	}
-	if (dice.percentChance(30)) {
-		result += "\n\t" + oddTables.jewelry(dice.d8(1)).trim();
-	}
-	if (dice.percentChance(40)) {
-		result += "\n\t" + oddTables.potion(true);
-		for (i = 0; i < 2; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTD");
 };
 
 oddTables.treasureTypeE = function () {
-	var result, i;
-	result = "Treasure Type E";
-	if (dice.percentChance(5)) {
-		result += "\n\t" + (dice.d10(1) * 1000) + "cp";
-	}
-	if (dice.percentChance(30)) {
-		result += "\n\t" + (dice.d12(1) * 1000) + "sp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d8(1) * 1000) + "gp";
-	}
-	if (dice.percentChance(10)) {
-		result += "\n\t" + oddTables.gems(dice.d10(1)).trim();
-	}
-	if (dice.percentChance(10)) {
-		result += "\n\t" + oddTables.jewelry(dice.d10(1)).trim();
-	}
-	if (dice.percentChance(40)) {
-		result += "\n\t" + oddTables.scroll(true);
-		for (i = 0; i < 3; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTE");
 };
 
 oddTables.treasureTypeF = function () {
-	var result, i;
-	result = "Treasure Type F";
-	if (dice.percentChance(10)) {
-		result += "\n\t" + (dice.d10(2) * 1000) + "sp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d12(1) * 1000) + "gp";
-	}
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.gems(dice.d12(2)).trim();
-	}
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.jewelry(dice.d12(2)).trim();
-	}
-	if (dice.percentChance(35)) {
-		result += "\n\t" + oddTables.potion(true).trim();
-		result += "\n\t" + oddTables.scroll(true).trim();
-		for (i = 0; i < 3; i++) {
-			result += "\n\t" + oddTables.magicItemNoArms().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTF");
 };
 
 oddTables.treasureTypeG = function () {
-	var result, i;
-	result = "Treasure Type G";
-	if (dice.percentChance(75)) {
-		result += "\n\t" + (dice.d4(1) * 10000) + "gp";
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + oddTables.gems(dice.d6(3)).trim();
-	}
-	if (dice.percentChance(25)) {
-		result += "\n\t" + oddTables.jewelry(dice.d10(1)).trim();
-	}
-	if (dice.percentChance(40)) {
-		result += "\n\t" + oddTables.scroll(true).trim();
-		for (i = 0; i < 4; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTG");
 };
 
 oddTables.treasureTypeHHalf = function () {
-	var result, i;
-	result = "Treasure Type H (Half)";
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d8(3) * 500) + "cp";
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + (dice.d100(1) * 500) + "sp";
-	}
-	if (dice.percentChance(75)) {
-		result += "\n\t" + (dice.d6(1) * 5000) + "gp";
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.gems(dice.d50(1)).trim();
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.jewelry(dice.d2(1) * 10).trim();
-	}
-	if (dice.percentChance(20)) {
-		if (dice.percentChance(50)) {
-			result += "\n\t" + oddTables.potion(true).trim();
-		}
-		if (dice.percentChance(50)) {
-			result += "\n\t" + oddTables.scroll(true).trim();
-		}
-		for (i = 0; i < 2; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTH_HALF");
 };
 
 oddTables.treasureTypeH = function () {
-	var result, i;
-	result = "Treasure Type H";
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d8(3) * 1000) + "cp";
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + (dice.d100(1) * 1000) + "sp";
-	}
-	if (dice.percentChance(75)) {
-		result += "\n\t" + (dice.d6(1) * 10000) + "gp";
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.gems(dice.d100(1)).trim();
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.jewelry(dice.d4(1) * 10).trim();
-	}
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.potion(true).trim();
-		result += "\n\t" + oddTables.scroll(true).trim();
-		for (i = 0; i < 4; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTH_FULL");
 };
 
 oddTables.treasureTypeHDouble = function () {
-	var result, i;
-	result = "Treasure Type H (Double)";
-	if (dice.percentChance(25)) {
-		result += "\n\t" + (dice.d8(3) * 2000) + "cp";
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + (dice.d100(1) * 2000) + "sp";
-	}
-	if (dice.percentChance(75)) {
-		result += "\n\t" + (dice.d6(1) * 20000) + "gp";
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.gems(dice.d100(2)).trim();
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.jewelry(dice.d4(2) * 10).trim();
-	}
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.potion(true).trim();
-		result += "\n\t" + oddTables.potion(true).trim();
-		result += "\n\t" + oddTables.scroll(true).trim();
-		result += "\n\t" + oddTables.scroll(true).trim();
-		for (i = 0; i < 8; i++) {
-			result += "\n\t" + oddTables.magicOrMap().trim();
-		}
-	}
-	result += "\n";
-	return result;
+  return treasureEngine.run("TTH_DOUBLE");
 };
 
 oddTables.treasureTypeI = function () {
-	var result;
-	result = "Treasure Type I";
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.gems(dice.d8(2)).trim();
-	}
-	if (dice.percentChance(50)) {
-		result += "\n\t" + oddTables.jewelry(dice.d8(2)).trim();
-	}
-	if (dice.percentChance(20)) {
-		result += "\n\t" + oddTables.magicOrMap().trim();
-	}
-	result += "\n";
-	return result;
-};
-
-oddTables.treasureTypeNil = function () {
-	return ""; //placeholder for encounters with no treasure
+  return treasureEngine.run("TTI");
 };
 
 //level treasure tables

@@ -78,6 +78,7 @@
   //   - Calls schema.rollMagicAndMaps(state) if present.
   //   - Uses buildFullOutput(title, state) to assemble sections + GRAND TOTAL.
   //
+
   treasureEngine.run = function (schemaKey) {
     var schema = treasureEngine.TREASURE_SCHEMAS[schemaKey];
 
@@ -109,7 +110,10 @@
 
     // 1) Roll all NON-MAGIC treasure with nil-safeguard
     if (typeof schema.rollNonMagic === "function") {
-      treasureEngine.applyNilSafeguard(schema.rollNonMagic, state, 5);
+      treasureEngine.applyNilSafeguard(function (st) {
+        // Ensure `this` inside rollNonMagic is the schema object
+        schema.rollNonMagic.call(schema, st);
+      }, state, 5);
     }
 
     // 2) Roll MAGIC ITEMS / MAPS (never rerolled by nil-safeguard)
@@ -235,13 +239,16 @@
       if (dice.percentChance(spec.chance)) {
         // Parse the dice expression (e.g., "d4", "d6", "d100")
         var die = (spec.dice || "").toLowerCase();
-        var fn =
+               var fn =
+          die === "d2"   ? dice.d2   :
+          die === "d3"   ? dice.d3   :
           die === "d4"   ? dice.d4   :
           die === "d6"   ? dice.d6   :
           die === "d8"   ? dice.d8   :
           die === "d10"  ? dice.d10  :
           die === "d12"  ? dice.d12  :
           die === "d20"  ? dice.d20  :
+          die === "d50"  ? dice.d50  :
           die === "d100" ? dice.d100 :
           null;
 
@@ -347,12 +354,15 @@
       if (dice.percentChance(spec.chance)) {
         var die = (spec.dice || "").toLowerCase();
         var fn =
+          die === "d2"   ? dice.d2   :
+          die === "d3"   ? dice.d3   :
           die === "d4"   ? dice.d4   :
           die === "d6"   ? dice.d6   :
           die === "d8"   ? dice.d8   :
           die === "d10"  ? dice.d10  :
           die === "d12"  ? dice.d12  :
           die === "d20"  ? dice.d20  :
+          die === "d50"  ? dice.d50  :
           die === "d100" ? dice.d100 :
           null;
 
@@ -616,6 +626,46 @@
   };
 
   // ======================================================================
+  // INTERNAL HELPER — REPLICATES oddTables.magicOrMap() BUT ROUTES
+  // OUTPUTS TO MAGIC ITEMS vs MAPS (75% / 25% SPLIT)
+  // ======================================================================
+
+  treasureEngine._magicOrMapRolls = function (count, state) {
+    var n = (typeof count === "number" && count > 0) ? Math.floor(count) : 0;
+    if (n <= 0) return;
+
+    for (var i = 0; i < n; i++) {
+      var roll = dice.d100(1);
+
+      // 75% → magic item
+      if (roll <= 75) {
+        if (typeof oddTables === "object" &&
+            oddTables !== null &&
+            typeof oddTables.magicItem === "function") {
+
+          var mi = oddTables.magicItem();
+          if (mi) {
+            state.magicItems.push(String(mi).trim());
+          }
+        }
+      }
+
+      // 25% → treasure map
+      else {
+        if (typeof maps === "object" &&
+            maps !== null &&
+            typeof maps.treasureMap === "function") {
+
+          var tm = maps.treasureMap();
+          if (tm) {
+            state.mapsList.push(String(tm).trim());
+          }
+        }
+      }
+    }
+  };
+
+  // ======================================================================
   // SECTION 5 — SECTION ASSEMBLY HELPERS (text only, no schemas)
   // ======================================================================
   //
@@ -679,8 +729,8 @@
       var vLines = state.valuablesLines.slice(); // don’t mutate state
       if (vLines.length > 1 && state.valuablesGpValue && state.valuablesGpValue > 0) {
         var vTotalLine =
-          state.valuablesGpValue + "gp. Total valuables value (" +
-          (state.valuablesEncumbrance || 0) + "p. Total valuables encumbrance)";
+          state.valuablesGpValue + "gp. Total items value (" +
+          (state.valuablesEncumbrance || 0) + "p. Total items encumbrance)";
         vLines.push(vTotalLine);
       }
       valuablesBody = vLines.join("\n");
@@ -719,8 +769,8 @@
 
     // Canonical order:
     text = treasureEngine._appendSection(text, "MAGIC ITEMS", magicBody);
-    text = treasureEngine._appendSection(text, "TREASURE MAPS", mapsBody);
-    text = treasureEngine._appendSection(text, "VALUABLE ITEMS", valuablesBody);
+    text = treasureEngine._appendSection(text, "MAPS", mapsBody);
+    text = treasureEngine._appendSection(text, "ITEMS", valuablesBody);
     text = treasureEngine._appendSection(text, "BOOKS", booksBody);
     text = treasureEngine._appendSection(text, "JEWELRY", jewelryBody);
     text = treasureEngine._appendSection(text, "GEMS", gemsBody);
@@ -845,6 +895,491 @@
 
     return out;
   };
+
+// ======================================================================
+// SECTION X — WILDERNESS TREASURE TABLES (A–I, with variants)
+// ======================================================================
+//
+// Each schema below uses the shared engines:
+//   - rollCoins()
+//   - rollGems()
+//   - rollJewelryWithSwaps()
+//   - rollMagicAndMaps()
+//   - _magicOrMapRolls()
+//   - applyNilSafeguard() via run()
+//
+// All numeric chances, dice expressions, and counts are taken directly
+// from the legacy oddTables code you provided.
+//
+// ======================================================================
+
+
+// ---------------------------------------------------------------
+// MAGIC PLANS
+// ---------------------------------------------------------------
+
+// TTA_LAND magic plan (40%, 3 rolls, 75% magic / 25% map)
+treasureEngine.MAGIC_PLANS.TTA_LAND = function (state) {
+  if (!dice.percentChance(40)) return;
+  treasureEngine._magicOrMapRolls(3, state);
+};
+
+// TTA_DESERT magic plan (60%, 3 magic items — Desert table had no maps)
+treasureEngine.MAGIC_PLANS.TTA_DESERT = function (state) {
+  if (!dice.percentChance(60)) return;
+
+  for (var i = 0; i < 3; i++) {
+    if (typeof oddTables.magicItem === "function") {
+      var mi = oddTables.magicItem();
+      if (mi) state.magicItems.push(String(mi).trim());
+    }
+  }
+};
+
+// TTA_WATER magic plan (50%, 1 map)
+treasureEngine.MAGIC_PLANS.TTA_WATER = function (state) {
+  if (!dice.percentChance(50)) return;
+
+  if (typeof maps.treasureMap === "function") {
+    var m = maps.treasureMap();
+    if (m) state.mapsList.push(String(m).trim());
+  }
+};
+
+// TTB magic plan (10%, 1 magicItemArms)
+treasureEngine.MAGIC_PLANS.TTB = function (state) {
+  if (!dice.percentChance(10)) return;
+
+  if (typeof oddTables.magicItemArms === "function") {
+    var mi = oddTables.magicItemArms();
+    if (mi) state.magicItems.push(String(mi).trim());
+  }
+};
+
+// TTC magic plan (40%, 2 rolls → magicOrMap)
+treasureEngine.MAGIC_PLANS.TTC = function (state) {
+  if (!dice.percentChance(40)) return;
+  treasureEngine._magicOrMapRolls(2, state);
+};
+
+// TTD magic plan (40%, potion + 2 rolls magicOrMap)
+treasureEngine.MAGIC_PLANS.TTD = function (state) {
+  if (!dice.percentChance(40)) return;
+
+  if (typeof oddTables.potion === "function") {
+    var pot = oddTables.potion(true);
+    if (pot) state.magicItems.push(String(pot).trim());
+  }
+
+  treasureEngine._magicOrMapRolls(2, state);
+};
+
+// TTE magic plan (40%, scroll + 3 rolls magicOrMap)
+treasureEngine.MAGIC_PLANS.TTE = function (state) {
+  if (!dice.percentChance(40)) return;
+
+  if (typeof oddTables.scroll === "function") {
+    var scr = oddTables.scroll(true);
+    if (scr) state.magicItems.push(String(scr).trim());
+  }
+
+  treasureEngine._magicOrMapRolls(3, state);
+};
+
+// TTF magic plan (35%, potion + scroll + 3× no-arms items)
+treasureEngine.MAGIC_PLANS.TTF = function (state) {
+  if (!dice.percentChance(35)) return;
+
+  if (typeof oddTables.potion === "function") {
+    var pot = oddTables.potion(true);
+    if (pot) state.magicItems.push(String(pot).trim());
+  }
+
+  if (typeof oddTables.scroll === "function") {
+    var scr = oddTables.scroll(true);
+    if (scr) state.magicItems.push(String(scr).trim());
+  }
+
+  if (typeof oddTables.magicItemNoArms === "function") {
+    for (var i = 0; i < 3; i++) {
+      var mi = oddTables.magicItemNoArms();
+      if (mi) state.magicItems.push(String(mi).trim());
+    }
+  }
+};
+
+// TTG magic plan (40%, scroll + 4 rolls magicOrMap)
+treasureEngine.MAGIC_PLANS.TTG = function (state) {
+  if (!dice.percentChance(40)) return;
+
+  if (typeof oddTables.scroll === "function") {
+    var scr = oddTables.scroll(true);
+    if (scr) state.magicItems.push(String(scr).trim());
+  }
+
+  treasureEngine._magicOrMapRolls(4, state);
+};
+
+// TTH_HALF magic plan (20%, optional potion, optional scroll, + 2× magic/map)
+treasureEngine.MAGIC_PLANS.TTH_HALF = function (state) {
+  if (!dice.percentChance(20)) return;
+
+  if (dice.percentChance(50) && typeof oddTables.potion === "function") {
+    var pot = oddTables.potion(true);
+    if (pot) state.magicItems.push(String(pot).trim());
+  }
+  if (dice.percentChance(50) && typeof oddTables.scroll === "function") {
+    var scr = oddTables.scroll(true);
+    if (scr) state.magicItems.push(String(scr).trim());
+  }
+
+  treasureEngine._magicOrMapRolls(2, state);
+};
+
+// TTH_FULL magic plan (20%, potion + scroll + 4 rolls magicOrMap)
+treasureEngine.MAGIC_PLANS.TTH_FULL = function (state) {
+  if (!dice.percentChance(20)) return;
+
+  if (typeof oddTables.potion === "function") {
+    var pot = oddTables.potion(true);
+    if (pot) state.magicItems.push(String(pot).trim());
+  }
+  if (typeof oddTables.scroll === "function") {
+    var scr = oddTables.scroll(true);
+    if (scr) state.magicItems.push(String(scr).trim());
+  }
+
+  treasureEngine._magicOrMapRolls(4, state);
+};
+
+// TTH_DOUBLE magic plan (20%, 2× potion, 2× scroll, 8× magicOrMap)
+treasureEngine.MAGIC_PLANS.TTH_DOUBLE = function (state) {
+  if (!dice.percentChance(20)) return;
+
+  for (var i = 0; i < 2; i++) {
+    var pot = oddTables.potion(true);
+    if (pot) state.magicItems.push(String(pot).trim());
+  }
+
+  for (var j = 0; j < 2; j++) {
+    var scr = oddTables.scroll(true);
+    if (scr) state.magicItems.push(String(scr).trim());
+  }
+
+  treasureEngine._magicOrMapRolls(8, state);
+};
+
+// TTI magic plan (20%, 1 roll magicOrMap)
+treasureEngine.MAGIC_PLANS.TTI = function (state) {
+  if (!dice.percentChance(20)) return;
+  treasureEngine._magicOrMapRolls(1, state);
+};
+
+
+// ---------------------------------------------------------------
+// SCHEMAS (NON-MAGIC)
+// ---------------------------------------------------------------
+
+// ----- A (Land) -----
+treasureEngine.TREASURE_SCHEMAS.TTA_LAND = {
+  title: "// Treasure Type A (Land) //",
+  coins: [
+    { type: "cp", chance: 25, dice: "d6", count: 1, multiplier: 1000 },
+    { type: "sp", chance: 30, dice: "d6", count: 1, multiplier: 1000 },
+    { type: "gp", chance: 35, dice: "d6", count: 2, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 50, dice: "d6", count: 6 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+    if (dice.percentChance(50)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d6(6), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTA_LAND", state);
+  }
+};
+
+// ----- A (Desert) -----
+treasureEngine.TREASURE_SCHEMAS.TTA_DESERT = {
+  title: "// Treasure Type A (Desert) //",
+  coins: [
+    { type: "cp", chance: 20, dice: "d4", count: 1, multiplier: 1000 },
+    { type: "sp", chance: 25, dice: "d4", count: 1, multiplier: 1000 },
+    { type: "gp", chance: 30, dice: "d6", count: 1, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 50, dice: "d4", count: 10 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(50)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d4(10), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTA_DESERT", state);
+  }
+};
+
+// ----- A (Water) -----
+treasureEngine.TREASURE_SCHEMAS.TTA_WATER = {
+  title: "// Treasure Type A (Water) //",
+  coins: [
+    { type: "gp", chance: 60, dice: "d6", count: 5, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 60, dice: "d6", count: 10 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(60)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d6(10), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTA_WATER", state);
+  }
+};
+
+// ----- B -----
+treasureEngine.TREASURE_SCHEMAS.TTB = {
+  title: "// Treasure Type B //",
+  coins: [
+    { type: "cp", chance: 50, dice: "d8", count: 1, multiplier: 1000 },
+    { type: "sp", chance: 25, dice: "d6", count: 1, multiplier: 1000 },
+    { type: "gp", chance: 25, dice: "d3", count: 2, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 25, dice: "d6", count: 1 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(25)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d6(1), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTB", state);
+  }
+};
+
+// ----- C -----
+treasureEngine.TREASURE_SCHEMAS.TTC = {
+  title: "// Treasure Type C //",
+  coins: [
+    { type: "cp", chance: 20, dice: "d12", count: 1, multiplier: 1000 },
+    { type: "sp", chance: 30, dice: "d4", count: 1, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 25, dice: "d4", count: 1 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(25)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d4(1), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTC", state);
+  }
+};
+
+// ----- D -----
+treasureEngine.TREASURE_SCHEMAS.TTD = {
+  title: "// Treasure Type D //",
+  coins: [
+    { type: "cp", chance: 10, dice: "d8", count: 1, multiplier: 1000 },
+    { type: "sp", chance: 15, dice: "d12", count: 1, multiplier: 1000 },
+    { type: "gp", chance: 60, dice: "d6", count: 1, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 30, dice: "d8", count: 1 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(30)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d8(1), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTD", state);
+  }
+};
+
+// ----- E -----
+treasureEngine.TREASURE_SCHEMAS.TTE = {
+  title: "// Treasure Type E //",
+  coins: [
+    { type: "cp", chance: 5, dice: "d10", count: 1, multiplier: 1000 },
+    { type: "sp", chance: 30, dice: "d12", count: 1, multiplier: 1000 },
+    { type: "gp", chance: 25, dice: "d8", count: 1, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 10, dice: "d10", count: 1 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(10)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d10(1), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTE", state);
+  }
+};
+
+// ----- F -----
+treasureEngine.TREASURE_SCHEMAS.TTF = {
+  title: "// Treasure Type F //",
+  coins: [
+    { type: "sp", chance: 10, dice: "d10", count: 2, multiplier: 1000 },
+    { type: "gp", chance: 25, dice: "d12", count: 1, multiplier: 1000 }
+  ],
+  gems: [
+    { chance: 20, dice: "d12", count: 2 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(20)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d12(2), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTF", state);
+  }
+};
+
+// ----- G -----
+treasureEngine.TREASURE_SCHEMAS.TTG = {
+  title: "// Treasure Type G //",
+  coins: [
+    { type: "gp", chance: 75, dice: "d4", count: 1, multiplier: 10000 }
+  ],
+  gems: [
+    { chance: 25, dice: "d6", count: 3 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(25)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d10(1), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTG", state);
+  }
+};
+
+// ----- H (Half) -----
+treasureEngine.TREASURE_SCHEMAS.TTH_HALF = {
+  title: "// Treasure Type H (Half) //",
+  coins: [
+    { type: "cp", chance: 25, dice: "d8", count: 3, multiplier: 500 },
+    { type: "sp", chance: 50, dice: "d100", count: 1, multiplier: 500 },
+    { type: "gp", chance: 75, dice: "d6", count: 1, multiplier: 5000 }
+  ],
+  gems: [
+    { chance: 50, dice: "d50", count: 1 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(50)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d2(1) * 10, state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTH_HALF", state);
+  }
+};
+
+// ----- H (Full) -----
+treasureEngine.TREASURE_SCHEMAS.TTH_FULL = {
+  title: "// Treasure Type H //",
+  coins: [
+    { type: "cp", chance: 25, dice: "d8", count: 3, multiplier: 1000 },
+    { type: "sp", chance: 50, dice: "d100", count: 1, multiplier: 1000 },
+    { type: "gp", chance: 75, dice: "d6", count: 1, multiplier: 10000 }
+  ],
+  gems: [
+    { chance: 50, dice: "d100", count: 1 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(50)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d4(1) * 10, state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTH_FULL", state);
+  }
+};
+
+// ----- H (Double) -----
+treasureEngine.TREASURE_SCHEMAS.TTH_DOUBLE = {
+  title: "// Treasure Type H (Double) //",
+  coins: [
+    { type: "cp", chance: 25, dice: "d8", count: 3, multiplier: 2000 },
+    { type: "sp", chance: 50, dice: "d100", count: 1, multiplier: 2000 },
+    { type: "gp", chance: 75, dice: "d6", count: 1, multiplier: 20000 }
+  ],
+  gems: [
+    { chance: 50, dice: "d100", count: 2 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(50)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d4(2) * 10, state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTH_DOUBLE", state);
+  }
+};
+
+// ----- I -----
+treasureEngine.TREASURE_SCHEMAS.TTI = {
+  title: "// Treasure Type I //",
+  coins: [],
+  gems: [
+    { chance: 50, dice: "d8", count: 2 }
+  ],
+  rollNonMagic: function (state) {
+    treasureEngine.rollCoins(this, state);
+    treasureEngine.rollGems(this, state);
+
+    if (dice.percentChance(50)) {
+      treasureEngine.rollJewelryWithSwaps(dice.d8(2), state);
+    }
+  },
+  rollMagicAndMaps: function (state) {
+    treasureEngine.rollMagicAndMaps("TTI", state);
+  }
+};
 
   // ==================================================================
   // END OF CURRENT IMPLEMENTATION PHASE
