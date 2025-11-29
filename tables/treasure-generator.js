@@ -62,9 +62,65 @@
   // 1. Public API placeholders (no logic yet)
   // ---------------------------------------------------------------
 
-  // Running the engine before it's implemented will give clear feedback.
+  // Run the treasure engine for a given schema key.
+  //
+  // Schema contract (for now, minimal and generic):
+  //   treasureEngine.TREASURE_SCHEMAS[schemaKey] = {
+  //     title: string,                      // title line for output
+  //     rollNonMagic: function (state) {},  // rolls coins/gems/jewelry/books/valuables
+  //     rollMagicAndMaps: function (state) {} // rolls magic items and maps
+  //   };
+  //
+  // This function:
+  //   - Creates a fresh state object.
+  //   - Calls schema.rollNonMagic(state) if present.
+  //   - Calls schema.rollMagicAndMaps(state) if present.
+  //   - Uses buildFullOutput(title, state) to assemble sections + GRAND TOTAL.
+  //
   treasureEngine.run = function (schemaKey) {
-    return `treasureEngine.run("${schemaKey}") called, but engine not implemented yet.`;
+    var schema = treasureEngine.TREASURE_SCHEMAS[schemaKey];
+
+    if (!schema) {
+      return 'treasureEngine.run("' + schemaKey + '"): no schema registered.';
+    }
+
+    var state = {};
+
+    // Defensive defaults so body builder doesn’t choke
+    state.magicItems = [];
+    state.mapsList = [];
+    state.valuablesLines = [];
+    state.booksLines = [];
+    state.jewelryText = "";
+    state.gemsText = "";
+    state.coinLines = [];
+
+    state.totalCoinGpValue = 0;
+    state.totalCoinEncumbrance = 0;
+    state.gemsGpValue = 0;
+    state.gemsEncumbrance = 0;
+    state.jewelryGpValue = 0;
+    state.jewelryEncumbrance = 0;
+    state.booksGpValue = 0;
+    state.booksEncumbrance = 0;
+    state.valuablesGpValue = 0;
+    state.valuablesEncumbrance = 0;
+
+    // 1) Roll all NON-MAGIC treasure first (coins/gems/jewelry/books/valuables)
+    if (typeof schema.rollNonMagic === "function") {
+      schema.rollNonMagic(state);
+    }
+
+    // 2) Roll MAGIC ITEMS / MAPS (never rerolled by nil-safeguard later)
+    if (typeof schema.rollMagicAndMaps === "function") {
+      schema.rollMagicAndMaps(state);
+    }
+
+    // 3) Build full output (sections + GRAND TOTAL) with a safe title
+    var title = (schema.title && String(schema.title).trim()) ||
+                ("// Treasure (" + schemaKey + ") //");
+
+    return treasureEngine.buildFullOutput(title, state);
   };
 
   // Empty registries to be populated in future phases.
